@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inscription</title>
-    <script src="assets/script.js"></script>
+    <script src="../asset/script.js"></script>
     <!-- Ajouter le CDN de Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
@@ -13,7 +13,7 @@
         <div class="bg-white p-8 rounded-lg shadow-lg w-full sm:w-96">
             <h1 class="text-2xl font-bold text-center text-gray-800 mb-6">Inscription</h1>
 
-            <form id="registerForm" action="index.php" method="POST" onsubmit="return validateForm()">
+            <form id="registerForm" action="../index.php" method="POST" onsubmit="return validateForm()">
                 
                 <div class="mb-4">
                     <label for="username" class="block text-gray-700">Nom d'utilisateur:</label>
