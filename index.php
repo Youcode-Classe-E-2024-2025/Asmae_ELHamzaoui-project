@@ -18,7 +18,7 @@
             
             <!-- Menu & Icons -->
             <div class="flex space-x-4 items-center">
-                <a href="#register" class="text-white hover:text-gray-400">S'inscrire</a>
+                <a href="views/register.php" class="text-white hover:text-gray-400">S'inscrire</a>
                 <a href="#login" class="text-white hover:text-gray-400">Se connecter</a>
             </div>
         </div>
