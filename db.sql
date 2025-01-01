@@ -11,6 +11,9 @@ CREATE TABLE Utilisateur (
     role_user ENUM('chef_de_projet', 'membre', 'invite') NOT NULL
 );
 
+ALTER TABLE Utilisateur
+MODIFY role_user ENUM('chef_de_projet', 'membre', 'invite') NOT NULL DEFAULT 'membre';
+
 
 CREATE TABLE Projet (
     id_projet INT AUTO_INCREMENT PRIMARY KEY,
