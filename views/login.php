@@ -13,7 +13,7 @@
         <div class="bg-white p-8 rounded-lg shadow-lg w-full sm:w-96">
             <h1 class="text-2xl font-bold text-center text-gray-800 mb-6">Connexion</h1>
 
-            <form id="loginForm" action="loginController.php" method="POST" onsubmit="return validateLoginForm()">
+            <form id="loginForm" action="../controllers/loginController.php" method="POST" onsubmit="return validateLoginForm()">
                 <div class="mb-4">
                     <label for="email" class="block text-gray-700">Email:</label>
                     <input type="email" id="email" name="email" class="w-full p-3 mt-1 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Email">
