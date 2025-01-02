@@ -67,18 +67,6 @@ class Projet {
         $stmt->bindParam(':visibilite', $visibilite);
         return $stmt->execute();
     }
-    // Ajouter un projet
-    public function ajouterProjet($nom, $desc, $date_debut, $date_fin, $visibilite) {
-        $sql = "INSERT INTO Projet (nom_projet, desc_projet, date_debut_projet, date_fin_projet, visibilite_projet)
-                VALUES (:nom, :desc, :date_debut, :date_fin, :visibilite)";
-        $stmt = $this->db->prepare($sql);
-        $stmt->bindParam(':nom', $nom);
-        $stmt->bindParam(':desc', $desc);
-        $stmt->bindParam(':date_debut', $date_debut);
-        $stmt->bindParam(':date_fin', $date_fin);
-        $stmt->bindParam(':visibilite', $visibilite);
-        return $stmt->execute();
-    }
     // Modifier un projet
     public function modifierProjet($id, $nom, $desc, $date_debut, $date_fin, $visibilite) {
         $sql = "UPDATE Projet SET nom_projet = :nom, desc_projet = :desc, date_debut_projet = :date_debut,
@@ -106,6 +94,14 @@ class Projet {
         $stmt = $this->db->query($sql);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-   
+    // Assigner un projet à un membre
+    public function assignerTache($id_projet, $id_utilisateur) {
+        // Ici on suppose qu'il y a une table 'Taches' pour gérer l'assignation de tâches.
+        $sql = "INSERT INTO Taches (projet_id, utilisateur_id) VALUES (:id_projet, :id_utilisateur)";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(':id_projet', $id_projet);
+        $stmt->bindParam(':id_utilisateur', $id_utilisateur);
+        return $stmt->execute();
+    }
 }
 ?>
