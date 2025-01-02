@@ -13,7 +13,7 @@
         <div class="bg-white p-8 rounded-lg shadow-lg w-full sm:w-96">
             <h1 class="text-2xl font-bold text-center text-gray-800 mb-6">Inscription</h1>
 
-            <form id="registerForm" action="../index.php" method="POST" onsubmit="return validateForm()">
+            <form id="registerForm" action="../controllers/registerController.php" method="POST" onsubmit="return validateForm()">
                 
                 <div class="mb-4">
                     <label for="username" class="block text-gray-700">Nom d'utilisateur:</label>
