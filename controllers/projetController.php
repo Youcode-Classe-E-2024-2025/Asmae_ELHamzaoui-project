@@ -35,13 +35,6 @@ class ProjetController {
     public function afficherProjets() {
         return $this->projetModel->afficherProjets();
     }
-    // Assigner une tâche à un membre
-    public function assignerTache($id_projet, $id_utilisateur) {
-        if ($this->projetModel->assignerTache($id_projet, $id_utilisateur)) {
-            echo "Tâche assignée avec succès.";
-        } else {
-            echo "Erreur lors de l'assignation de la tâche.";
-        }
-    }
+  
 }
 ?>
