@@ -100,6 +100,12 @@ class Projet {
         $stmt->bindParam(':id', $id);
         return $stmt->execute();
     }
-    
+    // Afficher tous les projets
+    public function afficherProjets() {
+        $sql = "SELECT * FROM Projet";
+        $stmt = $this->db->query($sql);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+   
 }
 ?>
