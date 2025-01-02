@@ -93,6 +93,13 @@ class Projet {
         $stmt->bindParam(':visibilite', $visibilite);
         return $stmt->execute();
     }
-   
+    // Supprimer un projet
+    public function supprimerProjet($id) {
+        $sql = "DELETE FROM Projet WHERE id_projet = :id";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(':id', $id);
+        return $stmt->execute();
+    }
+    
 }
 ?>
