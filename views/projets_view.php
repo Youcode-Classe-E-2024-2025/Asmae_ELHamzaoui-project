@@ -60,7 +60,7 @@ $projets = $projetController->afficherProjets();
                             <input type="hidden" name="projet_id" value="<?php echo $projet['id_projet']; ?>" />
                             <button type="submit" name="modifier" class="bg-yellow-500 text-white py-1 px-3 rounded hover:bg-yellow-600">Modifier</button>
                         </form>
-                        <form method="POST" action="supprimer_projet.php" class="inline ml-2">
+                        <form method="POST" action="../controllers/supprimer_projet.php" class="inline ml-2">
                             <input type="hidden" name="projet_id" value="<?php echo $projet['id_projet']; ?>" />
                             <button type="submit" name="supprimer" class="bg-red-500 text-white py-1 px-3 rounded hover:bg-red-600">Supprimer</button>
                         </form>
