@@ -55,6 +55,18 @@ class Projet {
     public function setChefProjetId($chefProjet_id) {
         $this->chefProjet_id = $chefProjet_id;
     }
+    // Ajouter un projet
+    public function ajouterProjet($nom, $desc, $date_debut, $date_fin, $visibilite) {
+        $sql = "INSERT INTO Projet (nom_projet, desc_projet, date_debut_projet, date_fin_projet, visibilite_projet)
+                VALUES (:nom, :desc, :date_debut, :date_fin, :visibilite)";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(':nom', $nom);
+        $stmt->bindParam(':desc', $desc);
+        $stmt->bindParam(':date_debut', $date_debut);
+        $stmt->bindParam(':date_fin', $date_fin);
+        $stmt->bindParam(':visibilite', $visibilite);
+        return $stmt->execute();
+    }
    
 }
 ?>
