@@ -28,23 +28,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Connexion réussie, démarrer la session et rediriger
             session_start();
             $_SESSION['user'] = [
-                'nom_user' => $utilisateur->nom_user,
-                'email_user' => $utilisateur->email_user,
-                'role_user' => $utilisateur->role_user
+                'nom_user' => $utilisateur->getNomUser(),
+                'email_user' => $utilisateur->getEmailUser(),
+                'role_user' => $utilisateur->getRoleUser()
             ];
+            
+         // Vérification du rôle de l'utilisateur
+         if ($utilisateur->getRoleUser() === 'chef_de_projet') {  // Utilisation du getter
+            // Si le rôle est chef de projet, rediriger vers dashboard.php
+            header("Location: dashboard.php");
+        } else if ($utilisateur->getRoleUser() === 'membre') {  // Utilisation du getter
+            // Si le rôle est membre, rediriger vers projets.php
+            header("Location: projets.php");
+        } else {
+            // Si le rôle n'est ni chef de projet ni membre, rediriger vers une page par défaut (facultatif)
+            header("Location: home.php");
+        }
 
-            // Vérification du rôle de l'utilisateur
-            if ($utilisateur->role_user === 'chef_de_projet') {
-                // Si le rôle est chef de projet, rediriger vers dashboard.php
-                header("Location: dashboard.php");
-            } else if ($utilisateur->role_user === 'membre') {
-                // Si le rôle est membre, rediriger vers projets.php
-                header("Location: projets.php");
-            } else {
-                // Si le rôle n'est ni chef de projet ni membre, rediriger vers une page par défaut (facultatif)
-                header("Location: home.php");
-            }
-            exit;
         } else {
             $errors['general'] = "Email ou mot de passe incorrect.";
         }
