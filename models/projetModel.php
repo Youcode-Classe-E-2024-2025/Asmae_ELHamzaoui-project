@@ -94,14 +94,16 @@ class Projet {
         $stmt = $this->db->query($sql);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-    // Assigner un projet à un membre
-    public function assignerTache($id_projet, $id_utilisateur) {
-        // Ici on suppose qu'il y a une table 'Taches' pour gérer l'assignation de tâches.
-        $sql = "INSERT INTO Taches (projet_id, utilisateur_id) VALUES (:id_projet, :id_utilisateur)";
-        $stmt = $this->db->prepare($sql);
-        $stmt->bindParam(':id_projet', $id_projet);
-        $stmt->bindParam(':id_utilisateur', $id_utilisateur);
-        return $stmt->execute();
-    }
+   
+// Ajouter cette méthode dans le modèle Projet
+public function getProjetById($id) {
+    $sql = "SELECT * FROM Projet WHERE id_projet = :id";
+    $stmt = $this->db->prepare($sql);
+    $stmt->bindParam(':id', $id);
+    $stmt->execute();
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+}
+
+
 }
 ?>

@@ -36,5 +36,9 @@ class ProjetController {
         return $this->projetModel->afficherProjets();
     }
   
+    // méthode pour récupérer un projet par son ID
+    public function getProjetById($id) {
+        return $this->projetModel->getProjetById($id);
+    }
 }
 ?>
