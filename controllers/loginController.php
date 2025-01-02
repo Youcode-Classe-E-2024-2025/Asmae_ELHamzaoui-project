@@ -44,7 +44,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Si le rôle n'est ni chef de projet ni membre, rediriger vers une page par défaut (facultatif)
             header("Location: home.php");
         }
-
         } else {
             $errors['general'] = "Email ou mot de passe incorrect.";
         }
