@@ -16,6 +16,36 @@ class Utilisateur {
         $this->role_user = $role_user;
     }
 
+    // Getters
+    public function getNomUser() {
+        return $this->nom_user;
+    }
+
+    public function getEmailUser() {
+        return $this->email_user;
+    }
+
+    public function getRoleUser() {
+        return $this->role_user;
+    }
+
+    // Setters
+    public function setNomUser($nom_user) {
+        $this->nom_user = $nom_user;
+    }
+
+    public function setEmailUser($email_user) {
+        $this->email_user = $email_user;
+    }
+
+    public function setMotDePasse($mot_de_passe) {
+        $this->mot_de_passe = $mot_de_passe;
+    }
+
+    public function setRoleUser($role_user) {
+        $this->role_user = $role_user;
+    }
+
     public function inscrire() {
         global $pdo;
         $query = "INSERT INTO Utilisateur (nom_user, email_user, mot_de_passe, role_user) 
@@ -38,4 +68,5 @@ class Utilisateur {
         return null;
     }
 }
+
 ?>
