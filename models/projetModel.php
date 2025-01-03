@@ -95,6 +95,13 @@ class Projet {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
    
+      // Afficher tous les projets publics
+      public function afficherProjetsPublic() {
+        $sql = "SELECT * FROM Projet WHERE visibilite_projet = 'public' ";
+        $stmt = $this->db->query($sql);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
 // Ajouter cette méthode dans le modèle Projet
 public function getProjetById($id) {
     $sql = "SELECT * FROM Projet WHERE id_projet = :id";
