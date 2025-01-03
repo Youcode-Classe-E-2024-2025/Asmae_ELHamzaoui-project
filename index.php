@@ -13,7 +13,7 @@
         <div class="container mx-auto flex justify-between items-center">
             <!-- Logo -->
             <div class="flex items-center">
-                <img src="https://via.placeholder.com/150x50?text=Logo" alt="Logo" class="h-12">
+                <img src="images/logo.png" alt="Logo" class="h-12">
             </div>
             
             <!-- Menu & Icons -->
