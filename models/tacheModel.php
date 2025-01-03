@@ -126,7 +126,15 @@ class Tache {
         return $stmt->execute();
     }
 
-    
+    // Supprimer une tâche
+    public function supprimerTache($id) {
+        $sql = "DELETE FROM Tache WHERE id_tache = :id";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(':id', $id);
+        return $stmt->execute();
+    }
+
+  
 
 }
 ?>
