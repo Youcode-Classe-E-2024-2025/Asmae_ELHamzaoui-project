@@ -111,6 +111,22 @@ class Tache {
         return $stmt->execute();
     }
 
+    
+    // Modifier une tâche
+    public function modifierTache($id, $titre, $desc, $statut, $date_limite, $priorite) {
+        $sql = "UPDATE Tache SET titre_tache = :titre, desc_tache = :desc, statut_tache = :statut, 
+                date_limite_tache = :date_limite, priorite_tache = :priorite WHERE id_tache = :id";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(':id', $id);
+        $stmt->bindParam(':titre', $titre);
+        $stmt->bindParam(':desc', $desc);
+        $stmt->bindParam(':statut', $statut);
+        $stmt->bindParam(':date_limite', $date_limite);
+        $stmt->bindParam(':priorite', $priorite);
+        return $stmt->execute();
+    }
+
+    
 
 }
 ?>
