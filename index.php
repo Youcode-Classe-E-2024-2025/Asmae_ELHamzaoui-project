@@ -37,7 +37,7 @@
             </div>
             <div class="flex space-x-8 items-center"> <!-- Espacement égal entre les éléments -->
                 <!-- Icône pour l'inscription -->
-                <a href="views/register.php" class="text-white text-xl hover:text-gray-400">
+                <a href="views/direction.php" class="text-white text-xl hover:text-gray-400">
                    Sign up
                 </a>
                 
@@ -52,8 +52,8 @@
     <!-- Body -->
     <main class="py-48 bg-gradient-to-r to-indigo-600 text-white">
         <div class="container mx-auto">
-            <h1 class="text-4xl font-bold mb-4 ml-32">DES TACHES CLAIRES,</h1>
-            <h1 class="text-4xl font-bold mb-4 ml-32">UNE EQUIPE PLUS PERfORMANTE</h1>
+            <h1 class="text-5xl font-bold mb-4 ml-32">DES TACHES CLAIRES</h1>
+            <h1 class="text-5xl font-bold mb-4 ml-48">UNE EQUIPE PLUS PERfORMANTE</h1>
         </div>
     </main>
 

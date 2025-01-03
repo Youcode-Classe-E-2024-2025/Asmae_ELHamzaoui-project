@@ -24,11 +24,11 @@
             height:300px;
             width:300px;
             border-radius:20px;
-            background-color:#1C325B;
+            background-color:#120e3d;
             text-align:center;
             border-top:1px solid white;
             border-left:1px solid white;
-            box-shadow: 12px 12px 12px rgba(255, 255, 255, 0.3); /* Ombre */
+            box-shadow: 12px 12px 12px rgba(72, 146, 230, 0.3); /* Ombre */
             transition: transform 0.3s ease; /* Transition pour l'animation */
         }
         .choix i{
