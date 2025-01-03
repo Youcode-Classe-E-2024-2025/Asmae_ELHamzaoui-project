@@ -98,7 +98,19 @@ class Tache {
         $this->etat_id = $etat_id;
     }
 
-    
+    // Ajouter une tâche
+    public function ajouterTache($titre, $desc, $statut, $date_limite, $priorite) {
+        $sql = "INSERT INTO Tache (titre_tache, desc_tache, statut_tache, date_limite_tache, priorite_tache)
+                VALUES (:titre, :desc, :statut, :date_limite, :priorite)";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(':titre', $titre);
+        $stmt->bindParam(':desc', $desc);
+        $stmt->bindParam(':statut', $statut);
+        $stmt->bindParam(':date_limite', $date_limite);
+        $stmt->bindParam(':priorite', $priorite);
+        return $stmt->execute();
+    }
+
 
 }
 ?>
