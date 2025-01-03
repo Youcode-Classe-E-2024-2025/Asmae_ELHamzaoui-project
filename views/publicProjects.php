@@ -1,7 +1,7 @@
 <?php
 include_once '../controllers/projetController.php';
 $projetController = new ProjetController($pdo);
-$projets = $projetController->afficherProjets();
+$projets = $projetController->afficherProjetsPublic();
 ?>
 <!DOCTYPE html>
 <html lang="fr">
