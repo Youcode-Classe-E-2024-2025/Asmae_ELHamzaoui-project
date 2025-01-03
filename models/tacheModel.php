@@ -134,7 +134,12 @@ class Tache {
         return $stmt->execute();
     }
 
-  
+    // Afficher toutes les tâches
+    public function afficherTaches() {
+        $sql = "SELECT * FROM Tache";
+        $stmt = $this->db->query($sql);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 
 }
 ?>
