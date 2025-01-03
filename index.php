@@ -31,8 +31,8 @@
             <img src="images/logo.png" alt="Logo" class="h-12 w-20 logo my-5"> <!-- Ajout de la classe "logo" pour appliquer la transformation -->
             <!-- Menu & Icons avec un espacement égal entre les éléments -->
             <div  class="flex space-x-8 items-center">
-                <a href="#" class="text-white text-xl hover:text-gray-400">Home</a>
-                <a href="#" class="text-white text-xl hover:text-gray-400">Project</a>
+                <a href="index.php" class="text-white text-xl hover:text-gray-400">Home</a>
+                <a href="views/publicProjects.php" class="text-white text-xl hover:text-gray-400">Project</a>
                 <a href="#" class="text-white text-xl hover:text-gray-400">About</a>
             </div>
             <div class="flex space-x-8 items-center"> <!-- Espacement égal entre les éléments -->
