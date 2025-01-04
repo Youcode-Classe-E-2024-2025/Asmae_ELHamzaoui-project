@@ -1,14 +1,7 @@
 <?php
 session_start();
 
-if (!isset($_SESSION['user']['id_user'])) {
-    // Si l'utilisateur n'est pas connecté, afficher un message ou rediriger
-    echo "Utilisateur non connecté.";
-    exit;  // Arrêter l'exécution si l'utilisateur n'est pas connecté
-}
-
 $userId = $_SESSION['user']['id_user'];
-var_dump($userId);  // Debug: Vérifier si l'ID utilisateur est récupéré correctement
 
 // Obtenir les projets assignés à l'utilisateur
 include_once '../controllers/projetController.php';
@@ -29,7 +22,18 @@ $projetsAssignes = $projetController->getProjetsAssignes($userId);
 </head>
 
 <body class="bg-gray-50">
-
+<header class="mx-8">
+    <div class="container flex justify-between items-center">
+        <!-- Logo avec taille augmentée -->
+        <img src="../images/logo.png" alt="Logo" class="h-12 w-20 logo my-5 bg-gray-600 "> <!-- Ajout de la classe "logo" pour appliquer la transformation -->
+        <div class="flex space-x-8 items-center"> <!-- Espacement égal entre les éléments -->
+            <!-- Icône pour l'inscription -->
+            <a href="deconnexion.php" class="text-2xl hover:text-gray-600">
+                <i class="fa-solid fa-right-from-bracket"></i>
+            </a>
+        </div>
+    </div>
+</header>
 <div class="container p-6">
     <h2 class="text-2xl font-bold mb-4">Mes projets assignés</h2>
     
