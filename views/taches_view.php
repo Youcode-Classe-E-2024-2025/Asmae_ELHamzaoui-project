@@ -50,7 +50,7 @@ $taches = $controller->afficherTaches();
                             <td class="py-2 px-4"><?php echo $tache['statut_tache']; ?></td>
                             <td class="py-2 px-4">
                                 <a href="modifier_tache.php?id=<?php echo $tache['id_tache']; ?>" class="text-blue-600 hover:text-blue-800">Modifier</a> | 
-                                <a href="supprimer_tache.php?id=<?php echo $tache['id_tache']; ?>" class="text-red-600 hover:text-red-800">Supprimer</a>
+                                <a href="../controllers/supprimer_tache.php?id=<?php echo $tache['id_tache']; ?>" class="text-red-600 hover:text-red-800">Supprimer</a>
                             </td>
                         </tr>
                     <?php endforeach; ?>

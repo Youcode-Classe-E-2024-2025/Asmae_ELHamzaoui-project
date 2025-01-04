@@ -31,7 +31,7 @@ if (isset($_GET['id'])) {
 
         // Appeler la méthode de modification
         $controller->modifierTache($id_tache, $titre, $desc, $statut, $date_limite, $priorite, $membre_assigne_id, $projet_id, $etat_id);
-        header("Location: taches.php"); // Rediriger vers la liste des tâches après modification
+        header("Location: taches_view.php"); // Rediriger vers la liste des tâches après modification
     }
 }
 ?>

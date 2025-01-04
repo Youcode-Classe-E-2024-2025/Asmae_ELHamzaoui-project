@@ -15,7 +15,7 @@ if (isset($_GET['id'])) {
     }
 
     // Rediriger vers la page des tâches après suppression
-    header("Location: taches.php");
+    header("Location: ../views/taches_view.php");
     exit;
 } else {
     echo "ID de tâche non spécifié.";
