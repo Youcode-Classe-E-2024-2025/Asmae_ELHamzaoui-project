@@ -17,6 +17,10 @@ class Utilisateur {
     }
 
     // Getters
+    public function getIdUser() {
+        return $this->id_user;
+    }
+
     public function getNomUser() {
         return $this->nom_user;
     }

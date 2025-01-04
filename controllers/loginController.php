@@ -25,25 +25,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $utilisateur = Utilisateur::seConnecter($email, $password);
 
         if ($utilisateur) {
-            // Connexion réussie, démarrer la session et rediriger
-            session_start();
+            // Connexion réussie, démarrer la session
+            session_start();  // Démarre la session
+            
+            // Stocker les informations de l'utilisateur dans la session
             $_SESSION['user'] = [
+                'id_user' => $utilisateur->getIdUser(),  // Ajout de l'ID utilisateur
                 'nom_user' => $utilisateur->getNomUser(),
                 'email_user' => $utilisateur->getEmailUser(),
                 'role_user' => $utilisateur->getRoleUser()
             ];
-            
-         // Vérification du rôle de l'utilisateur
-         if ($utilisateur->getRoleUser() === 'chef_de_projet') {  // Utilisation du getter
-            // Si le rôle est chef de projet, rediriger vers dashboard.php
-            header("Location: ../views/projets_view.php");
-        } else if ($utilisateur->getRoleUser() === 'membre') {  // Utilisation du getter
-            // Si le rôle est membre, rediriger vers projets.php
-            header("Location: projets.php");
-        } else {
-            // Si le rôle n'est ni chef de projet ni membre, rediriger vers une page par défaut (facultatif)
-            header("Location: home.php");
-        }
+
+            // Vérification du rôle de l'utilisateur
+            if ($utilisateur->getRoleUser() === 'chef_de_projet') {
+                // Si le rôle est chef de projet, rediriger vers dashboard.php
+                header("Location: ../views/projets_view.php");
+                exit;  // Assurez-vous que le script s'arrête après la redirection
+            } else if ($utilisateur->getRoleUser() === 'membre') {
+                // Si le rôle est membre, rediriger vers projets.php
+                header("Location: projets.php");
+                exit;  // Assurez-vous que le script s'arrête après la redirection
+            } else {
+                // Si le rôle n'est ni chef de projet ni membre, rediriger vers une page par défaut (facultatif)
+                header("Location: home.php");
+                exit;  // Assurez-vous que le script s'arrête après la redirection
+            }
         } else {
             $errors['general'] = "Email ou mot de passe incorrect.";
         }
