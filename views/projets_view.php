@@ -74,7 +74,10 @@ $projets = $projetController->afficherProjets();
         
         <div class="flex justify-between items-center">
           <h2 class="text-2xl font-bold mb-4">Liste des projets</h2>
-          <h2 class="text-xl font-bold mb-4  border border-gray-200 rounded-lg bg-sky-700 w-70 h-12 pt-2 px-10"><button onclick="ajouterProjet()">Ajouter projet</button></h2>
+          <div class="flex justify-between items-center ml-2">
+             <h2 class="text-xl font-bold mb-4  border border-gray-200 rounded-lg bg-sky-700 w-70 h-12 pt-2 px-10"><button onclick="ajouterProjet()">Ajouter projet</button></h2>
+             <h2 class="text-xl font-bold mb-4  border border-gray-200 rounded-lg bg-sky-700 w-70 h-12 pt-2 px-10"><button onclick="assignerProjet()">Assigner projet</button></h2>
+          </div>
         </div>
         
         <div class="container mx-auto">
@@ -141,11 +144,37 @@ $projets = $projetController->afficherProjets();
     </div>
     </div>
     
+    <!-- Modal pour assigner un projet -->
+<div class="hidden w-90 h-200 bg-blue-200" id="modal-assigner">
+    <form method="POST" action="assigner_projet.php" class="bg-white p-6">
+        <div class="mb-4">
+            <label for="membres" class="block text-gray-700">Sélectionner les membres à assigner:</label>
+            <div class="space-y-2">
+                <?php foreach ($membres as $membre): ?>
+                    <div>
+                        <input type="checkbox" name="membres[]" value="<?php echo $membre['id_user']; ?>" id="membre-<?php echo $membre['id_user']; ?>">
+                        <label for="membre-<?php echo $membre['id_user']; ?>" class="ml-2"><?php echo $membre['nom_user']; ?></label>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+        </div>
+        
+        <input type="hidden" name="projet_id" value="<?php echo $projet_id; ?>">
+
+        <button type="submit" name="assigner" class="w-80 bg-sky-700 text-white py-2 px-4 rounded hover:bg-blue-600">Assigner le projet</button>
+    </form>
+</div>
+
+
   <script>
     const modalProjet= document.getElementById('modal');
     function ajouterProjet(){
         modalProjet.style.display = modalProjet.style.display === "flex" ? "none" : "flex"; // Toggle visibility
-
+    }
+    const modalAssigner = document.getElementById('modal-assigner');
+    
+    function assignerProjet() {
+        modalAssigner.style.display = modalAssigner.style.display === "flex" ? "none" : "flex"; // Toggle visibility
     }
   </script>
 </body>
