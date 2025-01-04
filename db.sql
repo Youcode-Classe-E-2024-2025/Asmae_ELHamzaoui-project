@@ -79,3 +79,13 @@ INSERT INTO Utilisateur(nom_user, email_user, mot_de_passe, role_user) VALUES ('
 UPDATE Utilisateur
 SET role_user = 'chef_de_projet'
 WHERE email_user = 'asmaeadmin@gmail.com' ;
+
+-- Table Projet_Utilisateur (Table d'association entre projets et utilisateurs)
+CREATE TABLE Projet_Utilisateur (
+    id_projet INT,
+    id_user INT,
+    role_utilisateur ENUM('chef_de_projet', 'membre') NOT NULL,
+    PRIMARY KEY (id_projet, id_user),
+    FOREIGN KEY (id_projet) REFERENCES Projet(id_projet),
+    FOREIGN KEY (id_user) REFERENCES Utilisateur(id_user)
+);
