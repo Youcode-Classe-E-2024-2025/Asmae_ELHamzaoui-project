@@ -106,7 +106,7 @@ $projets = $projetController->afficherProjets();
            </div>
         </div>
 
-<div class="hidden w-90 h-200 text-center bg-blue-200" id="modal">
+<div class="hidden w-90 h-200 bg-blue-200" id="modal">
         <form method="POST" class="bg-white p-6 ">
             <div class="mb-4">
                 <label for="nom_projet" class="block text-gray-700">Nom du projet:</label>
@@ -136,7 +136,7 @@ $projets = $projetController->afficherProjets();
                 </select>
             </div>
             
-            <button type="submit" name="ajouter" class="w-80 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">Ajouter le projet</button>
+            <button type="submit" name="ajouter" class="w-80 bg-sky-700 text-white py-2 px-4 rounded hover:bg-blue-600">Ajouter le projet</button>
         </form>
     </div>
     </div>
