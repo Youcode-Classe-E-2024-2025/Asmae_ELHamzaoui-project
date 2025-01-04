@@ -92,17 +92,12 @@ $projets = $projetController->afficherProjets();
                       <p class="px-4 py-2"><?php echo $project['date_debut_projet']; ?></p>
                       <p class="px-4 py-2"><?php echo $project['date_fin_projet']; ?></p>
                       <p class="px-4 py-2"><?php echo $project['visibilite_projet']; ?></p>
-
-                      <!-- <form method="POST" action="assigner_tache.php" class="inline">
-                        <input type="hidden" name="projet_id" value="<?php echo $projet['id_projet']; ?>" />
-                        <button type="submit" name="assigner" class="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-600">Assigner tâche</button>
-                      </form> -->
                       <form method="POST" action="modifier_projet.php" class="inline ml-2">
-                        <input type="hidden" name="projet_id" value="<?php echo $projet['id_projet']; ?>" />
+                        <input type="hidden" name="projet_id" value="<?php echo $project['id_projet']; ?>" />
                         <button type="submit" name="modifier" class="bg-yellow-500 text-white py-1 px-3 rounded hover:bg-yellow-600">Modifier</button>
                       </form>
                       <form method="POST" action="../controllers/supprimer_projet.php" class="inline ml-2">
-                        <input type="hidden" name="projet_id" value="<?php echo $projet['id_projet']; ?>" />
+                        <input type="hidden" name="projet_id" value="<?php echo $project['id_projet']; ?>" />
                         <button type="submit" name="supprimer" class="bg-red-500 text-white py-1 px-3 rounded hover:bg-red-600">Supprimer</button>
                      </form>
                   </div>
@@ -110,7 +105,7 @@ $projets = $projetController->afficherProjets();
               <?php endforeach; ?>
            </div>
         </div>
-<!--  -->
+
 <div class="hidden w-90 h-200 text-center bg-blue-200" id="modal">
         <form method="POST" class="bg-white p-6 ">
             <div class="mb-4">
