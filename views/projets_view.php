@@ -15,6 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['ajouter'])) {
 
 // Affichage des projets
 $projets = $projetController->afficherProjets();
+$membres = $projetController->getMembres();
 ?>
 
 <!DOCTYPE html>
