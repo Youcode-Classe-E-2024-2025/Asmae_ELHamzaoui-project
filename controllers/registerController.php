@@ -43,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($utilisateur->inscrire()) {
             $success = "Inscription réussie ! Vous pouvez maintenant vous connecter.";
             // Redirection vers la page de connexion ou une autre page
-            header("Location: login.php");  // Rediriger vers la page de connexion
+            header("Location: ../views/UserInterfaceProjects.php");
             exit;
         } else {
             $errors['general'] = "Une erreur est survenue. Veuillez réessayer plus tard.";
