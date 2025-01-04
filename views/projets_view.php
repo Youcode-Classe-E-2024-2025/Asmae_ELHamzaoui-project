@@ -29,7 +29,7 @@ $membres = $projetController->getMembres();
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         /* Le modal sera placé au-dessus du contenu avec un fond semi-transparent */
-        #modal {
+        #modal-assigner {
             display: none; /* Initialement caché */
             position: fixed; /* Pour qu'il soit fixé en haut de la page */
             top: 0;
@@ -45,139 +45,114 @@ $membres = $projetController->getMembres();
 
         /* Contenu du modal */
         .modal-content {
-            margin: auto;
             background-color: white;
             padding: 20px;
             border-radius: 10px;
-            width: 80%;
-            max-width: 600px;
+            width: 60%;
+            max-width: 400px;
         }
     </style>
 </head>
 
 <body class="bg-gray-50">
 <header class="mx-8">
-        <div class="container flex justify-between items-center">
-            <!-- Logo avec taille augmentée -->
-            <img src="../images/logo.png" alt="Logo" class="h-12 w-20 logo my-5 bg-gray-600 "> <!-- Ajout de la classe "logo" pour appliquer la transformation -->
-            <div class="flex space-x-8 items-center"> <!-- Espacement égal entre les éléments -->
-                <!-- Icône pour l'inscription -->
-                <a href="views/direction.php" class="text-2xl hover:text-gray-600">
+    <div class="container flex justify-between items-center">
+        <!-- Logo avec taille augmentée -->
+        <img src="../images/logo.png" alt="Logo" class="h-12 w-20 logo my-5 bg-gray-600 "> <!-- Ajout de la classe "logo" pour appliquer la transformation -->
+        <div class="flex space-x-8 items-center"> <!-- Espacement égal entre les éléments -->
+            <!-- Icône pour l'inscription -->
+            <a href="views/direction.php" class="text-2xl hover:text-gray-600">
                 <i class="fa-solid fa-right-from-bracket"></i>
-                </a>
-            </div>
+            </a>
         </div>
-    </header>
+    </div>
+</header>
 
-   
-
-    <div class="container p-6">
-        
-        <div class="flex justify-between items-center">
-          <h2 class="text-2xl font-bold mb-4">Liste des projets</h2>
-          <div class="flex justify-between items-center ml-2">
-             <h2 class="text-xl font-bold mb-4  border border-gray-200 rounded-lg bg-sky-700 w-70 h-12 pt-2 px-10"><button onclick="ajouterProjet()">Ajouter projet</button></h2>
-             <h2 class="text-xl font-bold mb-4  border border-gray-200 rounded-lg bg-sky-700 w-70 h-12 pt-2 px-10"><button onclick="assignerProjet()">Assigner projet</button></h2>
-          </div>
+<div class="container p-6">
+    <div class="flex justify-between items-center">
+        <h2 class="text-2xl font-bold mb-4">Liste des projets</h2>
+        <div class="flex justify-between items-center ml-2">
+            <h2 class="text-xl font-bold mb-4  border border-gray-200 rounded-lg bg-sky-700 w-70 h-12 pt-2 px-10"><button onclick="ajouterProjet()">Ajouter projet</button></h2>
+            <h2 class="text-xl font-bold mb-4  border border-gray-200 rounded-lg bg-sky-700 w-70 h-12 pt-2 px-10"><button onclick="assignerProjet()">Assigner projet</button></h2>
         </div>
-        
-        <div class="container mx-auto">
+    </div>
+
+    <div class="container mx-auto">
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-              <?php foreach($projets as $project): ?>
-              <div class="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-                  <a href="#">
-                      <img class="rounded-t-lg" src="../images/background.jpg" alt="" />
-                  </a>
-                  <div class="p-5">
-                      <a href="#">
-                          <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white"><?php echo $project['nom_projet']; ?></h5>
-                      </a>
-                      <p class="mb-3 font-normal text-gray-700 dark:text-gray-400"><?php echo $project['desc_projet']; ?></p>
-                      <p class="px-4 py-2"><?php echo $project['date_debut_projet']; ?></p>
-                      <p class="px-4 py-2"><?php echo $project['date_fin_projet']; ?></p>
-                      <p class="px-4 py-2"><?php echo $project['visibilite_projet']; ?></p>
-                      <form method="POST" action="modifier_projet.php" class="inline ml-2">
-                        <input type="hidden" name="projet_id" value="<?php echo $project['id_projet']; ?>" />
-                        <button type="submit" name="modifier" class="bg-yellow-500 text-white py-1 px-3 rounded hover:bg-yellow-600">Modifier</button>
-                      </form>
-                      <form method="POST" action="../controllers/supprimer_projet.php" class="inline ml-2">
-                        <input type="hidden" name="projet_id" value="<?php echo $project['id_projet']; ?>" />
-                        <button type="submit" name="supprimer" class="bg-red-500 text-white py-1 px-3 rounded hover:bg-red-600">Supprimer</button>
-                     </form>
-                  </div>
-              </div>
-              <?php endforeach; ?>
-           </div>
-        </div>
-
-<div class="hidden w-90 h-200 bg-blue-200" id="modal">
-        <form method="POST" class="bg-white p-6 ">
-            <div class="mb-4">
-                <label for="nom_projet" class="block text-gray-700">Nom du projet:</label>
-                <input type="text" name="nom_projet" required class="w-80 px-4 py-2 border border-gray-300 rounded mt-1">
-            </div>
-            
-            <div class="mb-4">
-                <label for="desc_projet" class="block text-gray-700">Description:</label>
-                <textarea name="desc_projet" class="w-80 px-4 py-2 border border-gray-300 rounded mt-1"></textarea>
-            </div>
-            
-            <div class="mb-4">
-                <label for="date_debut" class="block text-gray-700">Date de début:</label>
-                <input type="date" name="date_debut" class="w-80 px-4 py-2 border border-gray-300 rounded mt-1">
-            </div>
-            
-            <div class="mb-4">
-                <label for="date_fin" class="block text-gray-700">Date de fin:</label>
-                <input type="date" name="date_fin" class="w-80 px-4 py-2 border border-gray-300 rounded mt-1">
-            </div>
-            
-            <div class="mb-4">
-                <label for="visibilite_projet" class="block text-gray-700">Visibilité:</label>
-                <select name="visibilite_projet" class="w-80 px-4 py-2 border border-gray-300 rounded mt-1">
-                    <option value="public">Public</option>
-                    <option value="privé">Privé</option>
-                </select>
-            </div>
-            
-            <button type="submit" name="ajouter" class="w-80 bg-sky-700 text-white py-2 px-4 rounded hover:bg-blue-600">Ajouter le projet</button>
-        </form>
-    </div>
-    </div>
-    
-    <!-- Modal pour assigner un projet -->
-<div class="hidden w-90 h-200 bg-blue-200" id="modal-assigner">
-    <form method="POST" action="assigner_projet.php" class="bg-white p-6">
-        <div class="mb-4">
-            <label for="membres" class="block text-gray-700">Sélectionner les membres à assigner:</label>
-            <div class="space-y-2">
-                <?php foreach ($membres as $membre): ?>
-                    <div>
-                        <input type="checkbox" name="membres[]" value="<?php echo $membre['id_user']; ?>" id="membre-<?php echo $membre['id_user']; ?>">
-                        <label for="membre-<?php echo $membre['id_user']; ?>" class="ml-2"><?php echo $membre['nom_user']; ?></label>
+            <?php foreach($projets as $project): ?>
+                <div class="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+                    <a href="#">
+                        <img class="rounded-t-lg" src="../images/background.jpg" alt="" />
+                    </a>
+                    <div class="p-5">
+                        <a href="#">
+                            <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white"><?php echo $project['nom_projet']; ?></h5>
+                        </a>
+                        <p class="mb-3 font-normal text-gray-700 dark:text-gray-400"><?php echo $project['desc_projet']; ?></p>
+                        <p class="px-4 py-2"><?php echo $project['date_debut_projet']; ?></p>
+                        <p class="px-4 py-2"><?php echo $project['date_fin_projet']; ?></p>
+                        <p class="px-4 py-2"><?php echo $project['visibilite_projet']; ?></p>
+                        <form method="POST" action="modifier_projet.php" class="inline ml-2">
+                            <input type="hidden" name="projet_id" value="<?php echo $project['id_projet']; ?>" />
+                            <button type="submit" name="modifier" class="bg-yellow-500 text-white py-1 px-3 rounded hover:bg-yellow-600">Modifier</button>
+                        </form>
+                        <form method="POST" action="../controllers/supprimer_projet.php" class="inline ml-2">
+                            <input type="hidden" name="projet_id" value="<?php echo $project['id_projet']; ?>" />
+                            <button type="submit" name="supprimer" class="bg-red-500 text-white py-1 px-3 rounded hover:bg-red-600">Supprimer</button>
+                        </form>
                     </div>
-                <?php endforeach; ?>
-            </div>
+                </div>
+            <?php endforeach; ?>
         </div>
-        
-        <input type="hidden" name="projet_id" value="<?php echo $projet_id; ?>">
+    </div>
 
-        <button type="submit" name="assigner" class="w-80 bg-sky-700 text-white py-2 px-4 rounded hover:bg-blue-600">Assigner le projet</button>
-    </form>
+    <!-- Modal pour assigner un projet -->
+    <div id="modal-assigner" class="flex items-center justify-center">
+        <div class="modal-content">
+            <form method="POST" action="assigner_projet.php" class="bg-white p-6">
+                <div class="mb-4">
+                    <label for="projet_id" class="block text-gray-700">Sélectionner le projet:</label>
+                    <select name="projet_id" class="w-80 px-4 py-2 border border-gray-300 rounded mt-1">
+                        <?php foreach ($projets as $projet): ?>
+                            <option value="<?php echo $projet['id_projet']; ?>"><?php echo $projet['nom_projet']; ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+
+                <div class="mb-4">
+                    <label for="membres" class="block text-gray-700">Sélectionner les membres à assigner:</label>
+                    <div class="space-y-2">
+                        <?php foreach ($membres as $membre): ?>
+                            <div>
+                                <input type="checkbox" name="membres[]" value="<?php echo $membre['id_user']; ?>" id="membre-<?php echo $membre['id_user']; ?>">
+                                <label for="membre-<?php echo $membre['id_user']; ?>" class="ml-2"><?php echo $membre['nom_user']; ?></label>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+
+                <button type="submit" name="assigner" class="w-80 bg-sky-700 text-white py-2 px-4 rounded hover:bg-blue-600">Assigner le projet</button>
+                <button type="button" onclick="fermerModal()" class="w-80 mt-4 bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600">Fermer</button>
+            </form>
+        </div>
+    </div>
+
 </div>
 
-
-  <script>
-    const modalProjet= document.getElementById('modal');
-    function ajouterProjet(){
-        modalProjet.style.display = modalProjet.style.display === "flex" ? "none" : "flex"; // Toggle visibility
-    }
+<script>
+    // Fonction pour afficher le modal d'assignation
     const modalAssigner = document.getElementById('modal-assigner');
-    
+
     function assignerProjet() {
-        modalAssigner.style.display = modalAssigner.style.display === "flex" ? "none" : "flex"; // Toggle visibility
+        modalAssigner.style.display = "flex"; // Afficher le modal
     }
-  </script>
+
+    // Fonction pour fermer le modal
+    function fermerModal() {
+        modalAssigner.style.display = "none"; // Cacher le modal
+    }
+</script>
+
 </body>
 
 </html>
