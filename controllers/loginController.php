@@ -39,11 +39,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Vérification du rôle de l'utilisateur
             if ($utilisateur->getRoleUser() === 'chef_de_projet') {
                 // Si le rôle est chef de projet, rediriger vers dashboard.php
+                
+               
                 header("Location: ../views/projets_view.php");
                 exit;  // Assurez-vous que le script s'arrête après la redirection
             } else if ($utilisateur->getRoleUser() === 'membre') {
                 // Si le rôle est membre, rediriger vers projets.php
-                header("Location: projets.php");
+                
+                header("Location: ../views/UserInterfaceProjects.php");
                 exit;  // Assurez-vous que le script s'arrête après la redirection
             } else {
                 // Si le rôle n'est ni chef de projet ni membre, rediriger vers une page par défaut (facultatif)
