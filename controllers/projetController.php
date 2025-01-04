@@ -45,5 +45,24 @@ class ProjetController {
     public function getProjetById($id) {
         return $this->projetModel->getProjetById($id);
     }
+
+    // Dans projetController.php
+public function getMembres() {
+    global $pdo;
+    $stmt = $pdo->prepare("SELECT id_user, nom_user FROM Utilisateur WHERE role_user = 'membre'");
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+// Ajouter cette méthode dans le controller
+public function assignerProjet($projet_id, $utilisateurs) {
+    global $pdo;
+    
+    // Boucle à travers les utilisateurs sélectionnés et les associer au projet
+    foreach ($utilisateurs as $utilisateur_id) {
+        $stmt = $pdo->prepare("INSERT INTO Projet_Utilisateur (id_projet, id_user, role_utilisateur) VALUES (?, ?, 'membre')");
+        $stmt->execute([$projet_id, $utilisateur_id]);
+    }
+}
+
 }
 ?>
