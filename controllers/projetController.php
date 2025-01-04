@@ -46,7 +46,6 @@ class ProjetController {
         return $this->projetModel->getProjetById($id);
     }
 
-    // Dans projetController.php
 public function getMembres() {
     global $pdo;
     $stmt = $pdo->prepare("SELECT id_user, nom_user FROM Utilisateur WHERE role_user = 'membre'");

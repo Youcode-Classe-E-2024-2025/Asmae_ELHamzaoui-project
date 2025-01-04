@@ -11,6 +11,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['assigner'])) {
     $projetController->assignerProjet($projet_id, $membres);
 
     // Rediriger après l'assignation (ou vous pouvez afficher un message de succès)
-    header("Location: gestion_projet.php");
+    echo "projet affectée avec succés";
     exit();
 }
