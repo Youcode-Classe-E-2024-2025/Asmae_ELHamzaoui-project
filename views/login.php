@@ -26,13 +26,13 @@
             <form id="loginForm" action="../controllers/loginController.php" method="POST" onsubmit="return validateLoginForm()">
                 <div class="mb-4">
                     <label for="email" class="block text-white">Email:</label>
-                    <input type="email" id="email" name="email" class="w-full p-3 mt-1 border rounded-md focus:outline-none focus:ring-2 focus:bg-sky-700" placeholder="Email" require>
+                    <input type="email" id="email" name="email" class="w-full p-3 mt-1 border rounded-md focus:outline-none focus:ring-2 focus:bg-sky-700" placeholder="Email" required>
                     <span id="emailError" class="text-red-500 text-sm"><?= $errors['email'] ?? '' ?></span>
                 </div>
 
                 <div class="mb-4">
                     <label for="password" class="block text-white">Mot de passe:</label>
-                    <input type="password" id="password" name="password" class="w-full p-3 mt-1 border rounded-md focus:outline-none focus:ring-2 focus:bg-sky-700" placeholder="Mot de passe" require>
+                    <input type="password" id="password" name="password" class="w-full p-3 mt-1 border rounded-md focus:outline-none focus:ring-2 focus:bg-sky-700" placeholder="Mot de passe" required>
                     <span id="passwordError" class="text-red-500 text-sm"><?= $errors['password'] ?? '' ?></span>
                 </div>
 
@@ -47,29 +47,28 @@
 
 <script>
     function validateLoginForm() {
-    let email = document.getElementById('email').value;
-    let password = document.getElementById('password').value;
-    let valid = true;
+        let email = document.getElementById('email').value;
+        let password = document.getElementById('password').value;
+        let valid = true;
 
-    // Réinitialiser les messages d'erreur
-    document.getElementById('emailError').innerText = '';
-    document.getElementById('passwordError').innerText = '';
+        // Réinitialiser les messages d'erreur
+        document.getElementById('emailError').innerText = '';
+        document.getElementById('passwordError').innerText = '';
 
-    // Vérification de l'email
-    if (email === '') {
-        document.getElementById('emailError').innerText = "L'email est requis.";
-        valid = false;
+        // Vérification de l'email
+        if (email === '') {
+            document.getElementById('emailError').innerText = "L'email est requis.";
+            valid = false;
+        }
+
+        // Vérification du mot de passe
+        if (password === '') {
+            document.getElementById('passwordError').innerText = "Le mot de passe est requis.";
+            valid = false;
+        }
+
+        return valid;
     }
-
-    // Vérification du mot de passe
-    if (password === '') {
-        document.getElementById('passwordError').innerText = "Le mot de passe est requis.";
-        valid = false;
-    }
-
-    return valid;
-  }
-
 </script>
 </body>
 </html>

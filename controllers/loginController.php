@@ -36,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
          // Vérification du rôle de l'utilisateur
          if ($utilisateur->getRoleUser() === 'chef_de_projet') {  // Utilisation du getter
             // Si le rôle est chef de projet, rediriger vers dashboard.php
-            header("Location: dashboard.php");
+            header("Location: ../views/projets_view.php");
         } else if ($utilisateur->getRoleUser() === 'membre') {  // Utilisation du getter
             // Si le rôle est membre, rediriger vers projets.php
             header("Location: projets.php");

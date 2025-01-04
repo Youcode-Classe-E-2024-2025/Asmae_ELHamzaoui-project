@@ -1,4 +1,4 @@
--- Active: 1733492701458@@127.0.0.1@3306@couco
+-- Active: 1733492701458@@127.0.0.1@3306@gestion_projet
 CREATE DATABASE gestion_projet;
 
 USE gestion_projet;
@@ -74,4 +74,8 @@ CREATE TABLE Tache_Tag (
     FOREIGN KEY (tag_id) REFERENCES Tag(id_tag)
 );
 
+INSERT INTO Utilisateur(nom_user, email_user, mot_de_passe, role_user) VALUES ('asmae','asmae@admin.com', 'Asmae1234@', 'chef_de_projet')
 
+UPDATE Utilisateur
+SET role_user = 'chef_de_projet'
+WHERE email_user = 'asmaeadmin@gmail.com' ;
