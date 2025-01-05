@@ -31,6 +31,7 @@ CREATE TABLE Etat_de_tache (
     statut ENUM('To Do', 'Doing', 'Done') NOT NULL
 );
 
+
 CREATE TABLE Tache (
     id_tache INT AUTO_INCREMENT PRIMARY KEY,
     titre_tache VARCHAR(255) NOT NULL,
@@ -89,3 +90,30 @@ CREATE TABLE Projet_Utilisateur (
     FOREIGN KEY (id_projet) REFERENCES Projet(id_projet),
     FOREIGN KEY (id_user) REFERENCES Utilisateur(id_user)
 );
+
+SHOW CREATE TABLE Tache;
+ALTER TABLE Tache DROP FOREIGN KEY tache_ibfk_2;
+
+ALTER TABLE Tache DROP COLUMN projet_id;
+CREATE TABLE Projet_Tache (
+    id_projet INT,
+    id_tache INT,
+    PRIMARY KEY (id_projet, id_tache),
+    FOREIGN KEY (id_projet) REFERENCES Projet(id_projet),
+    FOREIGN KEY (id_tache) REFERENCES Tache(id_tache)
+);
+
+INSERT INTO Etat_de_tache (statut)
+SELECT 'To Do'
+WHERE NOT EXISTS (SELECT 1 FROM Etat_de_tache WHERE statut = 'To Do');
+
+ALTER TABLE Tache DROP FOREIGN KEY tache_ibfk_3;
+
+ALTER TABLE Tache DROP COLUMN etat_id;
+
+DROP TABLE Etat_de_tache;
+
+ALTER TABLE Tache
+MODIFY statut_tache ENUM('en_cours', 'terminee', 'en_attente') NOT NULL DEFAULT 'en_cours';
+
+
