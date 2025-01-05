@@ -141,5 +141,15 @@ class Tache {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+
+      // Récupérer les tâches par projet
+      public function getTachesByProjet($projet_id) {
+        $query = "SELECT * FROM taches WHERE projet_id = :projet_id";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':projet_id', $projet_id, PDO::PARAM_INT);
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);  // Retourne toutes les tâches sous forme de tableau associatif
+    }
 }
 ?>
