@@ -89,3 +89,15 @@ CREATE TABLE Projet_Utilisateur (
     FOREIGN KEY (id_projet) REFERENCES Projet(id_projet),
     FOREIGN KEY (id_user) REFERENCES Utilisateur(id_user)
 );
+
+SHOW CREATE TABLE Tache;
+ALTER TABLE Tache DROP FOREIGN KEY tache_ibfk_2;
+
+ALTER TABLE Tache DROP COLUMN projet_id;
+CREATE TABLE Projet_Tache (
+    id_projet INT,
+    id_tache INT,
+    PRIMARY KEY (id_projet, id_tache),
+    FOREIGN KEY (id_projet) REFERENCES Projet(id_projet),
+    FOREIGN KEY (id_tache) REFERENCES Tache(id_tache)
+);
