@@ -40,7 +40,15 @@ class TacheController {
     public function afficherTaches() {
         return $this->tacheModel->afficherTaches();
     }
-
+ // Récupérer les tâches par projet
+ public function getTachesByProjet($projet_id) {
+    $taches = $this->tacheModel->getTachesByProjet($projet_id);
+    if ($taches) {
+        return $taches; // Renvoie un tableau de tâches
+    } else {
+        echo "Aucune tâche trouvée pour ce projet.";
+    }
+}
   
 }
 ?>
