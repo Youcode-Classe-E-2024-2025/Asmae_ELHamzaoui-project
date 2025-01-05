@@ -20,8 +20,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['ajouter'])) {
 // Afficher toutes les tâches
 $taches = $controller->afficherTaches();
 $projets = $projetController->afficherProjets();
-
 ?>
+
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
@@ -30,7 +30,7 @@ $projets = $projetController->afficherProjets();
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        /* Fond d'écran du modal (overlay) */
+        /* Style de l'overlay (fond semi-transparent) */
         #modalOverlay {
             display: none; /* Caché par défaut */
             position: fixed;
@@ -38,12 +38,12 @@ $projets = $projetController->afficherProjets();
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.5); /* Fond semi-transparent */
-            z-index: 9998; /* Un peu plus bas que le modal */
+            background-color: rgba(0, 0, 0, 0.7); /* Fond noir opaque */
+            z-index: 9998; /* Juste en dessous du modal */
         }
 
-        /* Style du modal */
-        #modalTache, #modalAssigner {
+        /* Style des modals */
+        .modal {
             display: none; /* Le modal est caché initialement */
             position: fixed;
             top: 50%;
@@ -52,23 +52,16 @@ $projets = $projetController->afficherProjets();
             background-color: white;
             padding: 20px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            z-index: 9999; /* Assurez-vous que le modal apparaît au-dessus du contenu */
+            z-index: 9999; /* Le modal est au-dessus de l'overlay */
             width: 80%;
             max-width: 600px;
-            border-radius: 8px;
-            overflow-y: auto; /* Pour que le contenu dépasse si nécessaire */
-            max-height: 80vh; /* Limiter la hauteur du modal */
+            border-radius: 10px;
+            overflow-y: auto;
+            max-height: 80vh;
+            transition: all 0.3s ease-in-out;
         }
 
-        .modal-form input, .modal-form select, .modal-form textarea {
-            width: 100%;
-            padding: 10px;
-            margin: 8px 0;
-            border-radius: 8px;
-            border: 1px solid #ccc;
-            box-sizing: border-box;
-        }
-
+        /* Style des boutons dans le modal */
         .modal-form button {
             background-color: #1D4ED8; /* Couleur de fond du bouton */
             color: white;
@@ -83,32 +76,48 @@ $projets = $projetController->afficherProjets();
         .modal-form button:hover {
             background-color: #2563EB;
         }
+
+        .modal-form input, .modal-form select, .modal-form textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+
+        .modal-form label {
+            font-size: 1.1rem;
+            color: #333;
+        }
     </style>
 </head>
+
 <body class="bg-gray-100 text-gray-900">
 <header class="mx-8">
-   <div class="container flex justify-between items-center">
-       <img src="../images/logo.png" alt="Logo" class="h-12 w-20 logo my-5 bg-gray-600 ">
-       <div class="flex space-x-8 items-center">
-           <a href="views/direction.php" class="text-2xl hover:text-gray-600">
-               <i class="fa-solid fa-right-from-bracket"></i>
-           </a>
-       </div>
-   </div>
+    <div class="container flex justify-between items-center">
+        <img src="../images/logo.png" alt="Logo" class="h-12 w-20 logo my-5 bg-gray-600 ">
+        <div class="flex space-x-8 items-center">
+            <a href="views/direction.php" class="text-2xl hover:text-gray-600">
+                <i class="fa-solid fa-right-from-bracket"></i>
+            </a>
+        </div>
+    </div>
 </header>
 
 <div class="flex justify-center gap-4">
-    <div class="w-64 h-screen  border rounded-lg p-6">
+    <div class="w-64 h-screen border rounded-lg p-6">
         <div class="w-48 h-10 border rounded-lg p-2 bg-gray-200">Taches</div><br>
         <div class="w-48 h-10 border rounded-lg p-2 bg-gray-200">Assignements</div>
     </div>
 
-    <div class="container mx-auto p-8  border rounded-lg">
+    <div class="container mx-auto p-8 border rounded-lg">
         <div class="flex justify-between gap-4">
             <h1 class="text-3xl font-bold mb-8">Liste des Tâches</h1>
-            <div class="flex flex-center gap-2">   
-                <button id="assignerTacheButton" class="w-40 h-10 border rounded-lg p-2 bg-gray-200">Assigner Tâche</button>
+            <div class="flex flex-center gap-2">
+                <button id="assignerTacheButton" class="w-40 h-10 border rounded-lg p-2 bg-gray-200">Assigner Tâche </button>
                 <button id="openModalButton" class="w-40 h-10 border rounded-lg p-2 bg-gray-200">Ajouter tache</button>
+                <button id="openModalUserTacheButton" class="w-40 h-10 border rounded-lg p-2 bg-gray-200">Assigner Tâche aux Membres</button>
             </div>
         </div>
 
@@ -131,7 +140,7 @@ $projets = $projetController->afficherProjets();
                         <td class="py-2 px-4"><?php echo $tache['desc_tache']; ?></td>
                         <td class="py-2 px-4"><?php echo $tache['statut_tache']; ?></td>
                         <td class="py-2 px-4">
-                            <a href="modifier_tache.php?id=<?php echo $tache['id_tache']; ?>" class="text-blue-600 hover:text-blue-800">Modifier</a> | 
+                            <a href="modifier_tache.php?id=<?php echo $tache['id_tache']; ?>" class="text-blue-600 hover:text-blue-800">Modifier</a> |
                             <a href="../controllers/supprimer_tache.php?id=<?php echo $tache['id_tache']; ?>" class="text-red-600 hover:text-red-800">Supprimer</a>
                         </td>
                     </tr>
@@ -142,7 +151,7 @@ $projets = $projetController->afficherProjets();
         <div id="modalOverlay"></div>
 
         <!-- Formulaire d'ajout de tâche -->
-        <div id="modalTache">
+        <div id="modalTache" class="modal">
             <h2 class="text-2xl font-semibold mt-10 mb-4">Ajouter une nouvelle tâche</h2>
             <form method="POST" class="modal-form space-y-4">
                 <div>
@@ -189,35 +198,33 @@ $projets = $projetController->afficherProjets();
             </form>
         </div>
 
-        <!-- Modal pour Assignation de tâche -->
-        <div id="modalAssigner">
-            <h2 class="text-2xl font-semibold mt-10 mb-4">Assigner une tâche</h2>
-            <form method="POST" action="../controllers/assigner_tache.php" class="modal-form space-y-4">
-                <!-- Sélection des membres -->
-                <div>
-                    <label for="membre_assigne" class="block text-lg">Projets :</label>
-                    <select name="projet_id" class="focus:outline-none focus:ring-2 focus:ring-blue-500">
-                        <?php foreach($projets as $project): ?>
-                            <option value="<?php echo  $project['id_projet']; ?>"><?php echo  $project['nom_projet']; ?></option>
-                        <?php endforeach; ?>
-                    </select>
-                </div>
-
-                <!-- Liste des tâches du projet -->
-                <div>
-                    <label for="taches" class="block text-lg">Tâches :</label>
+        <!-- Modal pour Assignation de tâche aux Membres -->
+        <div id="modalUserTache" class="modal">
+            <h2 class="text-2xl font-semibold mt-10 mb-4">Assigner des tâches aux Membres</h2>
+            <form method="POST" action="assigner_tache.php" class="modal-form space-y-4">
+                <label for="taches" class="block text-lg">Sélectionner des tâches :</label>
+                <div class="space-y-2">
                     <?php foreach ($taches as $tache): ?>
                         <div>
                             <input type="checkbox" name="taches[]" value="<?php echo $tache['id_tache']; ?>"> <?php echo $tache['titre_tache']; ?>
                         </div>
                     <?php endforeach; ?>
                 </div>
-
-                <!-- Boutons -->
-                <div class="flex gap-4">
-                    <button type="submit" name="assigner" class="w-1/2 bg-blue-500 text-white">Assigner</button>
-                    <button type="button" id="closeAssignerModal" class="w-1/2 bg-gray-500 text-white">Annuler</button>
+                <div>
+                    <label for="user_id" class="block text-lg">Sélectionner un utilisateur :</label>
+                    <select name="user_id" id="user_id" class="focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <?php
+                        // Récupérer les utilisateurs disponibles (membres)
+                        $stmt = $pdo->prepare("SELECT id_user, nom_user FROM Utilisateur WHERE role_user = 'membre'");
+                        $stmt->execute();
+                        $utilisateurs = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                        foreach ($utilisateurs as $utilisateur) {
+                            echo "<option value=\"" . $utilisateur['id_user'] . "\">" . $utilisateur['nom_user'] . "</option>";
+                        }
+                        ?>
+                    </select>
                 </div>
+                <button type="submit">Assigner</button>
             </form>
         </div>
     </div>
@@ -236,25 +243,18 @@ $projets = $projetController->afficherProjets();
         document.getElementById(overlayId).style.display = 'none';
     }
 
-    // Lorsque le bouton est cliqué, affiche le modal
-    document.getElementById('openModalButton').addEventListener('click', function() {
+    // Écouteurs d'événements pour ouvrir et fermer les modals
+    document.getElementById("openModalButton").addEventListener("click", function() {
         openModal('modalTache', 'modalOverlay');
     });
 
-    // Lors du clic sur le bouton "Assigner tâche"
-    document.getElementById('assignerTacheButton').addEventListener('click', function() {
-        openModal('modalAssigner', 'modalOverlay');
+    document.getElementById("openModalUserTacheButton").addEventListener("click", function() {
+        openModal('modalUserTache', 'modalOverlay');
     });
 
-    // Fermer le modal d'ajout lorsque l'on clique sur l'overlay
-    document.getElementById('modalOverlay').addEventListener('click', function() {
+    document.getElementById("modalOverlay").addEventListener("click", function() {
         closeModal('modalTache', 'modalOverlay');
-        closeModal('modalAssigner', 'modalOverlay');
-    });
-
-    // Bouton pour fermer le modal d'assignation
-    document.getElementById('closeAssignerModal').addEventListener('click', function() {
-        closeModal('modalAssigner', 'modalOverlay');
+        closeModal('modalUserTache', 'modalOverlay');
     });
 </script>
 </body>
