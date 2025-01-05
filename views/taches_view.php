@@ -136,7 +136,6 @@ $taches = $controller->afficherTaches();
             </table>
 
             <!-- Formulaire d'ajout de tâche -->
-            <div id="modalOverlay"></div>
             <div id="modalTache">
                 <h2 class="text-2xl font-semibold mt-10 mb-4">Ajouter une nouvelle tâche</h2>
                <form method="POST" class="modal-form space-y-4">
@@ -184,6 +183,29 @@ $taches = $controller->afficherTaches();
                </form>
             </div>
             
+            <!-- Modal pour Assigner les Tâches -->
+            <div id="modalAssignation" >
+                <div id="modalOverlay" style="display: block;"></div>
+                <div id="modalAssignationContent" class="modal-form bg-white p-6 rounded-lg shadow-lg">
+                    <h2 class="text-xl font-semibold mb-4">Assigner des Tâches</h2>
+                    <form method="POST" id="assignTasksForm">
+                        <!-- Sélectionner un membre -->
+                        <label for="membre_select" class="block text-lg mb-2">Membre :</label>
+                        <select name="membre_select" id="membre_select" class="focus:outline-none focus:ring-2 focus:ring-blue-500 mb-4">
+                            <!-- La liste des membres sera remplie via JavaScript -->
+                        </select>
+            
+                        <!-- Liste des tâches à assigner -->
+                        <div id="tachesList" class="mb-4">
+                            <!-- Les tâches seront ajoutées dynamiquement avec des cases à cocher -->
+                        </div>
+            
+                        <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded-lg">Assigner</button>
+                    </form>
+                </div>
+            </div>
+
+
         </div>
         </div>
 
