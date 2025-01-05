@@ -30,7 +30,7 @@ if (isset($_GET['id'])) {
         $etat_id = $_POST['etat_id'];
 
         // Appeler la méthode de modification
-        $controller->modifierTache($id_tache, $titre, $desc, $statut, $date_limite, $priorite, $membre_assigne_id, $projet_id, $etat_id);
+        $controller->modifierTache($id_tache, $titre, $desc, $statut, $date_limite, $priorite, $membre_assigne_id);
         header("Location: taches_view.php"); // Rediriger vers la liste des tâches après modification
     }
 }
@@ -93,19 +93,6 @@ if (isset($_GET['id'])) {
                 <input type="number" name="membre_assigne_id" value="<?php echo $tache_a_modifier['membre_assigne_id']; ?>" required
                        class="w-full px-4 py-2 mt-1 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
             </div>
-
-            <div class="mb-4">
-                <label for="projet_id" class="block text-lg font-medium text-gray-700">Projet :</label>
-                <input type="number" name="projet_id" value="<?php echo $tache_a_modifier['projet_id']; ?>" required
-                       class="w-full px-4 py-2 mt-1 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
-            </div>
-
-            <div class="mb-4">
-                <label for="etat_id" class="block text-lg font-medium text-gray-700">État :</label>
-                <input type="number" name="etat_id" value="<?php echo $tache_a_modifier['etat_id']; ?>" required
-                       class="w-full px-4 py-2 mt-1 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
-            </div>
-
             <div class="flex justify-center">
                 <button type="submit" name="modifier" 
                         class="px-6 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">

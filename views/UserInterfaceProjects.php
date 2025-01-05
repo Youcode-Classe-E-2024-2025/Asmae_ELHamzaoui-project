@@ -35,7 +35,10 @@ $projetsAssignes = $projetController->getProjetsAssignes($userId);
     </div>
 </header>
 <div class="container p-6">
+    <div class="flex justify-between">
     <h2 class="text-2xl font-bold mb-4">Mes projets assignés</h2>
+    <button onclick="window.location.href = 'UserInterfaceTache.php';" class="text-2xl font-bold border border-gray-200 rounded-lg bg-sky-700 w-70 h-12 px-10">mes taches</button>
+    </div>
     
     <?php if (count($projetsAssignes) > 0): ?>
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">

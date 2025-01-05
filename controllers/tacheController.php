@@ -10,8 +10,8 @@ class TacheController {
     }
 
     // Ajouter une tâche
-    public function ajouterTache($titre, $desc, $statut, $date_limite, $priorite, $membre_assigne_id, $projet_id, $etat_id) {
-        if ($this->tacheModel->ajouterTache($titre, $desc, $statut, $date_limite, $priorite, $membre_assigne_id, $projet_id, $etat_id)) {
+    public function ajouterTache($titre, $desc, $statut, $date_limite, $priorite, $membre_assigne_id) {
+        if ($this->tacheModel->ajouterTache($titre, $desc, $statut, $date_limite, $priorite, $membre_assigne_id)) {
             echo "Tâche ajoutée avec succès.";
         } else {
             echo "Erreur lors de l'ajout de la tâche.";
@@ -19,8 +19,8 @@ class TacheController {
     }
 
     // Modifier une tâche
-    public function modifierTache($id, $titre, $desc, $statut, $date_limite, $priorite, $membre_assigne_id, $projet_id, $etat_id) {
-        if ($this->tacheModel->modifierTache($id, $titre, $desc, $statut, $date_limite, $priorite, $membre_assigne_id, $projet_id, $etat_id)) {
+    public function modifierTache($id, $titre, $desc, $statut, $date_limite, $priorite, $membre_assigne_id) {
+        if ($this->tacheModel->modifierTache($id, $titre, $desc, $statut, $date_limite, $priorite, $membre_assigne_id)) {
             echo "Tâche modifiée avec succès.";
         } else {
             echo "Erreur lors de la modification de la tâche.";
@@ -110,5 +110,13 @@ class TacheController {
         echo "La tâche avec l'ID $tacheId a été assignée à l'utilisateur avec l'ID $userId avec succès.";
     }
     
+      // Méthode pour récupérer les tâches assignées à un utilisateur
+      public function getTachesAssignées($userId) {
+        global $pdo;
+        // Requête pour récupérer toutes les tâches de l'utilisateur
+        $stmt = $pdo->prepare("SELECT * FROM Tache WHERE membre_assigne_id = :membre_assigne_id");
+        $stmt->execute(['membre_assigne_id' => $userId]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
 ?>

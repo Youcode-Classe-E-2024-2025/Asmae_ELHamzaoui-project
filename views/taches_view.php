@@ -11,10 +11,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['ajouter'])) {
     $statut = $_POST['statut_tache'];
     $date_limite = $_POST['date_limite'];
     $priorite = $_POST['priorite_tache'];
-    $membre_assigne_id = $_POST['membre_assigne_id'];
-    $projet_id = $_POST['projet_id'];
-    $etat_id = $_POST['etat_id'];
-    $controller->ajouterTache($titre, $desc, $statut, $date_limite, $priorite, $membre_assigne_id, $projet_id, $etat_id);
+    $membre_assigne_id =0;
+    $controller->ajouterTache($titre, $desc, $statut, $date_limite, $priorite, $membre_assigne_id);
 }
 
 // Afficher toutes les tâches
@@ -157,8 +155,6 @@ $projets = $projetController->afficherProjets();
                     <label for="statut_tache" class="block text-lg">Statut :</label>
                     <select name="statut_tache" class="focus:outline-none focus:ring-2 focus:ring-blue-500">
                         <option value="en_cours">En cours</option>
-                        <option value="terminee">Terminée</option>
-                        <option value="en_attente">En attente</option>
                     </select>
                 </div>
                 <div>
@@ -173,18 +169,10 @@ $projets = $projetController->afficherProjets();
                         <option value="haute">Haute</option>
                     </select>
                 </div>
-                <div>
+                <!-- <div>
                     <label for="membre_assigne_id" class="block text-lg">Membre Assigné :</label>
                     <input type="number" name="membre_assigne_id" required class="focus:outline-none focus:ring-2 focus:ring-blue-500">
-                </div>
-                <div>
-                    <label for="projet_id" class="block text-lg">Projet :</label>
-                    <input type="number" name="projet_id" required class="focus:outline-none focus:ring-2 focus:ring-blue-500">
-                </div>
-                <div>
-                    <label for="etat_id" class="block text-lg">État :</label>
-                    <input type="number" name="etat_id" required class="focus:outline-none focus:ring-2 focus:ring-blue-500">
-                </div>
+                </div> -->
                 <button type="submit" name="ajouter">Ajouter</button>
             </form>
         </div>
