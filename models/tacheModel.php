@@ -144,8 +144,8 @@ class Tache {
 
       // Récupérer les tâches par projet
       public function getTachesByProjet($projet_id) {
-        $query = "SELECT * FROM taches WHERE projet_id = :projet_id";
-        $stmt = $this->conn->prepare($query);
+        $query = "SELECT * FROM Tache WHERE projet_id = :projet_id";
+        $stmt = $this->db->prepare($query);
         $stmt->bindParam(':projet_id', $projet_id, PDO::PARAM_INT);
         $stmt->execute();
 

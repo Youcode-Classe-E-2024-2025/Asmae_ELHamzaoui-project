@@ -20,6 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['ajouter'])) {
 // Afficher toutes les tâches
 $taches = $controller->afficherTaches();
 $membres = $projetController->getMembres();
+
 ?>
 <html lang="fr">
 <head>
