@@ -119,12 +119,17 @@ class TacheController {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-      // Mettre à jour le statut d'une tâche
-      public function updateTaskStatus($taskId, $newStatus) {
-        $stmt = $this->pdo->prepare("UPDATE taches SET statut_tache = :newStatus WHERE id_tache = :taskId");
-        $stmt->bindParam(':newStatus', $newStatus);
-        $stmt->bindParam(':taskId', $taskId);
-        return $stmt->execute();  // Retourne true si la requête s'exécute correctement
+         // Fonction pour mettre à jour le statut d'une tâche
+    public function updateTaskStatus($taskId, $newStatus) {
+        global $pdo;
+        // Préparer la requête SQL pour mettre à jour le statut de la tâche
+        $sql = "UPDATE Tache SET statut_tache = :statut WHERE id_tache = :id_tache";
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindParam(':statut', $newStatus);
+        $stmt->bindParam(':id_tache', $taskId);
+
+        // Exécuter la requête et retourner le résultat
+        return $stmt->execute();
     }
 }
 ?>
