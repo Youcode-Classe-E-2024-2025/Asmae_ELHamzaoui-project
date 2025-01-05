@@ -26,14 +26,68 @@ $taches = $controller->afficherTaches();
         <title>Gestion des tâches</title>
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
         <script src="https://cdn.tailwindcss.com"></script>
+        <style>
+            /* Fond d'écran du modal (overlay) */
+            #modalOverlay {
+                display: none; /* Caché par défaut */
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.5); /* Fond semi-transparent */
+                z-index: 9998; /* Un peu plus bas que le modal */
+            }
+
+            /* Style du modal */
+            #modalTache {
+                display: none; /* Le modal est caché initialement */
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background-color: white;
+                padding: 20px;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                z-index: 9999; /* Assurez-vous que le modal apparaît au-dessus du contenu */
+                width: 80%;
+                max-width: 600px;
+                border-radius: 8px;
+                overflow-y: auto; /* Pour que le contenu dépasse si nécessaire */
+                max-height: 80vh; /* Limiter la hauteur du modal */
+            }
+
+            /* Pour les formulaires du modal */
+            .modal-form input, .modal-form select, .modal-form textarea {
+                width: 100%;
+                padding: 10px;
+                margin: 8px 0;
+                border-radius: 8px;
+                border: 1px solid #ccc;
+                box-sizing: border-box;
+            }
+
+            .modal-form button {
+                background-color: #1D4ED8; /* Couleur de fond du bouton */
+                color: white;
+                padding: 10px 20px;
+                border-radius: 8px;
+                border: none;
+                cursor: pointer;
+                width: 100%;
+                margin-top: 10px;
+            }
+
+            .modal-form button:hover {
+                background-color: #2563EB;
+            }
+        </style>
     </head>
     <body class="bg-gray-100 text-gray-900">
     <header class="mx-8">
        <div class="container flex justify-between items-center">
-           <!-- Logo avec taille augmentée -->
-           <img src="../images/logo.png" alt="Logo" class="h-12 w-20 logo my-5 bg-gray-600 "> <!-- Ajout de la classe "logo" pour appliquer la transformation -->
-           <div class="flex space-x-8 items-center"> <!-- Espacement égal entre les éléments -->
-               <!-- Icône pour l'inscription -->
+           <img src="../images/logo.png" alt="Logo" class="h-12 w-20 logo my-5 bg-gray-600 ">
+           <div class="flex space-x-8 items-center">
                <a href="views/direction.php" class="text-2xl hover:text-gray-600">
                    <i class="fa-solid fa-right-from-bracket"></i>
                </a>
@@ -48,10 +102,9 @@ $taches = $controller->afficherTaches();
         <div class="container mx-auto p-8  border rounded-lg">
             <div class="flex justify-between gap-4">
              <h1 class="text-3xl font-bold mb-8">Liste des Tâches</h1>
-             <button class="w-48 h-10 border rounded-lg p-2 bg-gray-200">Ajouter tache</button>
+             <button id="openModalButton" class="w-48 h-10 border rounded-lg p-2 bg-gray-200">Ajouter tache</button>
             </div>
            
-            
             <!-- Table des tâches -->
             <table class="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
                 <thead class="bg-gray-800 text-white">
@@ -80,20 +133,21 @@ $taches = $controller->afficherTaches();
             </table>
 
             <!-- Formulaire d'ajout de tâche -->
+            <div id="modalOverlay"></div>
             <div id="modalTache">
-             <h2 class="text-2xl font-semibold mt-10 mb-4">Ajouter une nouvelle tâche</h2>
-               <form method="POST" class="space-y-4">
+                <h2 class="text-2xl font-semibold mt-10 mb-4">Ajouter une nouvelle tâche</h2>
+               <form method="POST" class="modal-form space-y-4">
                    <div>
                        <label for="titre_tache" class="block text-lg">Titre :</label>
-                       <input type="text" name="titre_tache" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                       <input type="text" name="titre_tache" required class="focus:outline-none focus:ring-2 focus:ring-blue-500">
                    </div>
                    <div>
                        <label for="desc_tache" class="block text-lg">Description :</label>
-                       <textarea name="desc_tache" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+                       <textarea name="desc_tache" class="focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
                    </div>
                    <div>
                        <label for="statut_tache" class="block text-lg">Statut :</label>
-                       <select name="statut_tache" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                       <select name="statut_tache" class="focus:outline-none focus:ring-2 focus:ring-blue-500">
                            <option value="en_cours">En cours</option>
                            <option value="terminee">Terminée</option>
                            <option value="en_attente">En attente</option>
@@ -101,11 +155,11 @@ $taches = $controller->afficherTaches();
                    </div>
                    <div>
                        <label for="date_limite" class="block text-lg">Date limite :</label>
-                       <input type="date" name="date_limite" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                       <input type="date" name="date_limite" class="focus:outline-none focus:ring-2 focus:ring-blue-500">
                    </div>
                    <div>
                        <label for="priorite_tache" class="block text-lg">Priorité :</label>
-                       <select name="priorite_tache" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                       <select name="priorite_tache" class="focus:outline-none focus:ring-2 focus:ring-blue-500">
                            <option value="basse">Basse</option>
                            <option value="moyenne">Moyenne</option>
                            <option value="haute">Haute</option>
@@ -113,21 +167,35 @@ $taches = $controller->afficherTaches();
                    </div>
                    <div>
                        <label for="membre_assigne_id" class="block text-lg">Membre Assigné :</label>
-                       <input type="number" name="membre_assigne_id" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                       <input type="number" name="membre_assigne_id" required class="focus:outline-none focus:ring-2 focus:ring-blue-500">
                    </div>
                    <div>
                        <label for="projet_id" class="block text-lg">Projet :</label>
-                       <input type="number" name="projet_id" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                       <input type="number" name="projet_id" required class="focus:outline-none focus:ring-2 focus:ring-blue-500">
                    </div>
                    <div>
                        <label for="etat_id" class="block text-lg">État :</label>
-                       <input type="number" name="etat_id" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                       <input type="number" name="etat_id" required class="focus:outline-none focus:ring-2 focus:ring-blue-500">
                    </div>
-                   <button type="submit" name="ajouter" class="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">Ajouter</button>
+                   <button type="submit" name="ajouter">Ajouter</button>
                </form>
             </div>
             
         </div>
         </div>
+
+        <script>
+            // Lorsque le bouton est cliqué, affiche le modal
+            document.getElementById('openModalButton').addEventListener('click', function() {
+                document.getElementById('modalTache').style.display = 'block';
+                document.getElementById('modalOverlay').style.display = 'block';
+            });
+
+            // Optionnel: Fermer le modal lorsqu'on clique sur le fond (overlay)
+            document.getElementById('modalOverlay').addEventListener('click', function() {
+                document.getElementById('modalTache').style.display = 'none';
+                document.getElementById('modalOverlay').style.display = 'none';
+            });
+        </script>
     </body>
 </html>
