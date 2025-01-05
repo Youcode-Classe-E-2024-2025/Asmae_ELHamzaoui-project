@@ -9,7 +9,8 @@ class Utilisateur {
     private $mot_de_passe;
     private $role_user;
 
-    public function __construct($nom_user, $email_user, $mot_de_passe, $role_user = 'membre') {
+    public function __construct($id_user,$nom_user, $email_user, $mot_de_passe, $role_user = 'membre') {
+        $this->id_user = $id_user;
         $this->nom_user = $nom_user;
         $this->email_user = $email_user;
         $this->mot_de_passe = $mot_de_passe;
@@ -66,7 +67,7 @@ class Utilisateur {
         $utilisateur = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if ($utilisateur && password_verify($mot_de_passe, $utilisateur['mot_de_passe'])) {
-            return new Utilisateur($utilisateur['nom_user'], $utilisateur['email_user'], $utilisateur['mot_de_passe'], $utilisateur['role_user']);
+            return new Utilisateur($utilisateur['id_user'],$utilisateur['nom_user'], $utilisateur['email_user'], $utilisateur['mot_de_passe'], $utilisateur['role_user']);
         }
 
         return null;

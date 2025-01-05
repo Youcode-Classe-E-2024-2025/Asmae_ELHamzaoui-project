@@ -2,7 +2,7 @@
 session_start();
 
 $userId = $_SESSION['user']['id_user'];
-
+var_dump($userId);
 // Obtenir les projets assignés à l'utilisateur
 include_once '../controllers/projetController.php';
 $projetController = new ProjetController($pdo);
