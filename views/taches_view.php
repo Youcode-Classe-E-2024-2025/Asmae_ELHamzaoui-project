@@ -1,8 +1,9 @@
 <?php
 // Inclure les fichiers nécessaires
+include_once '../controllers/projetController.php';
 include_once '../controllers/TacheController.php';
 $controller = new TacheController($pdo);
-
+$projetController = new ProjetController($pdo);
 // Ajouter une tâche via formulaire
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['ajouter'])) {
     $titre = $_POST['titre_tache'];
@@ -18,6 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['ajouter'])) {
 
 // Afficher toutes les tâches
 $taches = $controller->afficherTaches();
+$membres = $projetController->getMembres();
 ?>
 <html lang="fr">
 <head>
@@ -195,7 +197,7 @@ $taches = $controller->afficherTaches();
                     <label for="membre_assigne" class="block text-lg">Membre :</label>
                     <select name="membre_assigne_id" class="focus:outline-none focus:ring-2 focus:ring-blue-500">
                         <?php foreach ($membres as $membre): ?>
-                            <option value="<?php echo $membre['id_user']; ?>"><?php echo $membre['nom'] . ' ' . $membre['prenom']; ?></option>
+                            <option value="<?php echo $membre['id_user']; ?>"><?php echo $membre['nom_user']; ?></option>
                         <?php endforeach; ?>
                     </select>
                 </div>
