@@ -19,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['ajouter'])) {
 
 // Afficher toutes les tâches
 $taches = $controller->afficherTaches();
-$membres = $projetController->getMembres();
+$projets = $projetController->afficherProjets();
 
 ?>
 <html lang="fr">
@@ -195,10 +195,10 @@ $membres = $projetController->getMembres();
             <form method="POST" class="modal-form space-y-4">
                 <!-- Sélection des membres -->
                 <div>
-                    <label for="membre_assigne" class="block text-lg">Membre :</label>
+                    <label for="membre_assigne" class="block text-lg" action="../controllers/assigner_tache.php">Membre :</label>
                     <select name="membre_assigne_id" class="focus:outline-none focus:ring-2 focus:ring-blue-500">
-                        <?php foreach ($membres as $membre): ?>
-                            <option value="<?php echo $membre['id_user']; ?>"><?php echo $membre['nom_user']; ?></option>
+                        <?php foreach($projets as $project): ?>
+                            <option value="<?php echo  $project['id_projet']; ?>"><?php echo  $project['nom_projet']; ?></option>
                         <?php endforeach; ?>
                     </select>
                 </div>
@@ -206,7 +206,7 @@ $membres = $projetController->getMembres();
                 <!-- Liste des tâches du projet -->
                 <div>
                     <label for="taches" class="block text-lg">Tâches :</label>
-                    <?php foreach ($tachesProjet as $tache): ?>
+                    <?php foreach ($taches as $tache): ?>
                         <div>
                             <input type="checkbox" name="taches[]" value="<?php echo $tache['id_tache']; ?>"> <?php echo $tache['titre_tache']; ?>
                         </div>

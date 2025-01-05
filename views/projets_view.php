@@ -145,7 +145,7 @@ $membres = $projetController->getMembres();
     
     <!-- Modal pour assigner un projet -->
     <div class="hidden w-90 h-200 bg-blue-200" id="modal-assigner">
-        <form method="POST" action="assigner_projet.php" class="bg-white p-6">
+        <form method="POST" action="../controllers/assigner_projet.php" class="bg-white p-6">
             <div class="mb-4">
                 <label for="projet_id" class="block text-gray-700">Sélectionner le projet:</label>
                 <select name="projet_id" class="w-80 px-4 py-2 border border-gray-300 rounded mt-1">
