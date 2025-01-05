@@ -238,12 +238,19 @@ $projets = $projetController->afficherProjets();
            }
            ?>
            <br>
-   
            <label for="user_id">Sélectionner un utilisateur :</label>
-           <select name="user_id" required>
-               <option value="1">Utilisateur 1</option>
-               <option value="2">Utilisateur 2</option>
-               <!-- Ajouter plus d'options d'utilisateurs -->
+           <select name="user_id" id="user_id">
+               <?php
+               // Récupérer les utilisateurs disponibles (membres)
+               $stmt = $pdo->prepare("SELECT id_user, nom_user FROM Utilisateur WHERE role_user = 'membre'");
+               $stmt->execute();
+               $utilisateurs = $stmt->fetchAll(PDO::FETCH_ASSOC);
+   
+               // Affichage des utilisateurs dans le menu déroulant
+               foreach ($utilisateurs as $utilisateur) {
+                   echo "<option value=\"" . $utilisateur['id_user'] . "\">" . $utilisateur['nom_user'] . "</option>";
+               }
+               ?>
            </select>
            <br><br>
    
