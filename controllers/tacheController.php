@@ -40,15 +40,24 @@ class TacheController {
     public function afficherTaches() {
         return $this->tacheModel->afficherTaches();
     }
- // Récupérer les tâches par projet
- public function getTachesByProjet($projet_id) {
-    $taches = $this->tacheModel->getTachesByProjet($projet_id);
-    if ($taches) {
-        return $taches; // Renvoie un tableau de tâches
-    } else {
-        echo "Aucune tâche trouvée pour ce projet.";
+
+    public function assignertache($projet_id, $taches) {
+        global $pdo;
+        
+        foreach ($taches as $tache_id) {
+            // Vérifier si la relation existe déjà
+            $stmt = $pdo->prepare("SELECT COUNT(*) FROM Projet_Tache WHERE id_projet = ? AND id_tache = ?");
+            $stmt->execute([$projet_id, $tache_id]);
+            $count = $stmt->fetchColumn();
+            
+            // Si la relation n'existe pas, on l'ajoute
+            if ($count == 0) {
+                $stmt = $pdo->prepare("INSERT INTO Projet_Tache (id_projet, id_tache) VALUES (?, ?)");
+                $stmt->execute([$projet_id, $tache_id]);
+            } else {
+                echo "L'utilisateur avec l'ID $tache_id est déjà assigné au projet avec l'ID $projet_id.";
+            }
+        }
     }
-}
-  
 }
 ?>

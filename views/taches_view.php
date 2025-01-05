@@ -192,11 +192,11 @@ $projets = $projetController->afficherProjets();
         <!-- Modal pour Assignation de tâche -->
         <div id="modalAssigner">
             <h2 class="text-2xl font-semibold mt-10 mb-4">Assigner une tâche</h2>
-            <form method="POST" class="modal-form space-y-4">
+            <form method="POST" action="../controllers/assigner_tache.php" class="modal-form space-y-4">
                 <!-- Sélection des membres -->
                 <div>
-                    <label for="membre_assigne" class="block text-lg" action="../controllers/assigner_tache.php">Membre :</label>
-                    <select name="membre_assigne_id" class="focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <label for="membre_assigne" class="block text-lg">Projets :</label>
+                    <select name="projet_id" class="focus:outline-none focus:ring-2 focus:ring-blue-500">
                         <?php foreach($projets as $project): ?>
                             <option value="<?php echo  $project['id_projet']; ?>"><?php echo  $project['nom_projet']; ?></option>
                         <?php endforeach; ?>
@@ -215,7 +215,7 @@ $projets = $projetController->afficherProjets();
 
                 <!-- Boutons -->
                 <div class="flex gap-4">
-                    <button type="submit" class="w-1/2 bg-blue-500 text-white">Assigner</button>
+                    <button type="submit" name="assigner" class="w-1/2 bg-blue-500 text-white">Assigner</button>
                     <button type="button" id="closeAssignerModal" class="w-1/2 bg-gray-500 text-white">Annuler</button>
                 </div>
             </form>
