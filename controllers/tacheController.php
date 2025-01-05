@@ -59,5 +59,56 @@ class TacheController {
             }
         }
     }
+
+    public function assignerTacheAUtilisateur($userId, $tacheId) {
+        global $pdo;
+        
+        // Étape 1 : Vérifier si la tâche existe
+        $stmt = $pdo->prepare("SELECT COUNT(*) FROM Tache WHERE id_tache = ?");
+        $stmt->execute([$tacheId]);
+        $count = $stmt->fetchColumn();
+        
+        if ($count == 0) {
+            echo "La tâche avec l'ID $tacheId n'existe pas.";
+            return;
+        }
+        
+        // Étape 2 : Vérifier si la tâche est associée à un projet dans Projet_Tache
+        $stmt = $pdo->prepare("SELECT id_projet FROM Projet_Tache WHERE id_tache = ?");
+        $stmt->execute([$tacheId]);
+        $projetId = $stmt->fetchColumn();
+        
+        if (!$projetId) {
+            echo "La tâche avec l'ID $tacheId n'est associée à aucun projet.";
+            return;
+        }
+        
+        // Étape 3 : Vérifier si l'utilisateur fait partie du projet
+        $stmt = $pdo->prepare("SELECT COUNT(*) FROM Projet_Utilisateur WHERE id_projet = ? AND id_user = ?");
+        $stmt->execute([$projetId, $userId]);
+        $count = $stmt->fetchColumn();
+        
+        if ($count == 0) {
+            echo "L'utilisateur avec l'ID $userId n'est pas associé au projet avec l'ID $projetId.";
+            return;
+        }
+        
+        // Étape 4 : Vérifier si la tâche est déjà assignée à l'utilisateur
+        $stmt = $pdo->prepare("SELECT COUNT(*) FROM Tache WHERE id_tache = ? AND membre_assigne_id = ?");
+        $stmt->execute([$tacheId, $userId]);
+        $count = $stmt->fetchColumn();
+        
+        if ($count > 0) {
+            echo "La tâche avec l'ID $tacheId est déjà assignée à l'utilisateur avec l'ID $userId.";
+            return;
+        }
+        
+        // Étape 5 : Assigner la tâche à l'utilisateur
+        $stmt = $pdo->prepare("UPDATE Tache SET membre_assigne_id = ? WHERE id_tache = ?");
+        $stmt->execute([$userId, $tacheId]);
+        
+        echo "La tâche avec l'ID $tacheId a été assignée à l'utilisateur avec l'ID $userId avec succès.";
+    }
+    
 }
 ?>
