@@ -1,30 +1,24 @@
 <?php
-// Démarrer la session pour accéder à $_SESSION
+// Démarrer la session pour pouvoir accéder à la variable $_SESSION
 session_start();
 
 // Inclure les fichiers nécessaires
 include_once '../controllers/TacheController.php';
 $controller = new TacheController($pdo);
 
-// Vérifier si les données sont envoyées via POST
-$data = json_decode(file_get_contents('php://input'), true);
+// Vérifier que le formulaire a bien été soumis
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Récupérer l'ID de la tâche et le nouveau statut
+    $taskId = $_POST['taskId'];
+    $newStatus = $_POST['newStatus'];
 
-// Récupérer l'ID de la tâche et le nouveau statut
-$taskId = $data['taskId'] ?? null;
-$newStatus = $data['newStatus'] ?? null;
-
-// Vérifier si les informations sont valides
-if ($taskId && $newStatus) {
-    // Mettre à jour le statut de la tâche
-    $success = $controller->updateTaskStatus($taskId, $newStatus);
-
-    // Répondre en JSON avec un message de succès ou d'échec
-    if ($success) {
-        echo json_encode(['success' => true]);
+    // Mettre à jour le statut de la tâche dans la base de données
+    if ($controller->updateTaskStatus($taskId, $newStatus)) {
+        // Rediriger vers la page principale (ou une autre page)
+        header('Location: UserInterfaceTache.php');
+        exit();
     } else {
-        echo json_encode(['success' => false, 'message' => 'Erreur lors de la mise à jour de la tâche.']);
+        echo "Erreur lors de la mise à jour de la tâche.";
     }
-} else {
-    echo json_encode(['success' => false, 'message' => 'Paramètres manquants']);
 }
 ?>
