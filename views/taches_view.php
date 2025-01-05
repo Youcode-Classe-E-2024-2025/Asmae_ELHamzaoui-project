@@ -102,7 +102,10 @@ $taches = $controller->afficherTaches();
         <div class="container mx-auto p-8  border rounded-lg">
             <div class="flex justify-between gap-4">
              <h1 class="text-3xl font-bold mb-8">Liste des Tâches</h1>
-             <button id="openModalButton" class="w-48 h-10 border rounded-lg p-2 bg-gray-200">Ajouter tache</button>
+             <div class="flex flex-center gap-2">   
+               <button id="assignerTacheButton" class="w-40 h-10 border rounded-lg p-2 bg-gray-200">Assigner Tâche</button>
+               <button id="openModalButton" class="w-40 h-10 border rounded-lg p-2 bg-gray-200">Ajouter tache</button>
+             </div>
             </div>
            
             <!-- Table des tâches -->
