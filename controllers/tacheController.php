@@ -118,5 +118,13 @@ class TacheController {
         $stmt->execute(['membre_assigne_id' => $userId]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+      // Mettre à jour le statut d'une tâche
+      public function updateTaskStatus($taskId, $newStatus) {
+        $stmt = $this->pdo->prepare("UPDATE taches SET statut_tache = :newStatus WHERE id_tache = :taskId");
+        $stmt->bindParam(':newStatus', $newStatus);
+        $stmt->bindParam(':taskId', $taskId);
+        return $stmt->execute();  // Retourne true si la requête s'exécute correctement
+    }
 }
 ?>
