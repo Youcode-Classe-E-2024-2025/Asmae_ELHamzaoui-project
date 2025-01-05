@@ -101,6 +101,10 @@ $membres = $projetController->getMembres();
                             <input type="hidden" name="projet_id" value="<?php echo $project['id_projet']; ?>" />
                             <button type="submit" name="supprimer" class="bg-red-500 text-white py-1 px-3 rounded hover:bg-red-600">Supprimer</button>
                         </form>
+                        <form method="GET" action="taches_view.php" class="inline ml-2">
+                            <input type="hidden" name="projet_id" value="<?php echo $project['id_projet']; ?>" />
+                            <button type="submit" name="planifier" class="bg-red-500 text-white py-1 px-3 rounded hover:bg-red-600">planifier</button>
+                        </form>
                     </div>
                 </div>
             <?php endforeach; ?>
