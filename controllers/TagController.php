@@ -1,27 +1,31 @@
 <?php
-
 require_once '../models/Tag.php';
+require_once '../config/db.php';
 
 class TagController
 {
     private $tagModel;
 
-    public function __construct($db)
+    public function __construct($pdo)
     {
-        $this->tagModel = new Tag($db);
+        $this->tagModel = new Tag($pdo);
     }
 
-    public function createTag()
+    public function handlePostRequest()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $nomTag = $_POST['nom_tag'];
-            $descTag = $_POST['desc_tag'];
+            $nomTag = htmlspecialchars($_POST['nom_tag']); // Sanitize input
 
-            if ($this->tagModel->createTag($nomTag, $descTag)) {
-                echo json_encode(['success' => true]);
+            if ($this->tagModel->createTag($nomTag)) {
+                echo "success"; // Success message for JavaScript
             } else {
-                echo json_encode(['success' => false]);
+                echo "error"; // Error message for JavaScript
             }
         }
     }
 }
+
+// Initialize the controller and handle the POST request
+$controller = new TagController($pdo);
+$controller->handlePostRequest();
+?>
