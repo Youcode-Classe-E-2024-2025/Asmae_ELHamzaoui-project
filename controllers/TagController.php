@@ -1,6 +1,6 @@
 <?php
 
-require_once 'Model/Tag.php';
+require_once '../models/Tag.php';
 
 class TagController
 {
