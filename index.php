@@ -7,12 +7,6 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        /* Ajoutez un arrière-plan d'image pour le corps */
-        body {
-            background-image: url('images/background.jpg'); /* Remplacez par le chemin de votre image */
-            background-size: cover;
-            background-position: center;
-        }
         i{
             font-size:20px;
         }
@@ -31,18 +25,18 @@
             <img src="images/logo.png" alt="Logo" class="h-12 w-20 logo my-5"> <!-- Ajout de la classe "logo" pour appliquer la transformation -->
             <!-- Menu & Icons avec un espacement égal entre les éléments -->
             <div  class="flex space-x-8 items-center">
-                <a href="index.php" class="text-white text-xl hover:text-gray-400">Home</a>
-                <a href="views/publicProjects.php" class="text-white text-xl hover:text-gray-400">Project</a>
-                <a href="#" class="text-white text-xl hover:text-gray-400">About</a>
+                <a href="index.php" class="text-black text-xl hover:text-gray-400">Home</a>
+                <a href="views/publicProjects.php" class="text-black text-xl hover:text-gray-400">Project</a>
+                <a href="#" class="text-black text-xl hover:text-gray-400">About</a>
             </div>
             <div class="flex space-x-8 items-center"> <!-- Espacement égal entre les éléments -->
                 <!-- Icône pour l'inscription -->
-                <a href="views/direction.php" class="text-white text-xl hover:text-gray-400">
+                <a href="views/direction.php" class="text-black text-xl hover:text-gray-400">
                    Sign up
                 </a>
                 
                 <!-- Icône pour la connexion -->
-                <a href="views/login.php" class="text-white text-xl hover:text-gray-400">
+                <a href="views/login.php" class="text-black text-xl hover:text-gray-400">
                     log in
                 </a>
             </div>
@@ -50,11 +44,16 @@
     </header>
 
     <!-- Body -->
-    <main class="py-48 bg-gradient-to-r to-indigo-600 text-white">
-        <div class="container mx-auto">
-            <h1 class="text-5xl font-bold mb-4 ml-32">DES TACHES CLAIRES</h1>
-            <h1 class="text-5xl font-bold mb-4 ml-48">UNE EQUIPE PLUS PERfORMANTE</h1>
+    <main class="py-48 bg-gradient-to-r to-indigo-600 text-black">
+       <div class="flex flex-between">
+       <div class="container">
+            <h1 class="text-4xl font-bold mb-4 ml-10">DES TACHES CLAIRES</h1>
+            <h1 class="text-4xl font-bold mb-4 ml-12">UNE EQUIPE PLUS PERfORMANTE</h1>
         </div>
+        <div>
+            <img src="images/projectImage.png" class="text-4xl font-bold mb-48 ml-2">
+        </div>
+       </div>
     </main>
 
     <!-- Footer -->

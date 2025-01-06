@@ -36,12 +36,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Si aucune erreur, procéder à l'inscription
     if (empty($errors)) {
-        // Créer un nouvel objet Utilisateur
-        $utilisateur = new Utilisateur($username, $email, $password);
+        // Créer un nouvel objet Utilisateur (sans l'id_user, il sera généré automatiquement)
+        $utilisateur = new Utilisateur(null, $username, $email, $password);  // L'id_user sera null car il est auto-incrémenté
 
         // Inscrire l'utilisateur dans la base de données
         if ($utilisateur->inscrire()) {
             $success = "Inscription réussie ! Vous pouvez maintenant vous connecter.";
+            session_start();  // Démarre la session
+            
+            // Stocker les informations de l'utilisateur dans la session
+            $_SESSION['user'] = [
+                'id_user' => $utilisateur->getIdUser(),  // Ajout de l'ID utilisateur
+                'nom_user' => $utilisateur->getNomUser(),
+                'email_user' => $utilisateur->getEmailUser(),
+                'role_user' => $utilisateur->getRoleUser()
+            ];
+
             // Redirection vers la page de connexion ou une autre page
             header("Location: ../views/UserInterfaceProjects.php");
             exit;

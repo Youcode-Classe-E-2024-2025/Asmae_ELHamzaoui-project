@@ -41,6 +41,10 @@
                         Se connecter
                     </button>
                 </div>
+                <div class="flex felx-center text-center text-gray-100 gap-2">  
+                   <p>j'ai pas un compte </p>
+                   <a href="register.php"> S'inscrire</a>
+                </div>
             </form>
         </div>
     </div>
