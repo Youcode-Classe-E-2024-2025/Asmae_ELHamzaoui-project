@@ -117,3 +117,5 @@ ALTER TABLE Tache
 MODIFY statut_tache ENUM('en_cours', 'terminee', 'en_attente') NOT NULL DEFAULT 'en_cours';
 
 
+ALTER TABLE Projet
+ADD COLUMN image_projet VARCHAR(255) NULL;

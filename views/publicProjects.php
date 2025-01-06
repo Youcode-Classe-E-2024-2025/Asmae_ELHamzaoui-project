@@ -45,7 +45,7 @@ $projets = $projetController->afficherProjetsPublic();
               <?php foreach($projets as $project): ?>
               <div class="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
                   <a href="#">
-                      <img class="rounded-t-lg" src="../images/background.jpg" alt="" />
+                      <img class="rounded-t-lg" src="<?php echo $project['image_projet']; ?>" alt="" />
                   </a>
                   <div class="p-5">
                       <a href="#">
