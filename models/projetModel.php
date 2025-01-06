@@ -65,7 +65,7 @@ class Projet {
     }
     // Ajouter un projet
     public function ajouterProjet($nom, $desc, $date_debut, $date_fin, $visibilite, $photo_Projet) {
-        $sql = "INSERT INTO Projet (nom_projet, desc_projet, date_debut_projet, date_fin_projet, visibilite_projet, photo_Projet)
+        $sql = "INSERT INTO Projet (nom_projet, desc_projet, date_debut_projet, date_fin_projet, visibilite_projet, image_projet)
                 VALUES (:nom, :desc, :date_debut, :date_fin, :visibilite, :photo_Projet)";
         $stmt = $this->db->prepare($sql);
         $stmt->bindParam(':nom', $nom);
@@ -79,7 +79,7 @@ class Projet {
     // Modifier un projet
     public function modifierProjet($id, $nom, $desc, $date_debut, $date_fin, $visibilite, $photo_Projet) {
         $sql = "UPDATE Projet SET nom_projet = :nom, desc_projet = :desc, date_debut_projet = :date_debut,
-                date_fin_projet = :date_fin, visibilite_projet = :visibilite, photo_Projet = :photo_Projet 
+                date_fin_projet = :date_fin, visibilite_projet = :visibilite, image_projet = :photo_Projet 
                 WHERE id_projet = :id";
         $stmt = $this->db->prepare($sql);
         $stmt->bindParam(':id', $id);

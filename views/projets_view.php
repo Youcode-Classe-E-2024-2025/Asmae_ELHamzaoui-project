@@ -10,7 +10,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['ajouter'])) {
     $date_debut = $_POST['date_debut'];
     $date_fin = $_POST['date_fin'];
     $visibilite = $_POST['visibilite_projet'];
-    $projetController->ajouterProjet($nom, $desc, $date_debut, $date_fin, $visibilite);
+    $photo_Projet = $_POST['photo_Projet'];
+    $projetController->ajouterProjet($nom, $desc, $date_debut, $date_fin, $visibilite, $photo_Projet);
 }
 
 // Affichage des projets
@@ -84,7 +85,7 @@ $membres = $projetController->getMembres();
             <?php foreach($projets as $project): ?>
                 <div class="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
                     <a href="#">
-                        <img class="rounded-t-lg" src="../images/background.jpg" alt="" />
+                        <img class="rounded-t-lg" src="<?php echo $project['image_projet']; ?>" alt="" />
                     </a>
                     <div class="p-5">
                         <a href="#">
@@ -111,6 +112,10 @@ $membres = $projetController->getMembres();
     <!-- Modal pour ajouter un projet -->
     <div class="hidden w-90 h-200 bg-blue-200" id="modal">
         <form method="POST" class="bg-white p-6 ">
+            <div class="mb-4">
+                <label for="nom_projet" class="block text-gray-700">URL image:</label>
+                <input type="url" name="photo_Projet" required class="w-80 px-4 py-2 border border-gray-300 rounded mt-1">
+            </div>
             <div class="mb-4">
                 <label for="nom_projet" class="block text-gray-700">Nom du projet:</label>
                 <input type="text" name="nom_projet" required class="w-80 px-4 py-2 border border-gray-300 rounded mt-1">
