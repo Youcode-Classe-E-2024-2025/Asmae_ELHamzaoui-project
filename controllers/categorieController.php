@@ -1,6 +1,6 @@
 <?php
 
-require_once '../models/Tag.php';
+require_once '../models/Category.php';
 require_once '../config/db.php';
 
 class CategoryController
@@ -16,8 +16,6 @@ class CategoryController
     public function handlePostRequest()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $nomTag = htmlspecialchars($_POST['nom_tag']); // Sanitize input
-
             $nomCategorie = htmlspecialchars($_POST['nom_categorie']);
             $descCategorie = htmlspecialchars($_POST['desc_categorie']);
 
@@ -29,10 +27,10 @@ class CategoryController
         }
     }
 
-// Initialize the controller and handle the POST request
-$controller = new CategoryController($pdo);
-$controller->handlePostRequest();
+
    
 }
 
-
+// Initialize the controller and handle the POST request
+$Category = new CategoryController($pdo);
+$Category->handlePostRequest();
