@@ -269,7 +269,7 @@ $projets = $projetController->afficherProjets();
 </div>
 
 <!-- Modal for Adding a Category -->
-<div class="modal fade" id="addCategoryModal" tabindex="-1" aria-labelledby="addCategoryModalLabel" aria-hidden="true">
+<div class="modal fade" id="addCategoryModal">
   <div class="modal-dialog">
     <div class="modal-content rounded-lg shadow-lg">
       <div class="modal-header p-4 bg-gray-100">
@@ -277,7 +277,7 @@ $projets = $projetController->afficherProjets();
         <button type="button" class="btn-close text-gray-500" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body p-4">
-        <form id="addCategoryForm">
+        <form id="addCategoryForm" action="../controllers/categorieController.php" method="POST">
           <div class="mb-4">
             <label for="nom_categorie" class="block text-sm font-medium text-gray-700">Nom de la Catégorie</label>
             <input type="text" id="nom_categorie" name="nom_categorie" class="mt-2 p-2 w-full border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" required>
