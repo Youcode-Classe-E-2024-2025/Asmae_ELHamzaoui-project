@@ -9,7 +9,7 @@ class Utilisateur {
     private $mot_de_passe;
     private $role_user;
 
-    public function __construct($id_user,$nom_user, $email_user, $mot_de_passe, $role_user = 'membre') {
+    public function __construct($id_user, $nom_user, $email_user, $mot_de_passe, $role_user = 'membre') {
         $this->id_user = $id_user;
         $this->nom_user = $nom_user;
         $this->email_user = $email_user;
@@ -56,8 +56,19 @@ class Utilisateur {
         $query = "INSERT INTO Utilisateur (nom_user, email_user, mot_de_passe, role_user) 
                   VALUES (?, ?, ?, ?)";
         $stmt = $pdo->prepare($query);
-        return $stmt->execute([$this->nom_user, $this->email_user, password_hash($this->mot_de_passe, PASSWORD_DEFAULT), $this->role_user]);
+        
+        // Exécute la requête d'insertion
+        $stmt->execute([$this->nom_user, $this->email_user, password_hash($this->mot_de_passe, PASSWORD_DEFAULT), $this->role_user]);
+    
+        // Si l'insertion réussie, on récupère l'id de l'utilisateur inséré
+        if ($stmt) {
+            // Récupère l'id généré par auto-incrémentation
+            $this->id_user = $pdo->lastInsertId();
+            return true;
+        }
+        return false;
     }
+    
 
     public static function seConnecter($email_user, $mot_de_passe) {
         global $pdo;

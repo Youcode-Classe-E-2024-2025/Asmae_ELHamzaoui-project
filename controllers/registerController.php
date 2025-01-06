@@ -36,8 +36,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Si aucune erreur, procéder à l'inscription
     if (empty($errors)) {
-        // Créer un nouvel objet Utilisateur
-        $utilisateur = new Utilisateur($username, $email, $password);
+        // Créer un nouvel objet Utilisateur (sans l'id_user, il sera généré automatiquement)
+        $utilisateur = new Utilisateur(null, $username, $email, $password);  // L'id_user sera null car il est auto-incrémenté
 
         // Inscrire l'utilisateur dans la base de données
         if ($utilisateur->inscrire()) {
