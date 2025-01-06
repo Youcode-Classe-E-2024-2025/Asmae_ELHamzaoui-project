@@ -42,6 +42,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Inscrire l'utilisateur dans la base de données
         if ($utilisateur->inscrire()) {
             $success = "Inscription réussie ! Vous pouvez maintenant vous connecter.";
+            session_start();  // Démarre la session
+            
+            // Stocker les informations de l'utilisateur dans la session
+            $_SESSION['user'] = [
+                'id_user' => $utilisateur->getIdUser(),  // Ajout de l'ID utilisateur
+                'nom_user' => $utilisateur->getNomUser(),
+                'email_user' => $utilisateur->getEmailUser(),
+                'role_user' => $utilisateur->getRoleUser()
+            ];
+
             // Redirection vers la page de connexion ou une autre page
             header("Location: ../views/UserInterfaceProjects.php");
             exit;
