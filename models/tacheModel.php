@@ -99,37 +99,28 @@ class Tache {
     }
 
     // Ajouter une tâche
-    public function ajouterTache($id_projet, $titre, $desc, $statut, $date_limite, $priorite) {
-        // $sql = "INSERT INTO Tache (titre_tache, desc_tache, statut_tache, date_limite_tache, priorite_tache)
-        //         VALUES (:titre, :desc, :statut, :date_limite, :priorite)";
-        // $stmt = $this->db->prepare($sql);
-        // $stmt->bindParam(':titre', $titre);
-        // $stmt->bindParam(':desc', $desc);
-        // $stmt->bindParam(':statut', $statut);
-        // $stmt->bindParam(':date_limite', $date_limite);
-        // $stmt->bindParam(':priorite', $priorite);
-        // return $stmt->execute();
-// 1. Ajouter la tâche à la table Tache
-$sql = "INSERT INTO Tache (titre_tache, desc_tache, statut_tache, date_limite_tache, priorite_tache)
-VALUES (:titre, :desc, :statut, :date_limite, :priorite)";
-$stmt = $this->db->prepare($sql);
-$stmt->bindParam(':titre', $titre);
-$stmt->bindParam(':desc', $desc);
-$stmt->bindParam(':statut', $statut);
-$stmt->bindParam(':date_limite', $date_limite);
-$stmt->bindParam(':priorite', $priorite);
-$stmt->execute(); // Ajout de la tâche
-
-// 2. Ajouter la tâche au projet
-// Si l'ajout de la tâche échoue mais cette étape réussit, il y a une incohérence
-$tache_id = $this->db->lastInsertId();  // ID de la tâche ajoutée
-
-$stmt = $this->db->prepare("INSERT INTO Projet_Tache (id_projet, id_tache) VALUES (:id_projet, :id_tache)");
-$stmt->bindParam(':id_projet', $id_projet);
-$stmt->bindParam(':id_tache', $tache_id);
-$stmt->execute(); // Assignation de la tâche au projet
-
-echo "Tâche ajoutée et assignée au projet!";
+    public function ajouterTache($id_projet, $titre, $desc, $statut, $date_limite, $priorite) { 
+     // 1. Ajouter la tâche à la table Tache
+         $sql = "INSERT INTO Tache (titre_tache, desc_tache, statut_tache, date_limite_tache, priorite_tache)
+                 VALUES (:titre, :desc, :statut, :date_limite, :priorite)";
+         $stmt = $this->db->prepare($sql);
+         $stmt->bindParam(':titre', $titre);
+         $stmt->bindParam(':desc', $desc);
+         $stmt->bindParam(':statut', $statut);
+         $stmt->bindParam(':date_limite', $date_limite);
+         $stmt->bindParam(':priorite', $priorite);
+         $stmt->execute(); // Ajout de la tâche
+         
+         // 2. Ajouter la tâche au projet
+         // Si l'ajout de la tâche échoue mais cette étape réussit, il y a une incohérence
+         $tache_id = $this->db->lastInsertId();  // ID de la tâche ajoutée
+         
+         $stmt = $this->db->prepare("INSERT INTO Projet_Tache (id_projet, id_tache) VALUES (:id_projet, :id_tache)");
+         $stmt->bindParam(':id_projet', $id_projet);
+         $stmt->bindParam(':id_tache', $tache_id);
+         $stmt->execute(); // Assignation de la tâche au projet
+         
+         echo "Tâche ajoutée et assignée au projet!";
   
     }
 
@@ -149,12 +140,20 @@ echo "Tâche ajoutée et assignée au projet!";
     }
 
     // Supprimer une tâche
-    public function supprimerTache($id) {
-        $sql = "DELETE FROM Tache WHERE id_tache = :id";
-        $stmt = $this->db->prepare($sql);
+     public function supprimerTache($id) {
+        // Supprimer les lignes associées dans projet_tache
+        $sqlDeleteProjetTache = "DELETE FROM projet_tache WHERE id_tache = :id";
+        $stmt = $this->db->prepare($sqlDeleteProjetTache);
         $stmt->bindParam(':id', $id);
-        return $stmt->execute();
+        $stmt->execute(); // Exécute la suppression dans projet_tache
+    
+        // Ensuite, supprimer la tâche dans la table tache
+        $sqlDeleteTache = "DELETE FROM Tache WHERE id_tache = :id";
+        $stmt = $this->db->prepare($sqlDeleteTache);
+        $stmt->bindParam(':id', $id);
+        return $stmt->execute(); // Exécute la suppression dans tache
     }
+    
 
     // Afficher toutes les tâches
     public function afficherTaches($id_projet){
