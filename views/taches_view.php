@@ -130,7 +130,7 @@ $projets = $projetController->afficherProjets();
                         <td class="py-2 px-4"><?php echo $tache['desc_tache']; ?></td>
                         <td class="py-2 px-4"><?php echo $tache['statut_tache']; ?></td>
                         <td class="py-2 px-4">
-                            <a href="modifier_tache.php?id=<?php echo $tache['id_tache']; ?>" class="text-blue-600 hover:text-blue-800">Modifier</a> | 
+                            <a href="modifier_tache.php?id=<?php echo $tache['id_tache']; ?>&id_projet=<?php echo $id_projet; ?>" class="text-blue-600 hover:text-blue-800">Modifier</a> | 
                             <a href="../controllers/supprimer_tache.php?id=<?php echo urlencode($tache['id_tache']); ?>&id_projet=<?php echo urlencode($id_projet); ?>" class="text-red-600 hover:text-red-800" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette tâche ?')">Supprimer</a>
                         </td>
                     </tr>

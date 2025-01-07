@@ -38,6 +38,7 @@ class TacheController {
     public function afficherTaches($id_projet) {
         return $this->tacheModel->afficherTaches($id_projet);
     }
+    
     public function assignerTacheAUtilisateur($userId, $tacheId) {
         global $pdo;
         
