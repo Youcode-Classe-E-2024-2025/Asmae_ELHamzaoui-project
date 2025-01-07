@@ -6,9 +6,9 @@ $controller = new TacheController($pdo);
 // Vérifier si l'ID de la tâche est passé dans l'URL
 if (isset($_GET['id'])) {
     $id_tache = $_GET['id'];
-    
+    $id_projet= $_GET['id_projet'];
     // Récupérer les informations de la tâche
-    $tache = $controller->afficherTaches(); // récupère toutes les tâches
+    $tache = $controller->afficherTaches($id_projet); // récupère toutes les tâches
     $tache_a_modifier = null;
 
     foreach ($tache as $t) {
@@ -30,8 +30,10 @@ if (isset($_GET['id'])) {
         $etat_id = $_POST['etat_id'];
 
         // Appeler la méthode de modification
-        $controller->modifierTache($id_tache, $titre, $desc, $statut, $date_limite, $priorite, $membre_assigne_id);
-        header("Location: taches_view.php"); // Rediriger vers la liste des tâches après modification
+        $controller->modifierTache($id_tache, $titre, $desc, $statut, $date_limite, $priorite);
+
+        $url = "../views/taches_view.php?id_projet=" . $id_projet;
+        header("Location: " . $url);
     }
 }
 ?>
@@ -86,12 +88,6 @@ if (isset($_GET['id'])) {
                     <option value="moyenne" <?php echo $tache_a_modifier['priorite_tache'] == 'moyenne' ? 'selected' : ''; ?>>Moyenne</option>
                     <option value="haute" <?php echo $tache_a_modifier['priorite_tache'] == 'haute' ? 'selected' : ''; ?>>Haute</option>
                 </select>
-            </div>
-
-            <div class="mb-4">
-                <label for="membre_assigne_id" class="block text-lg font-medium text-gray-700">Membre Assigné :</label>
-                <input type="number" name="membre_assigne_id" value="<?php echo $tache_a_modifier['membre_assigne_id']; ?>" required
-                       class="w-full px-4 py-2 mt-1 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
             </div>
             <div class="flex justify-center">
                 <button type="submit" name="modifier" 

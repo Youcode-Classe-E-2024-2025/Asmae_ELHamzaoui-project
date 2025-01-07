@@ -17,8 +17,8 @@ class TacheController {
     }
 
     // Modifier une tâche
-    public function modifierTache($id, $titre, $desc, $statut, $date_limite, $priorite, $membre_assigne_id) {
-        if ($this->tacheModel->modifierTache($id, $titre, $desc, $statut, $date_limite, $priorite, $membre_assigne_id)) {
+    public function modifierTache($id, $titre, $desc, $statut, $date_limite, $priorite) {
+        if ($this->tacheModel->modifierTache($id, $titre, $desc, $statut, $date_limite, $priorite)) {
             echo "Tâche modifiée avec succès.";
         } else {
             echo "Erreur lors de la modification de la tâche.";
@@ -38,7 +38,7 @@ class TacheController {
     public function afficherTaches($id_projet) {
         return $this->tacheModel->afficherTaches($id_projet);
     }
-    
+
     public function assignerTacheAUtilisateur($userId, $tacheId) {
         global $pdo;
         
