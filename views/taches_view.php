@@ -177,6 +177,7 @@ $projets = $projetController->afficherProjets();
                 <button type="submit" name="ajouter">Ajouter</button>
             </form>
         </div>
+
         <!-- Modal pour Assignation de tâche pour des membres-->
         <div id="modalUserTache">
            <form method="POST" action="../controllers/assigner_tache_user.php">
@@ -214,53 +215,53 @@ $projets = $projetController->afficherProjets();
            <button type="submit" name="assigner_tache_user" class="w-40 h-10 border rounded-lg p-2 bg-blue-200">Assigner</button>
            <button type="button" id="closeUserTacheModal" class="w-40 h-10 border rounded-lg p-2 bg-red-200">Annuler</button>
            </form>
-       </div>
+        </div>
        
-       <!-- Modal for Adding a Tag -->
-<div class="modal fade" id="addTagModal">
-  <div class="modal-dialog">
-    <div class="modal-content rounded-lg shadow-lg">
-      <div class="modal-header p-4 bg-gray-100">
-        <h5 class="modal-title text-xl font-semibold text-gray-800" id="addTagModalLabel">Ajouter un Nouveau Tag</h5>
-        <button type="button" class="btn-close text-gray-500" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body p-4">
-        <form id="addTagForm" action="../controllers/TagController.php" method="POST">
-          <div class="mb-4">
-            <label for="nom_tag" class="block text-sm font-medium text-gray-700">Nom du Tag</label>
-            <input type="text" id="nom_tag" name="nom_tag" class="mt-2 p-2 w-full border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" required>
+        <!-- Modal for Adding a Tag -->
+        <div class="modal fade" id="addTagModal">
+          <div class="modal-dialog">
+            <div class="modal-content rounded-lg shadow-lg">
+              <div class="modal-header p-4 bg-gray-100">
+                <h5 class="modal-title text-xl font-semibold text-gray-800" id="addTagModalLabel">Ajouter un Nouveau Tag</h5>
+                <button type="button" class="btn-close text-gray-500" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body p-4">
+                <form id="addTagForm" action="../controllers/TagController.php" method="POST">
+                  <div class="mb-4">
+                    <label for="nom_tag" class="block text-sm font-medium text-gray-700">Nom du Tag</label>
+                    <input type="text" id="nom_tag" name="nom_tag" class="mt-2 p-2 w-full border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" required>
+                  </div>
+                  <button type="submit" class="w-full py-2 mt-2 bg-indigo-500 text-white rounded-lg hover:bg-indigo-600">Ajouter Tag</button>
+                </form>
+              </div>
+            </div>
           </div>
-          <button type="submit" class="w-full py-2 mt-2 bg-indigo-500 text-white rounded-lg hover:bg-indigo-600">Ajouter Tag</button>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
+        </div>
 
-<!-- Modal for Adding a Category -->
-<div class="modal fade" id="addCategoryModal">
-  <div class="modal-dialog">
-    <div class="modal-content rounded-lg shadow-lg">
-      <div class="modal-header p-4 bg-gray-100">
-        <h5 class="modal-title text-xl font-semibold text-gray-800" id="addCategoryModalLabel">Ajouter une Nouvelle Catégorie</h5>
-        <button type="button" class="btn-close text-gray-500" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body p-4">
-        <form id="addCategoryForm" action="../controllers/categorieController.php" method="POST">
-          <div class="mb-4">
-            <label for="nom_categorie" class="block text-sm font-medium text-gray-700">Nom de la Catégorie</label>
-            <input type="text" id="nom_categorie" name="nom_categorie" class="mt-2 p-2 w-full border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" required>
+       <!-- Modal for Adding a Category -->
+        <div class="modal fade" id="addCategoryModal">
+          <div class="modal-dialog">
+            <div class="modal-content rounded-lg shadow-lg">
+              <div class="modal-header p-4 bg-gray-100">
+                <h5 class="modal-title text-xl font-semibold text-gray-800" id="addCategoryModalLabel">Ajouter une Nouvelle Catégorie</h5>
+                <button type="button" class="btn-close text-gray-500" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body p-4">
+                <form id="addCategoryForm" action="../controllers/categorieController.php" method="POST">
+                  <div class="mb-4">
+                    <label for="nom_categorie" class="block text-sm font-medium text-gray-700">Nom de la Catégorie</label>
+                    <input type="text" id="nom_categorie" name="nom_categorie" class="mt-2 p-2 w-full border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" required>
+                  </div>
+                  <div class="mb-4">
+                    <label for="desc_categorie" class="block text-sm font-medium text-gray-700">Description de la Catégorie</label>
+                    <textarea id="desc_categorie" name="desc_categorie" class="mt-2 p-2 w-full border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
+                  </div>
+                  <button type="submit" class="w-full py-2 mt-2 bg-indigo-500 text-white rounded-lg hover:bg-indigo-600">Ajouter Catégorie</button>
+                </form>
+              </div>
+            </div>
           </div>
-          <div class="mb-4">
-            <label for="desc_categorie" class="block text-sm font-medium text-gray-700">Description de la Catégorie</label>
-            <textarea id="desc_categorie" name="desc_categorie" class="mt-2 p-2 w-full border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
-          </div>
-          <button type="submit" class="w-full py-2 mt-2 bg-indigo-500 text-white rounded-lg hover:bg-indigo-600">Ajouter Catégorie</button>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
+        </div>
 
     </div>
 </div>
