@@ -179,14 +179,8 @@ $projets = $projetController->afficherProjets();
             <form method="POST" action="../controllers/assigner_tache_user.php">
                 <label for="taches">Sélectionner des tâches :</label>
                 <br>
-
-                <?php
-                // Récupérer les tâches disponibles
-                $stmt = $pdo->prepare("SELECT id_tache, titre_tache FROM Tache");
-                $stmt->execute();
-                $taches = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-                // Affichage des cases à cocher pour chaque tâche
+                 <!-- Affichage des cases à cocher pour chaque tâche -->
+                <?php       
                 foreach ($taches as $tache) {
                     echo "<input type=\"checkbox\" name=\"taches[]\" value=\"" . $tache['id_tache'] . "\"> " . $tache['titre_tache'] . "<br>";
                 }
