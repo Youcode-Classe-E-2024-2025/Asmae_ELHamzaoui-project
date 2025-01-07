@@ -84,7 +84,7 @@ $membres = $projetController->getMembres();
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
             <?php foreach($projets as $project): ?>
                 <div class="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-                    <a href="#">
+                    <a href="taches_view.php?id_projet=<?php echo $project['id_projet']; ?>">
                         <img class="rounded-t-lg" src="<?php echo $project['image_projet']; ?>" alt="" />
                     </a>
                     <div class="p-5">
@@ -105,6 +105,7 @@ $membres = $projetController->getMembres();
                         </form>
                     </div>
                 </div>
+                
             <?php endforeach; ?>
         </div>
     </div>

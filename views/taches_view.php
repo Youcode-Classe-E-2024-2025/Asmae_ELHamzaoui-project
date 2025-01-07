@@ -15,8 +15,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['ajouter'])) {
     $controller->ajouterTache($titre, $desc, $statut, $date_limite, $priorite, $membre_assigne_id);
 }
 
+$id_projet = $_GET['id_projet'];
 // Afficher toutes les tâches
-$taches = $controller->afficherTaches();
+$taches = $controller->afficherTaches($id_projet);
 $projets = $projetController->afficherProjets();
 ?>
 <html lang="fr">

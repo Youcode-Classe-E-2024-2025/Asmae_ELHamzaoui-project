@@ -135,9 +135,11 @@ class Tache {
     }
 
     // Afficher toutes les tâches
-    public function afficherTaches() {
-        $sql = "SELECT * FROM Tache";
-        $stmt = $this->db->query($sql);
+    public function afficherTaches($id_projet){
+        $sql = "SELECT t.* FROM Tache t JOIN Projet_Tache pt ON t.id_tache = pt.id_tache WHERE pt.id_projet = :id_projet";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(':id_projet', $id_projet);
+        $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 

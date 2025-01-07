@@ -37,8 +37,8 @@ class TacheController {
     }
 
     // Afficher toutes les tâches
-    public function afficherTaches() {
-        return $this->tacheModel->afficherTaches();
+    public function afficherTaches($id_projet) {
+        return $this->tacheModel->afficherTaches($id_projet);
     }
 
     public function assignertache($projet_id, $taches) {
