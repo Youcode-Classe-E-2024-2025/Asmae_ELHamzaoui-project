@@ -181,7 +181,7 @@ $projets = $projetController->afficherProjets();
                 <br>
                  <!-- Affichage des cases à cocher pour chaque tâche -->
                 <?php       
-                foreach ($taches as $tache) {
+                 foreach ($taches as $tache) {
                     echo "<input type=\"checkbox\" name=\"taches[]\" value=\"" . $tache['id_tache'] . "\"> " . $tache['titre_tache'] . "<br>";
                 }
                 ?>
@@ -189,8 +189,9 @@ $projets = $projetController->afficherProjets();
                 <label for="user_id">Sélectionner un utilisateur :</label>
                 <select name="user_id" id="user_id">
                     <?php
-                    // Récupérer les utilisateurs disponibles (membres)
-                    $stmt = $pdo->prepare("SELECT id_user, nom_user FROM Utilisateur WHERE role_user = 'membre'");
+                    // Récupérer les membres assigné pour le projet
+                    $stmt = $pdo->prepare("SELECT u.id_user, u.nom_user FROM Utilisateur u JOIN Projet_Utilisateur pu ON u.id_user = pu.id_user WHERE pu.id_projet = :id_projet;");
+                    $stmt->bindParam(':id_projet', $id_projet);
                     $stmt->execute();
                     $utilisateurs = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
