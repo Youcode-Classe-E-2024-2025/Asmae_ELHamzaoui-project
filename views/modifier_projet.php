@@ -18,7 +18,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['modifier_projet'])) {
     $date_debut = $_POST['date_debut'];
     $date_fin = $_POST['date_fin'];
     $visibilite = $_POST['visibilite_projet'];
-    $projetController->modifierProjet($id, $nom, $desc, $date_debut, $date_fin, $visibilite);
+    $photo_Projet = $_POST['photo_Projet'];
+    $projetController->modifierProjet($id, $nom, $desc, $date_debut, $date_fin, $visibilite,$photo_Projet);
 
     // Après la modification, rediriger vers la page d'affichage des projets
     header('Location: ../views/projets_view.php'); // Remplacez 'liste_projets.php' par la page qui affiche les projets
@@ -42,6 +43,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['modifier_projet'])) {
         <form method="POST">
             <input type="hidden" name="id_projet" value="<?php echo $projet['id_projet']; ?>" />
 
+            <div class="mb-4">
+                <label for="nom_projet" class="block text-gray-700">URL image:</label>
+                <input type="url" name="photo_Projet" value="<?php echo $projet['image_projet']; ?>" required class="w-80 px-4 py-2 border border-gray-300 rounded mt-1">
+            </div>
             <div class="mb-4">
                 <label for="nom_projet" class="block text-gray-700">Nom du projet:</label>
                 <input type="text" name="nom_projet" value="<?php echo $projet['nom_projet']; ?>" required class="w-full px-4 py-2 border border-gray-300 rounded mt-1">

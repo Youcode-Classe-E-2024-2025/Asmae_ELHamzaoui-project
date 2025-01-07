@@ -92,12 +92,26 @@ class Projet {
         return $stmt->execute();
     }
     // Supprimer un projet
-    public function supprimerProjet($id) {
-        $sql = "DELETE FROM Projet WHERE id_projet = :id";
-        $stmt = $this->db->prepare($sql);
-        $stmt->bindParam(':id', $id);
-        return $stmt->execute();
+    public function supprimerProjet($id_projet) {
+        // Suppression des utilisateurs associés à ce projet dans la table projet_utilisateur
+        $query = "DELETE FROM projet_utilisateur WHERE id_projet = :id_projet";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':id_projet', $id_projet, PDO::PARAM_INT);
+        $stmt->execute();
+
+        // Suppression des tâches associées à ce projet dans la table projet_tache
+        $query = "DELETE FROM projet_tache WHERE id_projet = :id_projet";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':id_projet', $id_projet, PDO::PARAM_INT);
+        $stmt->execute();
+
+        //suppression du projet dans la table projet
+        $query = "DELETE FROM projet WHERE id_projet = :id_projet";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':id_projet', $id_projet, PDO::PARAM_INT);
+        $stmt->execute();
     }
+    
     // Afficher tous les projets
     public function afficherProjets() {
         $sql = "SELECT * FROM Projet";
