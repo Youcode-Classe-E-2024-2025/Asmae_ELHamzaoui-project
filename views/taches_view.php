@@ -4,6 +4,7 @@ include_once '../controllers/projetController.php';
 include_once '../controllers/TacheController.php';
 $controller = new TacheController($pdo);
 $projetController = new ProjetController($pdo);
+$id_projet = $_GET['id_projet'];
 // Ajouter une tâche via formulaire
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['ajouter'])) {
     $titre = $_POST['titre_tache'];
@@ -12,10 +13,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['ajouter'])) {
     $date_limite = $_POST['date_limite'];
     $priorite = $_POST['priorite_tache'];
     $membre_assigne_id =0;
-    $controller->ajouterTache($titre, $desc, $statut, $date_limite, $priorite, $membre_assigne_id);
+    $controller->ajouterTache($id_projet,$titre, $desc, $statut, $date_limite, $priorite, $membre_assigne_id);
 }
 
-$id_projet = $_GET['id_projet'];
+
 // Afficher toutes les tâches
 $taches = $controller->afficherTaches($id_projet);
 $projets = $projetController->afficherProjets();
@@ -105,13 +106,12 @@ $projets = $projetController->afficherProjets();
         <div class="flex justify-between gap-4">
             <h1 class="text-3xl font-bold mb-8">Liste des Tâches</h1>
             <div class="flex flex-center gap-2">   
-                <button id="assignerTacheButton" class="w-40 h-10 border rounded-lg p-2 bg-gray-200">Assigner Tâche </button>
                 <button id="openModalButton" class="w-40 h-10 border rounded-lg p-2 bg-gray-200">Ajouter tache</button>
-                <button id="openModalTacheUser" class="w-40 h-10 border rounded-lg p-2 bg-gray-200">Ajouter tâche utilisateur</button>
+                <button id="openModalTacheUser" class="w-40 h-10 border rounded-lg p-2 bg-gray-200">Assigner tâche</button>
             </div>
         </div>
 
-        <!-- Table des tâches -->
+        <!-- Affichage des tâches selon le projet -->
         <table class="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
             <thead class="bg-gray-800 text-white">
                 <tr>
@@ -177,38 +177,6 @@ $projets = $projetController->afficherProjets();
                 <button type="submit" name="ajouter">Ajouter</button>
             </form>
         </div>
-
-        <!-- Modal pour Assignation de tâche pour des projets-->
-        <div id="modalAssigner">
-            <h2 class="text-2xl font-semibold mt-10 mb-4">Assigner une tâche</h2>
-            <form method="POST" action="../controllers/assigner_tache.php" class="modal-form space-y-4">
-                <!-- Sélection des membres -->
-                <div>
-                    <label for="membre_assigne" class="block text-lg">Projets :</label>
-                    <select name="projet_id" class="focus:outline-none focus:ring-2 focus:ring-blue-500">
-                        <?php foreach($projets as $project): ?>
-                            <option value="<?php echo  $project['id_projet']; ?>"><?php echo  $project['nom_projet']; ?></option>
-                        <?php endforeach; ?>
-                    </select>
-                </div>
-
-                <!-- Liste des tâches du projet -->
-                <div>
-                    <label for="taches" class="block text-lg">Tâches :</label>
-                    <?php foreach ($taches as $tache): ?>
-                        <div>
-                            <input type="checkbox" name="taches[]" value="<?php echo $tache['id_tache']; ?>"> <?php echo $tache['titre_tache']; ?>
-                        </div>
-                    <?php endforeach; ?>
-                </div> 
-                <!-- Boutons -->
-                <div class="flex gap-4">
-                    <button type="submit" name="assigner" class="w-1/2 bg-blue-500 text-white">Assigner</button>
-                    <button type="button" id="closeAssignerModal" class="w-1/2 bg-gray-500 text-white">Annuler</button>
-                </div>
-            </form>
-        </div>
-        
         <!-- Modal pour Assignation de tâche pour des membres-->
         <div id="modalUserTache">
            <form method="POST" action="../controllers/assigner_tache_user.php">

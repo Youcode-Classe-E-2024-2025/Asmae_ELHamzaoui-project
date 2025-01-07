@@ -76,7 +76,6 @@ $membres = $projetController->getMembres();
         <div class="flex justify-between items-center ml-2">
             <h2 class="text-xl font-bold mb-4  border border-gray-200 rounded-lg bg-sky-700 w-70 h-12 pt-2 px-10"><button onclick="ajouterProjet()">Ajouter projet</button></h2>
             <h2 class="text-xl font-bold mb-4  border border-gray-200 rounded-lg bg-sky-700 w-70 h-12 pt-2 px-10"><button onclick="assignerProjet()">Assigner projet</button></h2>
-            <button type="submit" onclick="window.location.href = 'taches_view.php';" name="planifier" class="bg-red-500 text-white py-1 px-3 rounded hover:bg-red-600">planifier</button>
         </div>
     </div>
 
