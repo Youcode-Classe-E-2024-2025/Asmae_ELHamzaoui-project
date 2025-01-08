@@ -9,9 +9,7 @@
     <style>
         /* Ajoutez un arrière-plan d'image pour le corps */
         body {
-            background-image: url('../images/background.jpg'); /* Remplacez par le chemin de votre image */
-            background-size: cover;
-            background-position: center;
+            background-image:white;
         }
         i{
             font-size:20px;
@@ -24,10 +22,10 @@
             height:300px;
             width:300px;
             border-radius:20px;
-            background-color:#120e3d;
+            background-color:#f2f8ff;
             text-align:center;
-            border-top:1px solid white;
-            border-left:1px solid white;
+            border-top:1px solid #24508c;
+            border-left:1px solid #24508c;
             box-shadow: 12px 12px 12px rgba(72, 146, 230, 0.3); /* Ombre */
             transition: transform 0.3s ease; /* Transition pour l'animation */
         }
@@ -44,10 +42,10 @@
 <body class="font-sans bg-gray-50">
 
     <!-- Body -->
-    <main class="py-48 bg-gradient-to-r to-indigo-600 text-white">
+    <main class="py-48 bg-gradient-to-r to-indigo-600" style="color:#24508c;">
         <div class="flex justify-center gap-20">
-            <div class="choix"><a href="registerChef.php"><i class="fa-solid fa-user"></i></a><div><a href="registerChef.php">Chef de projet</a></div></div>
-            <div class="choix"><a href="register.php"><i class="fa-solid fa-user"></i></a><div><a href="register.php">Membre</a></div></div>
+            <div class="choix"><a href="registerChef.php"><i class="fa-solid fa-user" style="color:#24508c;"></i></a><div><a href="registerChef.php">Chef de projet</a></div></div>
+            <div class="choix"><a href="register.php"><i class="fa-solid fa-user" style="color:#24508c;"></i></a><div><a href="register.php">Membre</a></div></div>
         </div>
     </main>
 
