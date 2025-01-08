@@ -7,6 +7,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.1/gsap.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700&display=swap" rel="stylesheet">
     <style>
           body {
             background-color:#f2f8ff;
@@ -29,11 +30,11 @@
 
 
     <!-- Body -->
-    <main class="py-20">
+    <main class="pt-20">
        <div class="flex flex-between">
        <div class="container">
-            <h1 class="text-4xl font-bold mt-24 ml-10" style="color:#24508c">DES TACHES CLAIRES</h1>
-            <h1 class="text-4xl font-bold mt-8 ml-16" style="color:#24508c">UNE EQUIPE PLUS PERfORMANTE</h1>
+            <h1 class="text-4xl font-bold mt-24 ml-10" style="color:#24508c ;  font-family: 'Merriweather', serif;">DES TACHES CLAIRES</h1>
+            <h1 class="text-4xl font-bold mt-8 ml-16" style="color:#24508c ;  font-family:'Merriweather', serif;">UNE EQUIPE PLUS PERfORMANTE</h1>
         </div>
         <div>
             <img class="img" src="images/projectImage.png" style="width:650px;height:400px; margin-bottom:400px; margin-right:100px">
@@ -41,9 +42,9 @@
        </div>
     </main>
     <!-- Footer -->
-    <footer class="bg-black text-white py-6">
+    <footer class="text-white py-12"  style="background-color:#24508c">
         <div class="container mx-auto text-center">
-            <h3>&copy; 2024 Tous droits réservés. Mon entreprise.</h3>
+            <h3>&copy; 2025 Tous droits réservés. Mon entreprise.</h3>
         </div>
     </footer>
 <script>
