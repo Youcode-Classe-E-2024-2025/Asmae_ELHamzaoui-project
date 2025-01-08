@@ -53,32 +53,76 @@ $membres = $projetController->getMembres();
             width: 80%;
             max-width: 600px;
         }
+        body {
+            background-color:#f2f8ff;
+        }
+       
+         /* Icône du gear */
+    .gear-icon {
+      font-size: 30px;
+      cursor: pointer;
+      position: relative; 
+
+    }
+
+    /* Style du menu */
+    .menu {
+      display: none; /* Initialement caché */
+      position: absolute;
+      top: 60px; /* Place le menu juste en dessous de l'icône */
+      right:65px;
+      background-color: #f9f9f9;
+      border: 1px solid #ccc;
+      padding: 5px;
+      width:150px;
+      border-radius: 5px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      z-index: 10; /* Assure que le menu est au-dessus des autres éléments */
+    }
+
+    /* Style des éléments de menu */
+    .menu a {
+      display: block;
+      background-color:#f2f8ff;
+      margin-top:2px;
+      color: #333;
+      text-decoration: none;
+    }
+
+    .menu a:hover {
+        background-color:rgb(185, 212, 243);
+        cursor: pointer;
+    }
+
     </style>
 </head>
 
-<body class="bg-gray-50">
-<header class="mx-8">
-    <div class="container flex justify-between items-center">
-        <!-- Logo avec taille augmentée -->
-        <img src="../images/logo.png" alt="Logo" class="h-12 w-20 logo my-5 bg-gray-600 "> <!-- Ajout de la classe "logo" pour appliquer la transformation -->
-        <div class="flex space-x-8 items-center"> <!-- Espacement égal entre les éléments -->
-            <!-- Icône pour l'inscription -->
-            <a href="views/direction.php" class="text-2xl hover:text-gray-600">
-                <i class="fa-solid fa-right-from-bracket"></i>
-            </a>
-        </div>
-    </div>
-</header>
+<body>
 
+<header class="mx-4">
+        <div class="container flex justify-between items-center">
+            <!-- Logo avec taille augmentée -->
+            <img src="../images/logo.png" alt="Logo" class="h-24 w-32"> <!-- Ajout de la classe "logo" pour appliquer la transformation -->
+            <div class="space-x-6 items-center mr-8"> <!-- Espacement égal entre les éléments --> 
+                <i class="fa-duotone fa-solid fa-gear gear-icon"style="color:#24508c;" onclick="toggleMenu()">
+                </i> 
+                <div class="menu" id="menu">
+                  <a onclick="ajouterProjet()" class="text-center" style="color:#24508c">ajouter projet</a>
+                  <a onclick="assignerProjet()" class="text-center" style="color:#24508c">assigner projet</a>
+                  <a href="deconnexion.php"  class="text-center hover:text-gray-400" style="color:#24508c">log out</a>
+                </div>
+            </div>
+        </div>
+               
+    </header>
+ 
+               
 <div class="container p-6">
     <div class="flex justify-between items-center">
-        <h2 class="text-2xl font-bold mb-4">Liste des projets</h2>
-        <div class="flex justify-between items-center ml-2">
-            <h2 class="text-xl font-bold mb-4  border border-gray-200 rounded-lg bg-sky-700 w-70 h-12 pt-2 px-10"><button onclick="ajouterProjet()">Ajouter projet</button></h2>
-            <h2 class="text-xl font-bold mb-4  border border-gray-200 rounded-lg bg-sky-700 w-70 h-12 pt-2 px-10"><button onclick="assignerProjet()">Assigner projet</button></h2>
-        </div>
+        <h2 class="text-3xl font-bold mb-4" style="color:#24508c">Liste des projets</h2>
     </div>
-
+ 
+    <!-- Affichage des projets -->
     <div class="container mx-auto">
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
             <?php foreach($projets as $project): ?>
@@ -88,19 +132,18 @@ $membres = $projetController->getMembres();
                     </a>
                     <div class="p-5">
                         <a href="#">
-                            <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white"><?php echo $project['nom_projet']; ?></h5>
+                            <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white" style="color:#24508c"><?php echo $project['nom_projet']; ?></h5>
                         </a>
-                        <p class="mb-3 font-normal text-gray-700 dark:text-gray-400"><?php echo $project['desc_projet']; ?></p>
-                        <p class="px-4 py-2"><?php echo $project['date_debut_projet']; ?></p>
-                        <p class="px-4 py-2"><?php echo $project['date_fin_projet']; ?></p>
-                        <p class="px-4 py-2"><?php echo $project['visibilite_projet']; ?></p>
+                        <p class="mb-3 font-bold text-gray-700 dark:text-gray-400"><?php echo $project['desc_projet']; ?></p>
+                        <p class="px-4 py-2"><?php echo $project['date_debut_projet']; ?>/<?php echo $project['date_fin_projet']; ?></p>
+                        <p class="px-4 py-2" style="color:rgb(78, 109, 145) "><?php echo $project['visibilite_projet']; ?></p>
                         <form method="POST" action="modifier_projet.php" class="inline ml-2">
                             <input type="hidden" name="projet_id" value="<?php echo $project['id_projet']; ?>" />
-                            <button type="submit" name="modifier" class="bg-yellow-500 text-white py-1 px-3 rounded hover:bg-yellow-600">Modifier</button>
+                            <button type="submit" name="modifier" style="color: rgb(185, 212, 243) ;background-color:#24508c;" class="text-white py-1 px-3 rounded hover:bg-yellow-600"><i class="fa-solid fa-pen-to-square"></i></button>
                         </form>
                         <form method="POST" action="../controllers/supprimer_projet.php" class="inline ml-2">
                             <input type="hidden" name="projet_id" value="<?php echo $project['id_projet']; ?>" />
-                            <button type="submit" name="supprimer" class="bg-red-500 text-white py-1 px-3 rounded hover:bg-red-600">Supprimer</button>
+                            <button type="submit" name="supprimer" style="color: rgb(185, 212, 243) ;background-color:#24508c;"  class="text-white py-1 px-3 rounded hover:bg-red-600"><i class="fa-solid fa-trash"></i></button>
                         </form>
                     </div>
                 </div>
@@ -199,6 +242,16 @@ $membres = $projetController->getMembres();
             modalAssigner.style.display = "none";
         }
     });
+
+      // Fonction pour afficher/cacher le menu
+      function toggleMenu() {
+      const menu = document.getElementById("menu");
+      if (menu.style.display === "none") {
+        menu.style.display = "block"; // Si le menu est visible, on le cache
+      } else {
+        menu.style.display = "none"; // Sinon on l'affiche
+      }
+    }
 </script>
 
 </body>

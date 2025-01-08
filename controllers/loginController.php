@@ -54,7 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 exit;  // Assurez-vous que le script s'arrête après la redirection
             }
         } else {
-            $errors['general'] = "Email ou mot de passe incorrect.";
+            echo "Email ou mot de passe incorrect.";
         }
     }
 }

@@ -40,7 +40,6 @@
     </style>
 </head>
 <body class="font-sans bg-gray-50">
-
     <!-- Body -->
     <main class="py-48 bg-gradient-to-r to-indigo-600" style="color:#24508c;">
         <div class="flex justify-center gap-20">
@@ -48,7 +47,5 @@
             <div class="choix"><a href="register.php"><i class="fa-solid fa-user" style="color:#24508c;"></i></a><div><a href="register.php">Membre</a></div></div>
         </div>
     </main>
-
-
 </body>
 </html>
