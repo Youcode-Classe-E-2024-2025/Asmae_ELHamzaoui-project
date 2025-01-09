@@ -182,10 +182,9 @@ $couleurs = ["#89cdff", "#426ba8" , "#68a0ed", "#a36357" , "#bf9289", "#edbea4"]
                   </div>
                 </div>
             <?php endforeach; ?>
-        </div>
+    </div>
            
-
-        <div id="modalOverlay"></div>
+    <div id="modalOverlay"></div>
 
         <!-- Formulaire d'ajout de tâche -->
         <div id="modalTache" style="background-color:#f2f8ff; border:5px solid #24508c">
@@ -197,23 +196,23 @@ $couleurs = ["#89cdff", "#426ba8" , "#68a0ed", "#a36357" , "#bf9289", "#edbea4"]
                 
                
                 <div>
-                    <label for="titre_tache" class="block text-lg">Titre :</label>
+                    <label for="titre_tache" class="block text-lg font-semibold">Titre :</label>
                     <input type="text" name="titre_tache" required class="focus:outline-none focus:ring-2 focus:ring-blue-500" />
                 </div>
                 <div>
-                    <label for="desc_tache" class="block text-lg">Description :</label>
+                    <label for="desc_tache" class="block text-lg font-semibold">Description :</label>
                     <textarea name="desc_tache" class="focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
                 </div>
                 <div class="mb-2 flex space-x-4">
                     <div class="w-1/2">
-                        <label for="statut_tache" class="block text-lg">Statut :</label>
+                        <label for="statut_tache" class="block text-lg font-semibold">Statut :</label>
                         <select name="statut_tache" class=" w-full focus:outline-none focus:ring-2 focus:ring-blue-500">
                             <option value="en_cours">En cours</option>
                         </select>
                     </div>
     
                     <div class="w-1/2">
-                        <label for="priorite_tache" class="block text-lg">Priorité :</label>
+                        <label for="priorite_tache" class="block text-lg font-semibold">Priorité :</label>
                         <select name="priorite_tache" class="w-full focus:outline-none focus:ring-2 focus:ring-blue-500">
                             <option value="basse">Basse</option>
                             <option value="moyenne">Moyenne</option>
@@ -223,11 +222,11 @@ $couleurs = ["#89cdff", "#426ba8" , "#68a0ed", "#a36357" , "#bf9289", "#edbea4"]
                 </div>
                
                 <div>
-                    <label for="date_limite" class="block text-lg">Date limite :</label>
+                    <label for="date_limite" class="block text-lg font-semibold">Date limite :</label>
                     <input type="date" name="date_limite" class="focus:outline-none focus:ring-2 focus:ring-blue-500" />
                 </div>
                 
-                <button type="submit" name="ajouter" style="background:#24508c;">Ajouter</button>
+                <button type="submit" name="ajouter" style="background:#24508c; font-semibold">Ajouter</button>
             </form>
         </div>
 
@@ -267,7 +266,7 @@ $couleurs = ["#89cdff", "#426ba8" , "#68a0ed", "#a36357" , "#bf9289", "#edbea4"]
                 </select>
                 <br><br>
         
-                <button type="submit" name="assigner_tache_user" class="w-full h-10 border rounded-lg p-2 bg-blue-200" style="background-color:#24508c;">Assigner</button>
+                <button type="submit" name="assigner_tache_user" class="w-full h-10 border rounded-lg p-2 text-white font-semibold" style="background-color:#24508c;">Assigner</button>
                 <!-- <button type="button" id="closeUserTacheModal" class="w-40 h-10 border rounded-lg p-2 bg-red-200">Annuler</button> -->
             </form>
         </div>
@@ -316,7 +315,8 @@ $couleurs = ["#89cdff", "#426ba8" , "#68a0ed", "#a36357" , "#bf9289", "#edbea4"]
               }
             };
         </script>
-    </div>
+</div>
+
 </div>
 </body>
 </html>
