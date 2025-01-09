@@ -56,14 +56,13 @@ $couleurs = ["#89cdff", "#426ba8" , "#68a0ed", "#a36357" , "#bf9289", "#edbea4"]
             width: 80%;
             max-width: 600px;
             border-radius: 8px;
-            overflow-y: auto; /* Pour que le contenu dépasse si nécessaire */
-            max-height: 80vh; /* Limiter la hauteur du modal */
+            max-height: 90vh; /* Limiter la hauteur du modal */
         }
 
         .modal-form input, .modal-form select, .modal-form textarea {
             width: 100%;
             padding: 10px;
-            margin: 8px 0;
+            margin: 0px 0;
             border-radius: 8px;
             border: 1px solid #ccc;
             box-sizing: border-box;
@@ -189,9 +188,14 @@ $couleurs = ["#89cdff", "#426ba8" , "#68a0ed", "#a36357" , "#bf9289", "#edbea4"]
         <div id="modalOverlay"></div>
 
         <!-- Formulaire d'ajout de tâche -->
-        <div id="modalTache">
-            <h2 class="text-2xl font-semibold mt-10 mb-4">Ajouter une nouvelle tâche</h2>
-            <form method="POST" class="modal-form space-y-4">
+        <div id="modalTache" style="background-color:#f2f8ff; border:5px solid #24508c">
+            <form method="POST" class="modal-form">
+               
+                <div class="p-4 text-center text-white pt-2" style="height:70px; width:70px;position:relative; left:505px;bottom:21px; border-bottom-left-radius:90px; border-top-right-radius:9px;font-size:25px; background-color:#24508c;">
+                     <a><i class="fas fa-times"></i></a>
+                </div>
+                
+               
                 <div>
                     <label for="titre_tache" class="block text-lg">Titre :</label>
                     <input type="text" name="titre_tache" required class="focus:outline-none focus:ring-2 focus:ring-blue-500" />
@@ -200,49 +204,61 @@ $couleurs = ["#89cdff", "#426ba8" , "#68a0ed", "#a36357" , "#bf9289", "#edbea4"]
                     <label for="desc_tache" class="block text-lg">Description :</label>
                     <textarea name="desc_tache" class="focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
                 </div>
-                <div>
-                    <label for="statut_tache" class="block text-lg">Statut :</label>
-                    <select name="statut_tache" class="focus:outline-none focus:ring-2 focus:ring-blue-500">
-                        <option value="en_cours">En cours</option>
-                    </select>
+                <div class="mb-2 flex space-x-4">
+                    <div class="w-1/2">
+                        <label for="statut_tache" class="block text-lg">Statut :</label>
+                        <select name="statut_tache" class=" w-full focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <option value="en_cours">En cours</option>
+                        </select>
+                    </div>
+    
+                    <div class="w-1/2">
+                        <label for="priorite_tache" class="block text-lg">Priorité :</label>
+                        <select name="priorite_tache" class="w-full focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <option value="basse">Basse</option>
+                            <option value="moyenne">Moyenne</option>
+                            <option value="haute">Haute</option>
+                        </select>
+                    </div>
                 </div>
+               
                 <div>
                     <label for="date_limite" class="block text-lg">Date limite :</label>
                     <input type="date" name="date_limite" class="focus:outline-none focus:ring-2 focus:ring-blue-500" />
                 </div>
-                <div>
-                    <label for="priorite_tache" class="block text-lg">Priorité :</label>
-                    <select name="priorite_tache" class="focus:outline-none focus:ring-2 focus:ring-blue-500">
-                        <option value="basse">Basse</option>
-                        <option value="moyenne">Moyenne</option>
-                        <option value="haute">Haute</option>
-                    </select>
-                </div>
-                <button type="submit" name="ajouter">Ajouter</button>
+                
+                <button type="submit" name="ajouter" style="background:#24508c;">Ajouter</button>
             </form>
         </div>
 
         <!-- Modal pour Assignation de tâche pour des membres-->
-        <div id="modalUserTache">
+        <div id="modalUserTache" style="width:400px; background-color:#f2f8ff; border:5px solid #24508c">
             <form method="POST" action="../controllers/assigner_tache_user.php">
-                <label for="taches">Sélectionner des tâches :</label>
+                <div class="p-4 text-center text-white pt-2" style="height:70px; width:70px;position:relative; left:305px;bottom:21px; border-bottom-left-radius:90px; border-top-right-radius:9px;font-size:25px; background-color:#24508c;">
+                     <a><i class="fas fa-times"></i></a>
+                </div>
+                <label for="taches" class="font-semibold">Sélectionner des tâches :</label>
+                <br><br>
+                <!-- Zone des cases à cocher avec défilement -->
+                <div class="max-h-40  overflow-y-auto mb-2">
+                    <?php       
+                    foreach ($taches as $tache) {
+                        echo "<div><input type=\"checkbox\" name=\"taches[]\" value=\"" . $tache['id_tache'] . "\"> " . $tache['titre_tache'] . "</div>";
+                    }
+                    ?>
+                </div>
+        
                 <br>
-                 <!-- Affichage des cases à cocher pour chaque tâche -->
-                <?php       
-                 foreach ($taches as $tache) {
-                    echo "<input type=\"checkbox\" name=\"taches[]\" value=\"" . $tache['id_tache'] . "\"> " . $tache['titre_tache'] . "<br>";
-                }
-                ?>
+                <label for="user_id" class="font-semibold">Sélectionner un utilisateur :</label>
                 <br>
-                <label for="user_id">Sélectionner un utilisateur :</label>
-                <select name="user_id" id="user_id">
+                <select name="user_id" id="user_id"  class="w-full px-4 py-2 border border-gray-300 rounded mt-1 focus:ring-2 focus:ring-blue-500">
                     <?php
-                    // Récupérer les membres assigné pour le projet
+                    // Récupérer les membres assignés pour le projet
                     $stmt = $pdo->prepare("SELECT u.id_user, u.nom_user FROM Utilisateur u JOIN Projet_Utilisateur pu ON u.id_user = pu.id_user WHERE pu.id_projet = :id_projet;");
                     $stmt->bindParam(':id_projet', $id_projet);
                     $stmt->execute();
                     $utilisateurs = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
+        
                     // Affichage des utilisateurs dans le menu déroulant
                     foreach ($utilisateurs as $utilisateur) {
                         echo "<option value=\"" . $utilisateur['id_user'] . "\">" . $utilisateur['nom_user'] . "</option>";
@@ -250,11 +266,12 @@ $couleurs = ["#89cdff", "#426ba8" , "#68a0ed", "#a36357" , "#bf9289", "#edbea4"]
                     ?>
                 </select>
                 <br><br>
-
-                <button type="submit" name="assigner_tache_user" class="w-40 h-10 border rounded-lg p-2 bg-blue-200">Assigner</button>
-                <button type="button" id="closeUserTacheModal" class="w-40 h-10 border rounded-lg p-2 bg-red-200">Annuler</button>
+        
+                <button type="submit" name="assigner_tache_user" class="w-full h-10 border rounded-lg p-2 bg-blue-200" style="background-color:#24508c;">Assigner</button>
+                <!-- <button type="button" id="closeUserTacheModal" class="w-40 h-10 border rounded-lg p-2 bg-red-200">Annuler</button> -->
             </form>
         </div>
+
 
         <script>
             // Fonction pour ouvrir un modal

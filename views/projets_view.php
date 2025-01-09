@@ -214,7 +214,7 @@ $membres = $projetController->getMembres();
               <button><i class="fas fa-times"></i></button>
             </div>
             <div class="mb-4">
-                <label for="projet_id" class="block text-gray-700">Sélectionner le projet:</label>
+                <label for="projet_id" class="block text-gray-700 font-semibold">Sélectionner le projet:</label>
                 <select name="projet_id" class="w-80 px-4 py-2 border border-gray-300 rounded mt-1 focus:ring-2 focus:ring-blue-500">
                     <?php foreach ($projets as $projet): ?>
                         <option value="<?php echo $projet['id_projet']; ?>"><?php echo $projet['nom_projet']; ?></option>
@@ -223,7 +223,7 @@ $membres = $projetController->getMembres();
             </div>
     
             <div class="mb-4">
-                <label for="membres" class="block text-gray-700">Sélectionner les membres à assigner:</label>
+                <label for="membres" class="block text-gray-700 font-semibold">Sélectionner les membres à assigner:</label>
                 <!-- Ajout de la classe scrollable -->
                 <div class="space-y-2 max-h-40 overflow-y-auto">
                     <?php foreach ($membres as $membre): ?>
