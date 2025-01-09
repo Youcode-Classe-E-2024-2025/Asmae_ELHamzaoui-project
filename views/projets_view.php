@@ -21,7 +21,6 @@ $membres = $projetController->getMembres();
 
 <!DOCTYPE html>
 <html lang="fr">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -100,21 +99,20 @@ $membres = $projetController->getMembres();
 <body>
 
 <header class="mx-4">
-        <div class="container flex justify-between items-center">
-            <!-- Logo avec taille augmentée -->
-            <img src="../images/logo.png" alt="Logo" class="h-24 w-32"> <!-- Ajout de la classe "logo" pour appliquer la transformation -->
-            <div class="space-x-6 items-center mr-8"> <!-- Espacement égal entre les éléments --> 
-                <i class="fa-duotone fa-solid fa-gear gear-icon"style="color:#24508c;" onclick="toggleMenu()">
-                </i> 
-                <div class="menu" id="menu">
-                  <a onclick="ajouterProjet()" class="text-center" style="color:#24508c">ajouter projet</a>
-                  <a onclick="assignerProjet()" class="text-center" style="color:#24508c">assigner projet</a>
-                  <a href="deconnexion.php"  class="text-center hover:text-gray-400" style="color:#24508c">log out</a>
-                </div>
+    <div class="container flex justify-between items-center">
+        <!-- Logo avec taille augmentée -->
+        <img src="../images/logo.png" alt="Logo" class="h-24 w-32"> <!-- Ajout de la classe "logo" pour appliquer la transformation -->
+        <div class="space-x-6 items-center mr-8"> <!-- Espacement égal entre les éléments --> 
+            <i class="fa-duotone fa-solid fa-gear gear-icon"style="color:#24508c;" onclick="toggleMenu()">
+            </i> 
+            <div class="menu" id="menu">
+              <a onclick="ajouterProjet()" class="text-center" style="color:#24508c">ajouter projet</a>
+              <a onclick="assignerProjet()" class="text-center" style="color:#24508c">assigner projet</a>
+              <a href="deconnexion.php"  class="text-center hover:text-gray-400" style="color:#24508c">log out</a>
             </div>
         </div>
-               
-    </header>
+    </div>               
+</header>
  
                
 <div class="container p-6">
@@ -139,12 +137,16 @@ $membres = $projetController->getMembres();
                         <p class="px-4 py-2" style="color:rgb(78, 109, 145) "><?php echo $project['visibilite_projet']; ?></p>
                         <form method="POST" action="modifier_projet.php" class="inline ml-2">
                             <input type="hidden" name="projet_id" value="<?php echo $project['id_projet']; ?>" />
-                            <button type="submit" name="modifier" style="color: rgb(185, 212, 243) ;background-color:#24508c;" class="text-white py-1 px-3 rounded hover:bg-yellow-600"><i class="fa-solid fa-pen-to-square"></i></button>
+                            <button type="submit" name="modifier" style="color: rgb(185, 212, 243) ;background-color:#24508c;" class="text-white py-2 px-3 rounded hover:bg-yellow-600"><i class="fa-solid fa-pen-to-square"></i></button>
                         </form>
                         <form method="POST" action="../controllers/supprimer_projet.php" class="inline ml-2">
                             <input type="hidden" name="projet_id" value="<?php echo $project['id_projet']; ?>" />
-                            <button type="submit" name="supprimer" style="color: rgb(185, 212, 243) ;background-color:#24508c;"  class="text-white py-1 px-3 rounded hover:bg-red-600"><i class="fa-solid fa-trash"></i></button>
+                            <button type="submit" name="supprimer" style="color: rgb(185, 212, 243) ;background-color:#24508c;"  class="text-white py-2 px-3 rounded hover:bg-red-600"><i class="fa-solid fa-trash"></i></button>
                         </form>
+                        <form class="inline ml-2">
+                            <a href="taches_view.php?id_projet=<?php echo $project['id_projet']; ?>" style="color: rgb(185, 212, 243) ;background-color:#24508c;"  class="text-white font-bold p-2 px-4 rounded hover:bg-red-600 w-24 h-24">Planifier</a>
+                        </form>
+
                     </div>
                 </div>
                 
@@ -251,7 +253,7 @@ $membres = $projetController->getMembres();
       } else {
         menu.style.display = "none"; // Sinon on l'affiche
       }
-    }
+    };
 </script>
 
 </body>

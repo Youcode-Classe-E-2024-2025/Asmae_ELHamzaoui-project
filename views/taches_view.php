@@ -20,6 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['ajouter'])) {
 // Afficher toutes les tâches
 $taches = $controller->afficherTaches($id_projet);
 $projets = $projetController->afficherProjets();
+$couleurs = ["#89cdff", "#426ba8" , "#68a0ed", "#a36357" , "#bf9289", "#edbea4"];
 ?>
 <html lang="fr">
 <head>
@@ -82,61 +83,108 @@ $projets = $projetController->afficherProjets();
         .modal-form button:hover {
             background-color: #2563EB;
         }
-    </style>
+
+        body {
+            background-color:#f2f8ff;
+        }
+       
+         /* Icône du gear */
+    .gear-icon {
+      font-size: 30px;
+      cursor: pointer;
+      position: relative; 
+
+    }
+
+    /* Style du menu */
+    .menu {
+      display: none; /* Initialement caché */
+      position: absolute;
+      top: 60px; /* Place le menu juste en dessous de l'icône */
+      right:65px;
+      background-color: #f9f9f9;
+      border: 1px solid #ccc;
+      padding: 5px;
+      width:150px;
+      border-radius: 5px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      z-index: 10; /* Assure que le menu est au-dessus des autres éléments */
+    }
+
+    /* Style des éléments de menu */
+    .menu a {
+      display: block;
+      background-color:#f2f8ff;
+      margin-top:2px;
+      color: #333;
+      text-decoration: none;
+    }
+
+    .menu a:hover {
+        background-color:rgb(185, 212, 243);
+        cursor: pointer;
+    }
+
+.sticky-note {
+    width: 250px; /* Largeur de la note */
+    height: 250px; /* Hauteur de la note */
+    border-radius: 10px; /* Coins arrondis */
+    box-shadow: 6px 6px 15px rgba(0, 0, 0, 0.54); /* Ombre légère */
+    padding: 15px; /* Espacement interne */
+    font-family: Arial, sans-serif; /* Police de caractères */
+    position: relative; /* Pour ajouter des éléments positionnés à l'intérieur */
+    align-items: center;
+    text-align: center;
+    color: #333; /* Couleur du texte */
+    
+}
+</style>
 </head>
-<body class="bg-gray-100 text-gray-900">
-<header class="mx-8">
-   <div class="container flex justify-between items-center">
-       <img src="../images/logo.png" alt="Logo" class="h-12 w-20 logo my-5 bg-gray-600 " />
-       <div class="flex space-x-8 items-center">
-           <a href="views/direction.php" class="text-2xl hover:text-gray-600">
-               <i class="fa-solid fa-right-from-bracket"></i>
-           </a>
-       </div>
-   </div>
+<body>
+<header class="mx-4">
+    <div class="container flex justify-between items-center">
+        <!-- Logo avec taille augmentée -->
+        <img src="../images/logo.png" alt="Logo" class="h-24 w-32"> <!-- Ajout de la classe "logo" pour appliquer la transformation -->
+        <div class="space-x-6 items-center mr-8"> <!-- Espacement égal entre les éléments --> 
+            <i class="fa-duotone fa-solid fa-gear gear-icon" style="color:#24508c;" onclick="toggleMenu()">
+            </i> 
+            <div class="menu" id="menu">
+              <a onclick="ajouterProjet()"  id="openModalButton" class="text-center" style="color:#24508c">Ajouter tache</a>
+              <a onclick="assignerProjet()" id="openModalTacheUser" class="text-center" style="color:#24508c">Assigner tâche</a>
+              <a href="deconnexion.php"  class="text-center hover:text-gray-400" style="color:#24508c">log out</a>
+            </div>
+        </div>
+    </div>               
 </header>
 
-<div class="flex justify-center gap-4">
-    <div class="w-64 h-screen border rounded-lg p-6">
-        <div class="w-48 h-10 border rounded-lg p-2 bg-gray-200">Taches</div><br>
-        <div class="w-48 h-10 border rounded-lg p-2 bg-gray-200">Assignements</div>
+<div class="flex justify-center gap-4 mx-4">
+    <div class="w-64 h-screen border border-2 rounded-lg p-6" style="background-color:#f2f8ff;">
+        <div class="w-48 h-10 border rounded-lg p-2 text-white font-bold" style="background-color:#24508c;">Taches</div><br>
+        <div class="w-48 h-10 border rounded-lg p-2 text-white font-bold" style="background-color:#24508c;">Assignements</div>
     </div>
 
-    <div class="container mx-auto p-8 border rounded-lg">
+    <div class="container mx-auto p-8 border border-2 rounded-lg" style="background-color:#f2f8ff;">
         <div class="flex justify-between gap-4">
-            <h1 class="text-3xl font-bold mb-8">Liste des Tâches</h1>
-            <div class="flex flex-center gap-2">
-                <button id="openModalButton" class="w-40 h-10 border rounded-lg p-2 bg-gray-200">Ajouter tache</button>
-                <button id="openModalTacheUser" class="w-40 h-10 border rounded-lg p-2 bg-gray-200">Assigner tâche</button>
-            </div>
+            <h1 class="text-3xl font-bold mb-8" style="color:#24508c;">Liste des Tâches</h1>
         </div>
 
         <!-- Affichage des tâches selon le projet -->
-        <table class="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
-            <thead class="bg-gray-800 text-white">
-                <tr>
-                    <th class="py-2 px-4 text-left">ID</th>
-                    <th class="py-2 px-4 text-left">Titre</th>
-                    <th class="py-2 px-4 text-left">Description</th>
-                    <th class="py-2 px-4 text-left">Statut</th>
-                    <th class="py-2 px-4 text-left">Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($taches as $tache): ?>
-                    <tr class="border-b">
-                        <td class="py-2 px-4"><?php echo $tache['id_tache']; ?></td>
-                        <td class="py-2 px-4"><?php echo $tache['titre_tache']; ?></td>
-                        <td class="py-2 px-4"><?php echo $tache['desc_tache']; ?></td>
-                        <td class="py-2 px-4"><?php echo $tache['statut_tache']; ?></td>
-                        <td class="py-2 px-4">
-                            <a href="modifier_tache.php?id=<?php echo $tache['id_tache']; ?>&id_projet=<?php echo $id_projet; ?>" class="text-blue-600 hover:text-blue-800">Modifier</a> | 
-                            <a href="../controllers/supprimer_tache.php?id=<?php echo urlencode($tache['id_tache']); ?>&id_projet=<?php echo urlencode($id_projet); ?>" class="text-red-600 hover:text-red-800" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette tâche ?')">Supprimer</a>
-                        </td>
-                    </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
+        <div class="grid grid-cols-3 gap-5">
+        <?php foreach ($taches as $index => $tache): ?>
+           <?php $couleur = $couleurs[$index % count($couleurs)]; // Assigner une couleur différente ?>
+                <div class="sticky-note mb-8"style="background-color: <?php echo $couleur; ?>;">
+                <img src="../images/msak.png" alt="Logo" class="h-12 w-24" style="position:relative;bottom:40px;left:50px"> <!-- Ajout de la classe "logo" pour appliquer la transformation -->
+                  <h1 class="font-bold text-xl" style="position:relative;bottom:30px; color:#f2f8ff;"><?php echo $tache['titre_tache']; ?></h1>
+                  <p><?php echo $tache['desc_tache']; ?></p>
+                  <p><?php echo $tache['statut_tache']; ?></p>
+                  <div class="pt-16 px-4">
+                    <a style="color: rgb(185, 212, 243) ;background-color:#24508c;"  class="text-white py-2 px-3 rounded hover:bg-red-600" href="modifier_tache.php?id=<?php echo $tache['id_tache']; ?>&id_projet=<?php echo $id_projet; ?>" ><i class="fa-solid fa-pen-to-square"></i></a> | 
+                    <a style="color: rgb(185, 212, 243) ;background-color:#24508c;"  class="text-white py-2 px-3 rounded hover:bg-red-600" href="../controllers/supprimer_tache.php?id=<?php echo urlencode($tache['id_tache']); ?>&id_projet=<?php echo urlencode($id_projet); ?>" class="text-red-600 hover:text-red-800" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette tâche ?')"><i class="fa-solid fa-trash"></i></a>
+                  </div>
+                </div>
+            <?php endforeach; ?>
+        </div>
+           
 
         <div id="modalOverlay"></div>
 
@@ -242,6 +290,14 @@ $projets = $projetController->afficherProjets();
                 closeModal('modalUserTache', 'modalOverlay');
             });
 
+            function toggleMenu() {
+               const menu = document.getElementById("menu");
+              if (menu.style.display === "none") {
+                  menu.style.display = "block"; // Si le menu est visible, on le cache
+              } else {
+                 menu.style.display = "none"; // Sinon on l'affiche
+              }
+            };
         </script>
     </div>
 </div>
