@@ -116,6 +116,7 @@ $membres = $projetController->getMembres();
  
                
 <div class="container p-6">
+    
     <div class="flex justify-between items-center">
         <h2 class="text-3xl font-bold mb-4" style="color:#24508c">Liste des projets</h2>
     </div>
@@ -156,71 +157,75 @@ $membres = $projetController->getMembres();
 
     <!-- Modal pour ajouter un projet -->
     <div class="hidden fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50" id="modal">
-    <form method="POST" class="bg-white p-4 rounded-lg shadow-xl w-full max-w-lg " style="background-color:#f2f8ff; border:5px solid #24508c">
-        <div class="p-4 text-center text-white pt-2" style="height:70px; width:70px;position:relative; left:417px;bottom:21px; border-bottom-left-radius:90px; border-top-right-radius:9px;font-size:25px; background-color:#24508c;">
-            <button><i class="fas fa-times"></i></button>
-        </div>
-       
-        <!-- Champ URL image -->
-        <div>
-            <label for="photo_Projet" class="block text-gray-700 font-semibold">URL image:</label>
-            <input type="url" name="photo_Projet" required class="w-full px-4 py-1 border border-gray-300 rounded-lg mt-2 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all">
-        </div>
-
-        <!-- Champ Nom du projet -->
-        <div>
-            <label for="nom_projet" class="block text-gray-700 font-semibold">Nom du projet:</label>
-            <input type="text" name="nom_projet" required class="w-full px-4 py-2 border border-gray-300 rounded-lg mt-2 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all">
-        </div>
-
-        <!-- Champ Description -->
-        <div>
-            <label for="desc_projet" class="block text-gray-700 font-semibold">Description:</label>
-            <textarea name="desc_projet" class="w-full px-4 py-2 border border-gray-300 rounded-lg mt-2 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"></textarea>
-        </div>
-
-        <!-- Champ Date de début et de fin -->
-        <div class="mb-2 flex space-x-4">
-            <div class="w-1/2">
-                <label for="date_debut" class="block text-gray-700 font-semibold">Date de début:</label>
-                <input type="date" name="date_debut" class="w-full px-4 py-2 border border-gray-300 rounded-lg mt-2 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all">
+        <form method="POST" class="bg-white p-4 rounded-lg shadow-xl w-full max-w-lg " style="background-color:#f2f8ff; border:5px solid #24508c">
+            <div class="p-4 text-center text-white pt-2" style="height:70px; width:70px;position:relative; left:417px;bottom:21px; border-bottom-left-radius:90px; border-top-right-radius:9px;font-size:25px; background-color:#24508c;">
+                <button><i class="fas fa-times"></i></button>
             </div>
-            <div class="w-1/2">
-                <label for="date_fin" class="block text-gray-700 font-semibold">Date de fin:</label>
-                <input type="date" name="date_fin" class="w-full px-4 py-2 border border-gray-300 rounded-lg mt-2 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all">
+           
+            <!-- Champ URL image -->
+            <div>
+                <label for="photo_Projet" class="block text-gray-700 font-semibold">URL image:</label>
+                <input type="url" name="photo_Projet" required class="w-full px-4 py-1 border border-gray-300 rounded-lg mt-2 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all">
             </div>
-        </div>
-
-        <!-- Champ Visibilité -->
-        <div>
-            <label for="visibilite_projet" class="block text-gray-700 font-semibold">Visibilité:</label>
-            <select name="visibilite_projet" class="w-full px-4 py-2 border border-gray-300 rounded-lg mt-2 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all">
-                <option value="public">Public</option>
-                <option value="privé">Privé</option>
-            </select>
-        </div>
-
-        <!-- Bouton Ajouter le projet -->
-        <button type="submit" name="ajouter" class="w-full text-white mt-4 py-2 px-4 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all" style="background-color:#24508c">Ajouter le projet</button>
-    </form>
-</div>
+    
+            <!-- Champ Nom du projet -->
+            <div>
+                <label for="nom_projet" class="block text-gray-700 font-semibold">Nom du projet:</label>
+                <input type="text" name="nom_projet" required class="w-full px-4 py-2 border border-gray-300 rounded-lg mt-2 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all">
+            </div>
+    
+            <!-- Champ Description -->
+            <div>
+                <label for="desc_projet" class="block text-gray-700 font-semibold">Description:</label>
+                <textarea name="desc_projet" class="w-full px-4 py-2 border border-gray-300 rounded-lg mt-2 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"></textarea>
+            </div>
+    
+            <!-- Champ Date de début et de fin -->
+            <div class="mb-2 flex space-x-4">
+                <div class="w-1/2">
+                    <label for="date_debut" class="block text-gray-700 font-semibold">Date de début:</label>
+                    <input type="date" name="date_debut" class="w-full px-4 py-2 border border-gray-300 rounded-lg mt-2 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all">
+                </div>
+                <div class="w-1/2">
+                    <label for="date_fin" class="block text-gray-700 font-semibold">Date de fin:</label>
+                    <input type="date" name="date_fin" class="w-full px-4 py-2 border border-gray-300 rounded-lg mt-2 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all">
+                </div>
+            </div>
+    
+            <!-- Champ Visibilité -->
+            <div>
+                <label for="visibilite_projet" class="block text-gray-700 font-semibold">Visibilité:</label>
+                <select name="visibilite_projet" class="w-full px-4 py-2 border border-gray-300 rounded-lg mt-2 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all">
+                    <option value="public">Public</option>
+                    <option value="privé">Privé</option>
+                </select>
+            </div>
+    
+            <!-- Bouton Ajouter le projet -->
+            <button type="submit" name="ajouter" class="w-full text-white mt-4 py-2 px-4 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all" style="background-color:#24508c">Ajouter le projet</button>
+        </form>
+    </div>
 
     
     <!-- Modal pour assigner un projet -->
     <div class="hidden w-90 h-200 bg-blue-200" id="modal-assigner">
-        <form method="POST" action="../controllers/assigner_projet.php" class="bg-white p-6">
+        <form method="POST" action="../controllers/assigner_projet.php"  style="background-color:#f2f8ff; border:5px solid #24508c" class="p-6 rounded-lg">
+            <div class="p-4 text-center text-white pt-2" style="height:70px; width:70px;position:relative; left:276px;bottom:26px; border-bottom-left-radius:90px; border-top-right-radius:9px;font-size:25px; background-color:#24508c;">
+              <button><i class="fas fa-times"></i></button>
+            </div>
             <div class="mb-4">
                 <label for="projet_id" class="block text-gray-700">Sélectionner le projet:</label>
-                <select name="projet_id" class="w-80 px-4 py-2 border border-gray-300 rounded mt-1">
+                <select name="projet_id" class="w-80 px-4 py-2 border border-gray-300 rounded mt-1 focus:ring-2 focus:ring-blue-500">
                     <?php foreach ($projets as $projet): ?>
                         <option value="<?php echo $projet['id_projet']; ?>"><?php echo $projet['nom_projet']; ?></option>
                     <?php endforeach; ?>
                 </select>
             </div>
-
+    
             <div class="mb-4">
                 <label for="membres" class="block text-gray-700">Sélectionner les membres à assigner:</label>
-                <div class="space-y-2">
+                <!-- Ajout de la classe scrollable -->
+                <div class="space-y-2 max-h-40 overflow-y-auto">
                     <?php foreach ($membres as $membre): ?>
                         <div>
                             <input type="checkbox" name="membres[]" value="<?php echo $membre['id_user']; ?>" id="membre-<?php echo $membre['id_user']; ?>">
@@ -229,7 +234,7 @@ $membres = $projetController->getMembres();
                     <?php endforeach; ?>
                 </div>
             </div>
-
+    
             <button type="submit" name="assigner" class="w-80 bg-sky-700 text-white py-2 px-4 rounded hover:bg-blue-600">Assigner le projet</button>
         </form>
     </div>
