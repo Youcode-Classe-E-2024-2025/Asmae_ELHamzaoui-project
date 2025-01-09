@@ -155,43 +155,56 @@ $membres = $projetController->getMembres();
     </div>
 
     <!-- Modal pour ajouter un projet -->
-    <div class="hidden w-90 h-200 bg-blue-200" id="modal">
-        <form method="POST" class="bg-white p-6 ">
-            <div class="mb-4">
-                <label for="nom_projet" class="block text-gray-700">URL image:</label>
-                <input type="url" name="photo_Projet" required class="w-80 px-4 py-2 border border-gray-300 rounded mt-1">
-            </div>
-            <div class="mb-4">
-                <label for="nom_projet" class="block text-gray-700">Nom du projet:</label>
-                <input type="text" name="nom_projet" required class="w-80 px-4 py-2 border border-gray-300 rounded mt-1">
-            </div>
+    <div class="hidden fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50" id="modal">
+    <form method="POST" class="bg-white p-4 rounded-lg shadow-xl w-full max-w-lg " style="background-color:#f2f8ff; border:5px solid #24508c">
+        <div class="p-4 text-center text-white pt-2" style="height:70px; width:70px;position:relative; left:417px;bottom:21px; border-bottom-left-radius:90px; border-top-right-radius:9px;font-size:25px; background-color:#24508c;">
+            <button><i class="fas fa-times"></i></button>
+        </div>
+       
+        <!-- Champ URL image -->
+        <div>
+            <label for="photo_Projet" class="block text-gray-700 font-semibold">URL image:</label>
+            <input type="url" name="photo_Projet" required class="w-full px-4 py-1 border border-gray-300 rounded-lg mt-2 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all">
+        </div>
 
-            <div class="mb-4">
-                <label for="desc_projet" class="block text-gray-700">Description:</label>
-                <textarea name="desc_projet" class="w-80 px-4 py-2 border border-gray-300 rounded mt-1"></textarea>
-            </div>
+        <!-- Champ Nom du projet -->
+        <div>
+            <label for="nom_projet" class="block text-gray-700 font-semibold">Nom du projet:</label>
+            <input type="text" name="nom_projet" required class="w-full px-4 py-2 border border-gray-300 rounded-lg mt-2 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all">
+        </div>
 
-            <div class="mb-4">
-                <label for="date_debut" class="block text-gray-700">Date de début:</label>
-                <input type="date" name="date_debut" class="w-80 px-4 py-2 border border-gray-300 rounded mt-1">
-            </div>
+        <!-- Champ Description -->
+        <div>
+            <label for="desc_projet" class="block text-gray-700 font-semibold">Description:</label>
+            <textarea name="desc_projet" class="w-full px-4 py-2 border border-gray-300 rounded-lg mt-2 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"></textarea>
+        </div>
 
-            <div class="mb-4">
-                <label for="date_fin" class="block text-gray-700">Date de fin:</label>
-                <input type="date" name="date_fin" class="w-80 px-4 py-2 border border-gray-300 rounded mt-1">
+        <!-- Champ Date de début et de fin -->
+        <div class="mb-2 flex space-x-4">
+            <div class="w-1/2">
+                <label for="date_debut" class="block text-gray-700 font-semibold">Date de début:</label>
+                <input type="date" name="date_debut" class="w-full px-4 py-2 border border-gray-300 rounded-lg mt-2 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all">
             </div>
-
-            <div class="mb-4">
-                <label for="visibilite_projet" class="block text-gray-700">Visibilité:</label>
-                <select name="visibilite_projet" class="w-80 px-4 py-2 border border-gray-300 rounded mt-1">
-                    <option value="public">Public</option>
-                    <option value="privé">Privé</option>
-                </select>
+            <div class="w-1/2">
+                <label for="date_fin" class="block text-gray-700 font-semibold">Date de fin:</label>
+                <input type="date" name="date_fin" class="w-full px-4 py-2 border border-gray-300 rounded-lg mt-2 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all">
             </div>
+        </div>
 
-            <button type="submit" name="ajouter" class="w-80 bg-sky-700 text-white py-2 px-4 rounded hover:bg-blue-600">Ajouter le projet</button>
-        </form>
-    </div>
+        <!-- Champ Visibilité -->
+        <div>
+            <label for="visibilite_projet" class="block text-gray-700 font-semibold">Visibilité:</label>
+            <select name="visibilite_projet" class="w-full px-4 py-2 border border-gray-300 rounded-lg mt-2 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all">
+                <option value="public">Public</option>
+                <option value="privé">Privé</option>
+            </select>
+        </div>
+
+        <!-- Bouton Ajouter le projet -->
+        <button type="submit" name="ajouter" class="w-full text-white mt-4 py-2 px-4 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all" style="background-color:#24508c">Ajouter le projet</button>
+    </form>
+</div>
+
     
     <!-- Modal pour assigner un projet -->
     <div class="hidden w-90 h-200 bg-blue-200" id="modal-assigner">
