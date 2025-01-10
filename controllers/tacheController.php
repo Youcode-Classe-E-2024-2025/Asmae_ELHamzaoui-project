@@ -33,6 +33,10 @@ class TacheController {
             echo "Erreur lors de la suppression de la tâche.";
         }
     }
+ // Afficher toutes les tâches
+ public function afficherTache() {
+    return $this->tacheModel->afficherTache();
+}
 
     // Afficher toutes les tâches
     public function afficherTaches($id_projet) {

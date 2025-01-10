@@ -48,7 +48,7 @@ $users=afficherUsers();
     <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
       <div class="px-4 py-5 sm:px-6">
         <h3 class="text-lg leading-6 font-medium text-gray-900">Tableau des données</h3>
-        <p class="mt-1 max-w-2xl text-sm text-gray-500">Vue détaillée des performances actuelles.</p>
+        <p class="mt-1 max-w-2xl text-sm text-gray-500">Gestion des utilisateurs et des roles</p>
       </div>
       
       <div class="overflow-x-auto">
@@ -80,6 +80,11 @@ $users=afficherUsers();
                 <input type="hidden" name="user_id" value="<?php echo $user['id_user']; ?>" />
                 <button type="submit" name="supprimer" style="background-color:rgb(185, 212, 243);"         onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ? Cette action est irréversible.')"
                 class="text-white py-2 px-3 rounded hover:bg-red-600"><i class="fa-solid fa-trash" style="color: #ff0000;"></i></button>
+               </form>
+               <form method="POST" action="../controllers/changer_role.php" class="inline ml-2">
+                <input type="hidden" name="user_id" value="<?php echo $user['id_user']; ?>" />
+                <button type="submit" name="changer" style="background-color:rgb(185, 212, 243);"         onclick="return confirm('Êtes-vous sûr de vouloir changer le role de cet utilisateur ?')"
+                class="text-white py-2 px-3 rounded hover:bg-red-600">Changer role</button>
                </form>
               </td>
             </tr>

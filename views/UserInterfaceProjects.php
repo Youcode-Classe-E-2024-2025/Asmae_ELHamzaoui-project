@@ -2,7 +2,6 @@
 session_start();
 
 $userId = $_SESSION['user']['id_user'];
-var_dump($userId);
 // Obtenir les projets assignés à l'utilisateur
 include_once '../controllers/projetController.php';
 $projetController = new ProjetController($pdo);
@@ -16,23 +15,24 @@ $projetsAssignes = $projetController->getProjetsAssignes($userId);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Projets Assignés</title>
+    <title>Gestion des projets</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background-color:#f2f8ff;
+        }
+    </style>
 </head>
-
-<body class="bg-gray-50">
-<header class="mx-8">
+<body>
+<header class="mx-4">
     <div class="container flex justify-between items-center">
         <!-- Logo avec taille augmentée -->
-        <img src="../images/logo.png" alt="Logo" class="h-12 w-20 logo my-5 bg-gray-600 "> <!-- Ajout de la classe "logo" pour appliquer la transformation -->
-        <div class="flex space-x-8 items-center"> <!-- Espacement égal entre les éléments -->
-            <!-- Icône pour l'inscription -->
-            <a href="deconnexion.php" class="text-2xl hover:text-gray-600">
-                <i class="fa-solid fa-right-from-bracket"></i>
-            </a>
+        <img src="../images/logo.png" alt="Logo" class="h-24 w-32"> <!-- Ajout de la classe "logo" pour appliquer la transformation -->
+        <div class="space-x-6 items-center mr-8"> <!-- Espacement égal entre les éléments --> 
+              <a href="deconnexion.php"  class="text-center hover:text-gray-400" style="color:#24508c">log out</a>
         </div>
-    </div>
+    </div>               
 </header>
 <div class="container p-6">
     <div class="flex justify-between">
