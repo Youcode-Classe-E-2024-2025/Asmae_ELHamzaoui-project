@@ -1,3 +1,19 @@
+<?php
+require_once '../config/db.php'; 
+
+  function afficherUsers() {
+    global $pdo;
+    $query = "SELECT * FROM Utilisateur";
+    $stmt = $pdo->prepare($query);
+    $stmt->execute();
+    $stmt->fetch(PDO::FETCH_ASSOC);
+    return $stmt;
+}
+
+$users=afficherUsers();
+
+?>
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -7,71 +23,9 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        /* Le modal sera placé au-dessus du contenu avec un fond semi-transparent */
-        #modal, #modal-assigner {
-            display: none; /* Initialement caché */
-            position: fixed; /* Pour qu'il soit fixé en haut de la page */
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: rgba(0, 0, 0, 0.5); /* Fond semi-transparent */
-            z-index: 50; /* Placer le modal au-dessus du contenu */
-            justify-content: center;
-            align-items: center;
-            overflow-y: auto;
-        }
-
-        /* Contenu du modal */
-        .modal-content {
-            margin: auto;
-            background-color: white;
-            padding: 20px;
-            border-radius: 10px;
-            width: 80%;
-            max-width: 600px;
-        }
         body {
             background-color:#f2f8ff;
         }
-       
-         /* Icône du gear */
-    .gear-icon {
-      font-size: 30px;
-      cursor: pointer;
-      position: relative; 
-
-    }
-
-    /* Style du menu */
-    .menu {
-      display: none; /* Initialement caché */
-      position: absolute;
-      top: 60px; /* Place le menu juste en dessous de l'icône */
-      right:65px;
-      background-color: #f9f9f9;
-      border: 1px solid #ccc;
-      padding: 5px;
-      width:150px;
-      border-radius: 5px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      z-index: 10; /* Assure que le menu est au-dessus des autres éléments */
-    }
-
-    /* Style des éléments de menu */
-    .menu a {
-      display: block;
-      background-color:#f2f8ff;
-      margin-top:2px;
-      color: #333;
-      text-decoration: none;
-    }
-
-    .menu a:hover {
-        background-color:rgb(185, 212, 243);
-        cursor: pointer;
-    }
-
     </style>
 </head>
 
@@ -82,18 +36,58 @@
         <!-- Logo avec taille augmentée -->
         <img src="../images/logo.png" alt="Logo" class="h-24 w-32"> <!-- Ajout de la classe "logo" pour appliquer la transformation -->
         <div class="space-x-6 items-center mr-8"> <!-- Espacement égal entre les éléments --> 
-            <i class="fa-duotone fa-solid fa-gear gear-icon"style="color:#24508c;" onclick="toggleMenu()">
-            </i> 
-            <div class="menu" id="menu">
-              <a onclick="ajouterProjet()" class="text-center" style="color:#24508c">ajouter projet</a>
-              <a onclick="assignerProjet()" class="text-center" style="color:#24508c">assigner projet</a>
-              <a href="deconnexion.php"  class="text-center hover:text-gray-400" style="color:#24508c">log out</a>
-            </div>
+              <a href="deconnexion.php"  class="text-center hover:text-gray-400" style="color:#24508c">retour aux projets</a>
         </div>
     </div>               
 </header>
 
 
+<body>
+
+  <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+    <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
+      <div class="px-4 py-5 sm:px-6">
+        <h3 class="text-lg leading-6 font-medium text-gray-900">Tableau des données</h3>
+        <p class="mt-1 max-w-2xl text-sm text-gray-500">Vue détaillée des performances actuelles.</p>
+      </div>
+      
+      <div class="overflow-x-auto">
+        <table class="min-w-full table-auto">
+          <thead class="bg-gray-50">
+            <tr>
+              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Nom utilisateur
+              </th>
+              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Email utilisateur
+              </th>
+              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                role utilisateur
+              </th>
+              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Action
+              </th>
+            </tr>
+          </thead>
+          <tbody class="bg-white divide-y divide-gray-200">
+           <?php foreach($users as $user): ?>
+            <tr>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"><?php echo $user['nom_user']; ?></td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-green-500"><?php echo $user['email_user']; ?></td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"><?php echo $user['role_user']; ?></td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-indigo-600 hover:text-indigo-900 cursor-pointer">
+              <form method="POST" action="../controllers/supprimer_user.php" class="inline ml-2">
+                <input type="hidden" name="user_id" value="<?php echo $user['id_user']; ?>" />
+                <button type="submit" name="supprimer" style="background-color:rgb(185, 212, 243);"  class="text-white py-2 px-3 rounded hover:bg-red-600"><i class="fa-solid fa-trash" style="color: #ff0000;"></i></button>
+               </form>
+              </td>
+            </tr>
+            <?php endforeach; ?>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
 
 
 
