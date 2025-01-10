@@ -154,6 +154,14 @@ class Tache {
         return $stmt->execute(); // Exécute la suppression dans tache
     }
     
+     // Afficher toutes les tâches
+     public function afficherTache(){
+        $sql = "SELECT * FROM Tache ";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
 
     // Afficher toutes les tâches
     public function afficherTaches($id_projet){

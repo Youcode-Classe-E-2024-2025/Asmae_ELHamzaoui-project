@@ -121,6 +121,7 @@ $membres = $projetController->getMembres();
         <h2 class="text-3xl font-bold mb-4" style="color:#24508c">Liste des projets</h2>
         <div class="flex justify-center gap-5 my-4">
         <a href="users.php" style="color: rgb(185, 212, 243) ;background-color:#24508c;"  class="text-white py-2 px-3 rounded hover:bg-red-600">Gestion</i></a>
+        <a href="statisticsChef.php" style="color: rgb(185, 212, 243) ;background-color:#24508c;"  class="text-white py-2 px-3 rounded hover:bg-red-600">Statistiques</i></a>
         </div>
     </div>
  
