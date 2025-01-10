@@ -36,7 +36,7 @@ $users=afficherUsers();
         <!-- Logo avec taille augmentée -->
         <img src="../images/logo.png" alt="Logo" class="h-24 w-32"> <!-- Ajout de la classe "logo" pour appliquer la transformation -->
         <div class="space-x-6 items-center mr-8"> <!-- Espacement égal entre les éléments --> 
-              <a href="deconnexion.php"  class="text-center hover:text-gray-400" style="color:#24508c">retour aux projets</a>
+              <a href="projets_view.php"  class="text-center hover:text-gray-400" style="color:#24508c">retour aux projets</a>
         </div>
     </div>               
 </header>
@@ -78,7 +78,8 @@ $users=afficherUsers();
               <td class="px-6 py-4 whitespace-nowrap text-sm text-indigo-600 hover:text-indigo-900 cursor-pointer">
               <form method="POST" action="../controllers/supprimer_user.php" class="inline ml-2">
                 <input type="hidden" name="user_id" value="<?php echo $user['id_user']; ?>" />
-                <button type="submit" name="supprimer" style="background-color:rgb(185, 212, 243);"  class="text-white py-2 px-3 rounded hover:bg-red-600"><i class="fa-solid fa-trash" style="color: #ff0000;"></i></button>
+                <button type="submit" name="supprimer" style="background-color:rgb(185, 212, 243);"         onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ? Cette action est irréversible.')"
+                class="text-white py-2 px-3 rounded hover:bg-red-600"><i class="fa-solid fa-trash" style="color: #ff0000;"></i></button>
                </form>
               </td>
             </tr>
