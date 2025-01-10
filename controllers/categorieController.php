@@ -18,9 +18,9 @@ class CategoryController
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $nomCategorie = htmlspecialchars($_POST['nom_categorie']);
             $descCategorie = htmlspecialchars($_POST['desc_categorie']);
-
+            $id_projet = $_GET['id_projet'];
             if ($this->categoryModel->createCategory($nomCategorie, $descCategorie)) {
-                echo "success"; // Success message for JavaScript
+                header("Location: ../views/taches_view.php?id_projet=" . $id_projet);
             } else {
                 echo "error"; // Error message for JavaScript
             }

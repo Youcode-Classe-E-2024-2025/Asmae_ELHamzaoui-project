@@ -15,9 +15,10 @@ class TagController
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $nomTag = htmlspecialchars($_POST['nom_tag']); // Sanitize input
-
+              
+            $id_projet = $_GET['id_projet'];
             if ($this->tagModel->createTag($nomTag)) {
-                echo "success"; // Success message for JavaScript
+                header("Location: ../views/taches_view.php?id_projet=" . $id_projet);
             } else {
                 echo "error"; // Error message for JavaScript
             }

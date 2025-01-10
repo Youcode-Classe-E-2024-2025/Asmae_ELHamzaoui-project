@@ -290,7 +290,7 @@ $couleurs = ["#89cdff", "#426ba8" , "#68a0ed", "#a36357" , "#bf9289", "#edbea4"]
 
          <!-- Modal pour ajouter des tag-->
          <div id="modalTag" style="width:400px; background-color:#f2f8ff; border:5px solid #24508c">
-            <form method="POST" action="../controllers/assigner_tache_user.php">
+            <form method="POST" action="../controllers/TagController.php?id_projet=<?php echo $id_projet; ?>">
                 <div class="p-4 text-center text-white pt-2" style="height:70px; width:70px;position:relative; left:305px;bottom:21px; border-bottom-left-radius:90px; border-top-right-radius:9px;font-size:25px; background-color:#24508c;">
                      <a><i class="fas fa-times"></i></a>
                 </div>
@@ -309,7 +309,7 @@ $couleurs = ["#89cdff", "#426ba8" , "#68a0ed", "#a36357" , "#bf9289", "#edbea4"]
 
         <!-- Modal pour ajouter des catégories-->
         <div id="modalCategorie" style="width:400px; background-color:#f2f8ff; border:5px solid #24508c">
-            <form method="POST" action="../controllers/assigner_tache_user.php">
+            <form method="POST" action="../controllers/categorieController.php?id_projet=<?php echo $id_projet; ?>">
                 <div class="p-4 text-center text-white pt-2" style="height:70px; width:70px;position:relative; left:305px;bottom:21px; border-bottom-left-radius:90px; border-top-right-radius:9px;font-size:25px; background-color:#24508c;">
                      <a><i class="fas fa-times"></i></a>
                 </div>
