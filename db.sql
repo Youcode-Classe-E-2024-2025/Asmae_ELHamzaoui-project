@@ -119,3 +119,12 @@ MODIFY statut_tache ENUM('en_cours', 'terminee', 'en_attente') NOT NULL DEFAULT 
 
 ALTER TABLE Projet
 ADD COLUMN image_projet VARCHAR(255) NULL;
+
+
+CREATE TABLE markdown_data (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    id_projet INT,
+    content TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (id_projet) REFERENCES Projet(id_projet)
+);

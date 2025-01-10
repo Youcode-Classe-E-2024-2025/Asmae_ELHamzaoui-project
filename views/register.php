@@ -92,7 +92,7 @@
         document.getElementById('confirmPasswordError').innerHTML = '';
     
         // Validation du nom d'utilisateur (5 caractères minimum et contient à la fois des lettres et des chiffres)
-        let usernameRegex = /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d]{5,}$/;
+        let usernameRegex = /^[A-Za-z]{7,}$/;
         if (username === "") {
             document.getElementById('usernameError').innerHTML = "Le nom d'utilisateur ne peut pas être vide.";
             valid = false;
