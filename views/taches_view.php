@@ -20,6 +20,25 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['ajouter'])) {
     $membre_assigne_id = 0;
     $controller->ajouterTache($id_projet,$titre, $desc, $statut, $date_limite, $priorite, $membre_assigne_id);
 }
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ajouterTag'])) {
+    $nomTag = htmlspecialchars($_POST['nom_tag']); // Sanitize input
+    if($TagController->createTag($nomTag)){
+        header("Location: ../views/taches_view.php?id_projet=" . $id_projet);
+    } else {
+        echo "error"; // Error message for JavaScript
+    }
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ajouterCategorie'])) {
+           $nomCategorie = htmlspecialchars($_POST['nom_categorie']);
+            $descCategorie = htmlspecialchars($_POST['desc_categorie']);
+            if ($CategorieController->createCategory($nomCategorie, $descCategorie)) {
+                header("Location: ../views/taches_view.php?id_projet=" . $id_projet);
+            } else {
+                echo "error"; // Error message for JavaScript
+            }
+}
 // Afficher toutes les tags
 $tags = $TagController->afficherTag();
 
@@ -68,7 +87,7 @@ $couleurs = ["#89cdff", "#426ba8" , "#68a0ed", "#a36357" , "#bf9289", "#edbea4"]
             border-radius: 8px;
             max-height: 90vh; /* Limiter la hauteur du modal */
         }
-        #modalTagbutton,#modalCategoriebutton{
+        #modalTagbutton,#modalCategoriebutton,#tagcategorietache{
             transform: translate(-50%, -50%);
             background-color: white;
             padding: 8px;
@@ -189,6 +208,7 @@ $couleurs = ["#89cdff", "#426ba8" , "#68a0ed", "#a36357" , "#bf9289", "#edbea4"]
             <div>
             <a id="modalTagbutton" style="color: rgb(185, 212, 243) ;background-color:#24508c;" class="text-white py-2 px-3 rounded hover:bg-red-600 " >Ajouter des tags</a>
             <a id="modalCategoriebutton" style="color: rgb(185, 212, 243) ;background-color:#24508c;" class="text-white py-2 px-3 rounded hover:bg-red-600 " >Ajouter catégories</a>
+            <a id="tagcategorietache" style="color: rgb(185, 212, 243) ;background-color:#24508c;"  class="text-white py-2 px-3 rounded hover:bg-red-600">améliorer une tache</i></a>
             </div>
         </div>
 
@@ -204,7 +224,6 @@ $couleurs = ["#89cdff", "#426ba8" , "#68a0ed", "#a36357" , "#bf9289", "#edbea4"]
                   <div class="pt-16 px-2 flex justify-center gap-4">
                     <a style="color: rgb(185, 212, 243) ;background-color:#24508c;"  class="text-white py-2 px-3 rounded hover:bg-red-600" href="modifier_tache.php?id=<?php echo $tache['id_tache']; ?>&id_projet=<?php echo $id_projet; ?>" ><i class="fa-solid fa-pen-to-square"></i></a>
                     <a style="color: rgb(185, 212, 243) ;background-color:#24508c;"  class="text-white py-2 px-3 rounded hover:bg-red-600" href="../controllers/supprimer_tache.php?id=<?php echo urlencode($tache['id_tache']); ?>&id_projet=<?php echo urlencode($id_projet); ?>" class="text-red-600 hover:text-red-800" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette tâche ?')"><i class="fa-solid fa-trash"></i></a>
-                    <a class="tagcategorietache" style="color: rgb(185, 212, 243) ;background-color:#24508c;"  class="text-white py-2 px-3 rounded hover:bg-red-600"><i class="fa-solid fa-pen-to-square"></i></a>
                   </div>
                 </div>
             <?php endforeach; ?>
@@ -301,7 +320,7 @@ $couleurs = ["#89cdff", "#426ba8" , "#68a0ed", "#a36357" , "#bf9289", "#edbea4"]
 
          <!-- Modal pour ajouter des tag-->
          <div id="modalTag" style="width:400px; background-color:#f2f8ff; border:5px solid #24508c">
-            <form method="POST" action="../controllers/TagController.php?id_projet=<?php echo $id_projet; ?>">
+            <form method="POST" action="">
                 <div class="p-4 text-center text-white pt-2" style="height:70px; width:70px;position:relative; left:305px;bottom:21px; border-bottom-left-radius:90px; border-top-right-radius:9px;font-size:25px; background-color:#24508c;">
                      <a><i class="fas fa-times"></i></a>
                 </div>
@@ -312,7 +331,7 @@ $couleurs = ["#89cdff", "#426ba8" , "#68a0ed", "#a36357" , "#bf9289", "#edbea4"]
                  <label for="">nom tag</label><br>
                  <input type="text" name="nom_tag" class="w-full px-4 py-2 border border-gray-300 rounded mt-1 focus:ring-2 focus:ring-blue-500">
                 </div><br>
-                <button type="submit" class="w-full h-10 border rounded-lg p-2 text-white font-semibold" style="background-color:#24508c;">Ajouter tag</button>
+                <button type="submit" name="ajouterTag" class="w-full h-10 border rounded-lg p-2 text-white font-semibold" style="background-color:#24508c;">Ajouter tag</button>
                 <!-- <button type="button" id="closeUserTacheModal" class="w-40 h-10 border rounded-lg p-2 bg-red-200">Annuler</button> -->
             </form>
         </div>
@@ -339,7 +358,7 @@ $couleurs = ["#89cdff", "#426ba8" , "#68a0ed", "#a36357" , "#bf9289", "#edbea4"]
                 </div>
                 <br><br>
         
-                <button type="submit" class="w-full h-10 border rounded-lg p-2 text-white font-semibold" style="background-color:#24508c;">Ajouter categorie</button>
+                <button type="submit" name="ajouterCategorie" name="ajouterTag" class="w-full h-10 border rounded-lg p-2 text-white font-semibold" style="background-color:#24508c;">Ajouter categorie</button>
                 <!-- <button type="button" id="closeUserTacheModal" class="w-40 h-10 border rounded-lg p-2 bg-red-200">Annuler</button> -->
             </form>
         </div>
@@ -347,70 +366,46 @@ $couleurs = ["#89cdff", "#426ba8" , "#68a0ed", "#a36357" , "#bf9289", "#edbea4"]
 
         <!-- Modal pour ajouter des tags et des catégories à une tache-->
         <div id="modalTagcategorie" style="width:400px; background-color:#f2f8ff; border:5px solid #24508c">
-            <form method="POST" action="../controllers/TagController.php?id_projet=<?php echo $id_projet; ?>">
+            <form method="POST" action="../controllers/ajouter_tache_TagCategorie.php">
                 <div class="p-4 text-center text-white pt-2" style="height:70px; width:70px;position:relative; left:305px;bottom:21px; border-bottom-left-radius:90px; border-top-right-radius:9px;font-size:25px; background-color:#24508c;">
                      <a><i class="fas fa-times"></i></a>
                 </div>
                 <label for="taches" class="font-semibold">Ajouter des tags et des catégories à votre taches </label>
-                <br><br>
+                <label for="taches">Sélectionner des tâches :</label>
+                <!-- Zone des cases à cocher avec défilement -->
+                <select name="id_tache" id="user_id"  class="w-full px-4 py-2 border border-gray-300 rounded mt-1 focus:ring-2 focus:ring-blue-500">
+                    <?php       
+                    foreach ($taches as $tache) {
+                        echo "<option value=\"" .  $tache['id_tache'] . "\">" . $tache['titre_tache'] . "</option>";
+                    }
+                    ?>
+                </select><br>
                 <!-- liste des catégories -->
                 <label for="">Catégorie :</label><br>
                 <div class="max-h-24  overflow-y-auto mb-2">
                     <?php       
                     foreach ($Categories as $categorie) {
-                        echo "<div><input type=\"checkbox\" name=\"taches[]\" value=\"" . $categorie['id_categorie'] . "\"> " . $categorie['nom_categorie'] . "</div>";
+                        echo "<div><input type=\"checkbox\" name=\"categories[]\" value=\"" . $categorie['id_categorie'] . "\"> " . $categorie['nom_categorie'] . "</div>";
                     }
                     ?>
                 
                 </div>
-                <br>
 
                  <!-- liste des tags -->
                  <label for="">Tags :</label><br>
                  <div class="max-h-24  overflow-y-auto mb-2">
                     <?php       
                     foreach ($tags as $tag) {
-                        echo "<div><input type=\"checkbox\" name=\"taches[]\" value=\"" . $tag['id_tag'] . "\"> " . $tag['nom_tag'] . "</div>";
+                        echo "<div><input type=\"checkbox\" name=\"tags[]\" value=\"" . $tag['id_tag'] . "\"> " . $tag['nom_tag'] . "</div>";
                     }
                     ?>
                 </div>
                 <br>
-                <button type="submit" class="w-full h-10 border rounded-lg p-2 text-white font-semibold" style="background-color:#24508c;">Ajouter tag</button>
+                <button type="submit"  class="w-full h-10 border rounded-lg p-2 text-white font-semibold" style="background-color:#24508c;">Ajouter </button>
                 <!-- <button type="button" id="closeUserTacheModal" class="w-40 h-10 border rounded-lg p-2 bg-red-200">Annuler</button> -->
             </form>
         </div>
 
-        <script>
-            // Fonction pour ouvrir un modal
-            function openModal(modalId, overlayId) {
-                document.getElementById(modalId).style.display = 'block';
-                document.getElementById(overlayId).style.display = 'block';
-            }
-        
-            // Fonction pour fermer un modal
-            function closeModal(modalId, overlayId) {
-                document.getElementById(modalId).style.display = 'none';
-                document.getElementById(overlayId).style.display = 'none';
-            }
-        
-            // Fonction pour afficher/masquer le menu
-            function toggleMenu() {
-                const menu = document.getElementById('menu');
-                menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';
-            }
-        
-            // Ouvrir les modals correspondants pour chaque tâche
-            document.querySelectorAll('.sticky-note .tagcategorietache').forEach(function(button) {
-                button.addEventListener('click', function() {
-                    openModal('modalTagcategorie', 'modalOverlay');
-                });
-            });
-        
-            // Fermer les modals lorsque l'on clique sur l'overlay
-            document.getElementById('modalOverlay').addEventListener('click', function() {
-                closeModal('modalTagcategorie', 'modalOverlay');
-            });
-        </script>
         
 
         <script>
@@ -441,12 +436,18 @@ $couleurs = ["#89cdff", "#426ba8" , "#68a0ed", "#a36357" , "#bf9289", "#edbea4"]
              document.getElementById('modalCategoriebutton').addEventListener('click', function() {
                 openModal('modalCategorie', 'modalOverlay');
             });
+
+             // Lors du clic sur le bouton "catégorie" +"tag"
+             document.getElementById('tagcategorietache').addEventListener('click', function() {
+                openModal('modalTagcategorie', 'modalOverlay');
+            });
             // Fermer le modal d'ajout lorsque l'on clique sur l'overlay
             document.getElementById('modalOverlay').addEventListener('click', function() {
                 closeModal('modalTache', 'modalOverlay');
                 closeModal('modalUserTache', 'modalOverlay');  // Ajout pour fermer le modal User
                 closeModal('modalTag', 'modalOverlay');
                 closeModal('modalCategorie', 'modalOverlay');
+                closeModal('modalTagcategorie', 'modalOverlay');
             });
             // Fermer le modal d'assignation
             document.getElementById('closeUserTacheModal').addEventListener('click', function() {
@@ -460,6 +461,10 @@ $couleurs = ["#89cdff", "#426ba8" , "#68a0ed", "#a36357" , "#bf9289", "#edbea4"]
             // Fermer le modal d'ajout d'une catégorie
             document.getElementById('modalCategoriebutton').addEventListener('click', function() {
                 closeModal('modalCategorie', 'modalOverlay');
+            });
+             // Fermer le modal d'ajout d'une catégorie
+             document.getElementById('tagcategorietache').addEventListener('click', function() {
+                closeModal('modalTagcategorie', 'modalOverlay');
             });
             function toggleMenu() {
                const menu = document.getElementById("menu");

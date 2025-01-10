@@ -11,21 +11,14 @@ class TagController
         $this->tagModel = new Tag($pdo);
     }
 
-    public function handlePostRequest()
-    {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $nomTag = htmlspecialchars($_POST['nom_tag']); // Sanitize input
-              
-            $id_projet = $_GET['id_projet'];
-            if ($this->tagModel->createTag($nomTag)) {
-                header("Location: ../views/taches_view.php?id_projet=" . $id_projet);
-            } else {
-                echo "error"; // Error message for JavaScript
-            }
-        }
+    
+        // Afficher toutes les tag
+     public function createTag($nomTag) {
+        echo'hi';
+        return $this->tagModel->createTag($nomTag);
     }
 
-     // Afficher toutes les tags
+     // Afficher toutes les tag
      public function afficherTag() {
         return $this->tagModel->afficherTag();
     }
@@ -51,6 +44,5 @@ class TagController
 }
 
 // Initialize the controller and handle the POST request
-$controller = new TagController($pdo);
-$controller->handlePostRequest();
+
 ?>

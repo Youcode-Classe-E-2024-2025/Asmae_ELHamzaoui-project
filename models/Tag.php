@@ -3,6 +3,7 @@
 class Tag
 {
     private $db;
+    private $nomTag;
 
     public function __construct($db)
     {
