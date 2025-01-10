@@ -89,7 +89,7 @@ if ($row) {
         <!-- Le contenu Markdown sera affiché ici -->
         <?php echo '<pre>' . htmlspecialchars($markdownContent) . '</pre>'; ?>
     </div>
-    <a href="edit_markdown.php?project_id=<?php echo $project_id; ?>">Retour à l'édition</a>
+    <a href="projets_view.php">Retour à l'édition</a>
 </div>
 
 <script>

@@ -43,7 +43,7 @@ $couleurs = ["#89cdff", "#426ba8" , "#68a0ed", "#a36357" , "#bf9289", "#edbea4"]
         }
 
         /* Style du modal */
-        #modalTache, #modalAssigner, #modalUserTache {
+        #modalTache, #modalAssigner, #modalUserTache,#modalTag,#modalCategorie {
             display: none; /* Le modal est caché initialement */
             position: fixed;
             top: 50%;
@@ -58,7 +58,18 @@ $couleurs = ["#89cdff", "#426ba8" , "#68a0ed", "#a36357" , "#bf9289", "#edbea4"]
             border-radius: 8px;
             max-height: 90vh; /* Limiter la hauteur du modal */
         }
-
+        #modalTagbutton,#modalCategoriebutton{
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            z-index: 9999; /* Assurez-vous que le modal apparaît au-dessus du contenu */
+            width: 20%;
+            max-width: 600px;
+            border-radius: 4px;
+            max-height: 90vh; /* Limiter la hauteur du modal */
+            cursor: pointer;  
+        }
         .modal-form input, .modal-form select, .modal-form textarea {
             width: 100%;
             padding: 10px;
@@ -124,19 +135,19 @@ $couleurs = ["#89cdff", "#426ba8" , "#68a0ed", "#a36357" , "#bf9289", "#edbea4"]
         cursor: pointer;
     }
 
-.sticky-note {
-    width: 250px; /* Largeur de la note */
-    height: 250px; /* Hauteur de la note */
-    border-radius: 10px; /* Coins arrondis */
-    box-shadow: 6px 6px 15px rgba(0, 0, 0, 0.54); /* Ombre légère */
-    padding: 15px; /* Espacement interne */
-    font-family: Arial, sans-serif; /* Police de caractères */
-    position: relative; /* Pour ajouter des éléments positionnés à l'intérieur */
-    align-items: center;
-    text-align: center;
-    color: #333; /* Couleur du texte */
-    
-}
+    .sticky-note {
+        width: 250px; /* Largeur de la note */
+        height: 250px; /* Hauteur de la note */
+        border-radius: 10px; /* Coins arrondis */
+        box-shadow: 6px 6px 15px rgba(0, 0, 0, 0.54); /* Ombre légère */
+        padding: 15px; /* Espacement interne */
+        font-family: Arial, sans-serif; /* Police de caractères */
+        position: relative; /* Pour ajouter des éléments positionnés à l'intérieur */
+        align-items: center;
+        text-align: center;
+        color: #333; /* Couleur du texte */
+        
+    }
 </style>
 </head>
 <body>
@@ -165,6 +176,10 @@ $couleurs = ["#89cdff", "#426ba8" , "#68a0ed", "#a36357" , "#bf9289", "#edbea4"]
     <div class="container mx-auto p-8 border border-2 rounded-lg" style="background-color:#f2f8ff;">
         <div class="flex justify-between gap-4">
             <h1 class="text-3xl font-bold mb-8" style="color:#24508c;">Liste des Tâches</h1>
+            <div>
+            <a id="modalTagbutton" style="color: rgb(185, 212, 243) ;background-color:#24508c;" class="text-white py-2 px-3 rounded hover:bg-red-600 " >Ajouter des tags</a>
+            <a id="modalCategoriebutton" style="color: rgb(185, 212, 243) ;background-color:#24508c;" class="text-white py-2 px-3 rounded hover:bg-red-600 " >Ajouter catégories</a>
+            </div>
         </div>
 
         <!-- Affichage des tâches selon le projet -->
@@ -176,8 +191,8 @@ $couleurs = ["#89cdff", "#426ba8" , "#68a0ed", "#a36357" , "#bf9289", "#edbea4"]
                   <h1 class="font-bold text-xl" style="position:relative;bottom:30px; color:#f2f8ff;"><?php echo $tache['titre_tache']; ?></h1>
                   <p><?php echo $tache['desc_tache']; ?></p>
                   <p><?php echo $tache['statut_tache']; ?></p>
-                  <div class="pt-16 px-4">
-                    <a style="color: rgb(185, 212, 243) ;background-color:#24508c;"  class="text-white py-2 px-3 rounded hover:bg-red-600" href="modifier_tache.php?id=<?php echo $tache['id_tache']; ?>&id_projet=<?php echo $id_projet; ?>" ><i class="fa-solid fa-pen-to-square"></i></a> | 
+                  <div class="pt-16 px-2 flex justify-center gap-4">
+                    <a style="color: rgb(185, 212, 243) ;background-color:#24508c;"  class="text-white py-2 px-3 rounded hover:bg-red-600" href="modifier_tache.php?id=<?php echo $tache['id_tache']; ?>&id_projet=<?php echo $id_projet; ?>" ><i class="fa-solid fa-pen-to-square"></i></a>
                     <a style="color: rgb(185, 212, 243) ;background-color:#24508c;"  class="text-white py-2 px-3 rounded hover:bg-red-600" href="../controllers/supprimer_tache.php?id=<?php echo urlencode($tache['id_tache']); ?>&id_projet=<?php echo urlencode($id_projet); ?>" class="text-red-600 hover:text-red-800" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette tâche ?')"><i class="fa-solid fa-trash"></i></a>
                   </div>
                 </div>
@@ -272,6 +287,52 @@ $couleurs = ["#89cdff", "#426ba8" , "#68a0ed", "#a36357" , "#bf9289", "#edbea4"]
         </div>
 
 
+
+         <!-- Modal pour ajouter des tag-->
+         <div id="modalTag" style="width:400px; background-color:#f2f8ff; border:5px solid #24508c">
+            <form method="POST" action="../controllers/assigner_tache_user.php">
+                <div class="p-4 text-center text-white pt-2" style="height:70px; width:70px;position:relative; left:305px;bottom:21px; border-bottom-left-radius:90px; border-top-right-radius:9px;font-size:25px; background-color:#24508c;">
+                     <a><i class="fas fa-times"></i></a>
+                </div>
+                <label for="taches" class="font-semibold">Ajouter tags </label>
+                <br><br>
+                <!-- ajout des tags -->
+                <div class="max-h-40  overflow-y-auto mb-2">
+                 <label for="">nom tag</label><br>
+                 <input type="text" name="nom_tag" class="w-full px-4 py-2 border border-gray-300 rounded mt-1 focus:ring-2 focus:ring-blue-500">
+                </div><br>
+                <button type="submit" class="w-full h-10 border rounded-lg p-2 text-white font-semibold" style="background-color:#24508c;">Ajouter tag</button>
+                <!-- <button type="button" id="closeUserTacheModal" class="w-40 h-10 border rounded-lg p-2 bg-red-200">Annuler</button> -->
+            </form>
+        </div>
+
+
+        <!-- Modal pour ajouter des catégories-->
+        <div id="modalCategorie" style="width:400px; background-color:#f2f8ff; border:5px solid #24508c">
+            <form method="POST" action="../controllers/assigner_tache_user.php">
+                <div class="p-4 text-center text-white pt-2" style="height:70px; width:70px;position:relative; left:305px;bottom:21px; border-bottom-left-radius:90px; border-top-right-radius:9px;font-size:25px; background-color:#24508c;">
+                     <a><i class="fas fa-times"></i></a>
+                </div>
+                <label class="font-semibold">Ajouter des catégories </label>
+                <br><br>
+                <!-- ajout des tags -->
+                <div class="max-h-40  overflow-y-auto mb-2">
+                 <label for="">nom catégorie</label><br>
+                 <input type="text" name="nom_categorie" class="w-full px-4 py-2 border border-gray-300 rounded mt-1 focus:ring-2 focus:ring-blue-500">
+                </div>
+        
+                <br>
+                <div class="max-h-40  overflow-y-auto mb-2">
+                 <label for="">description catégorie</label><br>
+                 <input type="text" name="desc_categorie" class="w-full px-4 py-1 border border-gray-300 rounded mt-1 focus:ring-2 focus:ring-blue-500">
+                </div>
+                <br><br>
+        
+                <button type="submit" class="w-full h-10 border rounded-lg p-2 text-white font-semibold" style="background-color:#24508c;">Ajouter categorie</button>
+                <!-- <button type="button" id="closeUserTacheModal" class="w-40 h-10 border rounded-lg p-2 bg-red-200">Annuler</button> -->
+            </form>
+        </div>
+
         <script>
             // Fonction pour ouvrir un modal
             function openModal(modalId, overlayId) {
@@ -295,17 +356,39 @@ $couleurs = ["#89cdff", "#426ba8" , "#68a0ed", "#a36357" , "#bf9289", "#edbea4"]
                 openModal('modalUserTache', 'modalOverlay');
             });
 
+             // Lors du clic sur le bouton "tag"
+             document.getElementById('modalTagbutton').addEventListener('click', function() {
+                openModal('modalTag', 'modalOverlay');
+            });
+
+            
+             // Lors du clic sur le bouton "catégorie"
+             document.getElementById('modalCategoriebutton').addEventListener('click', function() {
+                openModal('modalCategorie', 'modalOverlay');
+            });
+
             // Fermer le modal d'ajout lorsque l'on clique sur l'overlay
             document.getElementById('modalOverlay').addEventListener('click', function() {
                 closeModal('modalTache', 'modalOverlay');
                 closeModal('modalUserTache', 'modalOverlay');  // Ajout pour fermer le modal User
+                closeModal('modalTag', 'modalOverlay');
+                closeModal('modalCategorie', 'modalOverlay');
             });
 
             // Fermer le modal d'assignation
             document.getElementById('closeUserTacheModal').addEventListener('click', function() {
                 closeModal('modalUserTache', 'modalOverlay');
             });
-
+            
+            // Fermer le modal d'ajout d'une tage
+            document.getElementById('modalTagbutton').addEventListener('click', function() {
+                closeModal('modalTag', 'modalOverlay');
+            });
+ 
+            // Fermer le modal d'ajout d'une catégorie
+            document.getElementById('modalCategoriebutton').addEventListener('click', function() {
+                closeModal('modalCategorie', 'modalOverlay');
+            });
             function toggleMenu() {
                const menu = document.getElementById("menu");
               if (menu.style.display === "none") {

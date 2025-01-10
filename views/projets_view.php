@@ -144,9 +144,9 @@ $membres = $projetController->getMembres();
                             <input type="hidden" name="projet_id" value="<?php echo $project['id_projet']; ?>" />
                             <button type="submit" name="supprimer" style="color: rgb(185, 212, 243) ;background-color:#24508c;"  class="text-white py-2 px-3 rounded hover:bg-red-600"><i class="fa-solid fa-trash"></i></button>
                         </form>
-                        <form class="inline ml-2">
-                            <a href="taches_view.php?id_projet=<?php echo $project['id_projet']; ?>" style="color: rgb(185, 212, 243) ;background-color:#24508c;"  class="text-white font-bold p-2 px-4 rounded hover:bg-red-600 w-24 h-24">Planifier</a>
-                            <a href="readme.php?project_id=<?php echo $project['id_projet']; ?>">md file</a>
+                        <form class="inline ml-1">
+                           <a href="readme.php?project_id=<?php echo $project['id_projet']; ?>" style="color: rgb(185, 212, 243) ;background-color:#24508c;"  class="text-white py-2 px-2 rounded hover:bg-red-600 font-bold">MD</a>
+                           <a href="taches_view.php?id_projet=<?php echo $project['id_projet']; ?>" style="color: rgb(185, 212, 243) ;background-color:#24508c;"  class="text-white font-bold p-2 px-2 rounded hover:bg-red-600 w-24 h-24">Planifier</a>
                         </form>
 
                     </div>
