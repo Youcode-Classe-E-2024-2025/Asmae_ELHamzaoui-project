@@ -28,6 +28,11 @@ class CategoryController
     }
 
 
+    
+     // Afficher toutes les tags
+     public function afficherCategorie() {
+        return $this->categoryModel->afficherCategorie();
+    }
    
 }
 

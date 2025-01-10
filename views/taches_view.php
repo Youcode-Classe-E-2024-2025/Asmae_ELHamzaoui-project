@@ -2,6 +2,11 @@
 // Inclure les fichiers nécessaires
 include_once '../controllers/projetController.php';
 include_once '../controllers/TacheController.php';
+include_once '../controllers/categorieController.php';
+include_once '../controllers/TagController.php';
+
+$TagController = new TagController($pdo);
+$CategorieController = new CategoryController($pdo);
 $controller = new TacheController($pdo);
 $projetController = new ProjetController($pdo);
 $id_projet = $_GET['id_projet'];
@@ -15,10 +20,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['ajouter'])) {
     $membre_assigne_id = 0;
     $controller->ajouterTache($id_projet,$titre, $desc, $statut, $date_limite, $priorite, $membre_assigne_id);
 }
+// Afficher toutes les tags
+$tags = $TagController->afficherTag();
 
+// Afficher toutes les tags
+$Categories = $CategorieController->afficherCategorie();
 
 // Afficher toutes les tâches
 $taches = $controller->afficherTaches($id_projet);
+
 $projets = $projetController->afficherProjets();
 $couleurs = ["#89cdff", "#426ba8" , "#68a0ed", "#a36357" , "#bf9289", "#edbea4"];
 ?>
@@ -43,7 +53,7 @@ $couleurs = ["#89cdff", "#426ba8" , "#68a0ed", "#a36357" , "#bf9289", "#edbea4"]
         }
 
         /* Style du modal */
-        #modalTache, #modalAssigner, #modalUserTache,#modalTag,#modalCategorie {
+        #modalTache, #modalAssigner, #modalUserTache,#modalTag,#modalCategorie,#modalTagcategorie {
             display: none; /* Le modal est caché initialement */
             position: fixed;
             top: 50%;
@@ -194,6 +204,7 @@ $couleurs = ["#89cdff", "#426ba8" , "#68a0ed", "#a36357" , "#bf9289", "#edbea4"]
                   <div class="pt-16 px-2 flex justify-center gap-4">
                     <a style="color: rgb(185, 212, 243) ;background-color:#24508c;"  class="text-white py-2 px-3 rounded hover:bg-red-600" href="modifier_tache.php?id=<?php echo $tache['id_tache']; ?>&id_projet=<?php echo $id_projet; ?>" ><i class="fa-solid fa-pen-to-square"></i></a>
                     <a style="color: rgb(185, 212, 243) ;background-color:#24508c;"  class="text-white py-2 px-3 rounded hover:bg-red-600" href="../controllers/supprimer_tache.php?id=<?php echo urlencode($tache['id_tache']); ?>&id_projet=<?php echo urlencode($id_projet); ?>" class="text-red-600 hover:text-red-800" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette tâche ?')"><i class="fa-solid fa-trash"></i></a>
+                    <a class="tagcategorietache" style="color: rgb(185, 212, 243) ;background-color:#24508c;"  class="text-white py-2 px-3 rounded hover:bg-red-600"><i class="fa-solid fa-pen-to-square"></i></a>
                   </div>
                 </div>
             <?php endforeach; ?>
@@ -333,40 +344,103 @@ $couleurs = ["#89cdff", "#426ba8" , "#68a0ed", "#a36357" , "#bf9289", "#edbea4"]
             </form>
         </div>
 
+
+        <!-- Modal pour ajouter des tags et des catégories à une tache-->
+        <div id="modalTagcategorie" style="width:400px; background-color:#f2f8ff; border:5px solid #24508c">
+            <form method="POST" action="../controllers/TagController.php?id_projet=<?php echo $id_projet; ?>">
+                <div class="p-4 text-center text-white pt-2" style="height:70px; width:70px;position:relative; left:305px;bottom:21px; border-bottom-left-radius:90px; border-top-right-radius:9px;font-size:25px; background-color:#24508c;">
+                     <a><i class="fas fa-times"></i></a>
+                </div>
+                <label for="taches" class="font-semibold">Ajouter des tags et des catégories à votre taches </label>
+                <br><br>
+                <!-- liste des catégories -->
+                <label for="">Catégorie :</label><br>
+                <div class="max-h-24  overflow-y-auto mb-2">
+                    <?php       
+                    foreach ($Categories as $categorie) {
+                        echo "<div><input type=\"checkbox\" name=\"taches[]\" value=\"" . $categorie['id_categorie'] . "\"> " . $categorie['nom_categorie'] . "</div>";
+                    }
+                    ?>
+                
+                </div>
+                <br>
+
+                 <!-- liste des tags -->
+                 <label for="">Tags :</label><br>
+                 <div class="max-h-24  overflow-y-auto mb-2">
+                    <?php       
+                    foreach ($tags as $tag) {
+                        echo "<div><input type=\"checkbox\" name=\"taches[]\" value=\"" . $tag['id_tag'] . "\"> " . $tag['nom_tag'] . "</div>";
+                    }
+                    ?>
+                </div>
+                <br>
+                <button type="submit" class="w-full h-10 border rounded-lg p-2 text-white font-semibold" style="background-color:#24508c;">Ajouter tag</button>
+                <!-- <button type="button" id="closeUserTacheModal" class="w-40 h-10 border rounded-lg p-2 bg-red-200">Annuler</button> -->
+            </form>
+        </div>
+
         <script>
             // Fonction pour ouvrir un modal
             function openModal(modalId, overlayId) {
                 document.getElementById(modalId).style.display = 'block';
                 document.getElementById(overlayId).style.display = 'block';
             }
-
+        
             // Fonction pour fermer un modal
             function closeModal(modalId, overlayId) {
                 document.getElementById(modalId).style.display = 'none';
                 document.getElementById(overlayId).style.display = 'none';
             }
+        
+            // Fonction pour afficher/masquer le menu
+            function toggleMenu() {
+                const menu = document.getElementById('menu');
+                menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';
+            }
+        
+            // Ouvrir les modals correspondants pour chaque tâche
+            document.querySelectorAll('.sticky-note .tagcategorietache').forEach(function(button) {
+                button.addEventListener('click', function() {
+                    openModal('modalTagcategorie', 'modalOverlay');
+                });
+            });
+        
+            // Fermer les modals lorsque l'on clique sur l'overlay
+            document.getElementById('modalOverlay').addEventListener('click', function() {
+                closeModal('modalTagcategorie', 'modalOverlay');
+            });
+        </script>
+        
 
+        <script>
+            // Fonction pour ouvrir un modal
+            function openModal(modalId, overlayId) {
+                document.getElementById(modalId).style.display = 'block';
+                document.getElementById(overlayId).style.display = 'block';
+            }
+            // Fonction pour fermer un modal
+            function closeModal(modalId, overlayId) {
+                document.getElementById(modalId).style.display = 'none';
+                document.getElementById(overlayId).style.display = 'none';
+            }
             // Lorsque le bouton est cliqué, affiche le modal d'ajout de tâche
             document.getElementById('openModalButton').addEventListener('click', function() {
                 openModal('modalTache', 'modalOverlay');
             });
-
             // Lors du clic sur le bouton "Assigner tâche"
             document.getElementById('openModalTacheUser').addEventListener('click', function() {
                 openModal('modalUserTache', 'modalOverlay');
             });
-
              // Lors du clic sur le bouton "tag"
              document.getElementById('modalTagbutton').addEventListener('click', function() {
                 openModal('modalTag', 'modalOverlay');
             });
-
             
              // Lors du clic sur le bouton "catégorie"
              document.getElementById('modalCategoriebutton').addEventListener('click', function() {
                 openModal('modalCategorie', 'modalOverlay');
             });
-
             // Fermer le modal d'ajout lorsque l'on clique sur l'overlay
             document.getElementById('modalOverlay').addEventListener('click', function() {
                 closeModal('modalTache', 'modalOverlay');
@@ -374,7 +448,6 @@ $couleurs = ["#89cdff", "#426ba8" , "#68a0ed", "#a36357" , "#bf9289", "#edbea4"]
                 closeModal('modalTag', 'modalOverlay');
                 closeModal('modalCategorie', 'modalOverlay');
             });
-
             // Fermer le modal d'assignation
             document.getElementById('closeUserTacheModal').addEventListener('click', function() {
                 closeModal('modalUserTache', 'modalOverlay');
@@ -384,7 +457,6 @@ $couleurs = ["#89cdff", "#426ba8" , "#68a0ed", "#a36357" , "#bf9289", "#edbea4"]
             document.getElementById('modalTagbutton').addEventListener('click', function() {
                 closeModal('modalTag', 'modalOverlay');
             });
- 
             // Fermer le modal d'ajout d'une catégorie
             document.getElementById('modalCategoriebutton').addEventListener('click', function() {
                 closeModal('modalCategorie', 'modalOverlay');
@@ -398,8 +470,8 @@ $couleurs = ["#89cdff", "#426ba8" , "#68a0ed", "#a36357" , "#bf9289", "#edbea4"]
               }
             };
         </script>
-</div>
 
+</div>
 </div>
 </body>
 </html>

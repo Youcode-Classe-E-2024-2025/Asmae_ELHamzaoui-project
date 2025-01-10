@@ -17,4 +17,13 @@ class Tag
         
         return $stmt->execute();
     }
+
+
+      // Afficher toutes les tags
+      public function afficherTag(){
+        $sql = "SELECT * FROM Tag ";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
