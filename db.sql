@@ -144,3 +144,12 @@ CREATE TABLE Utilisateur_Permission (
     FOREIGN KEY (id_user) REFERENCES Utilisateur(id_user),
     FOREIGN KEY (id_permission) REFERENCES Permission(id_permission)
 );
+
+
+INSERT INTO Permission (nom_permission, description_permission) VALUES
+('ajouter projet', 'Permet d\'ajouter un projet'),
+('supprimer projet', 'Permet de supprimer un projet'),
+('modifier projet', 'Permet de modifier un projet'),
+('ajouter tache', 'Permet d\'ajouter une tâche'),
+('supprimer tache', 'Permet de supprimer une tâche'),
+('modifier tache', 'Permet de modifier une tâche');
