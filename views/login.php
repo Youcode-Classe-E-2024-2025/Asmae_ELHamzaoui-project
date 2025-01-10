@@ -9,10 +9,7 @@
     <style>
          /* Ajoutez un arrière-plan d'image pour le corps */
          body {
-            background-image: url('../images/background.jpg'); /* Remplacez par le chemin de votre image */
-            background-size: cover;
-            background-position: center;
-        }
+            background-color:white;}
         .logo {
             transform: translateX(110px); /* Déplace le logo de 3px vers la gauche */
         }
@@ -20,32 +17,41 @@
 </head>
 <body>
     <div class="flex justify-center items-center min-h-screen">
-        <div class="bg-indigo-950 p-8 rounded-lg shadow-lg w-full sm:w-96">
-            <h1 class="text-2xl font-bold text-center text-gray-800 mb-6"><img src="../images/logo.png" alt="Logo" class="h-12 w-20 logo my-0"></h1>
+        <div class="bg-indigo-950 p-12 rounded-lg shadow-lg w-full sm:w-[700px] grid grid-cols-1 sm:grid-cols-2 gap-8" style="background-color:#f2f8ff;">
+            
+            <!-- Section gauche (image et texte) -->
+            <div class="flex flex-col justify-center items-center sm:items-start mb-10">
+                <img src="../images/logo.png" alt="Logo" class="h-34 w-48 ml-12">
+                <p class="font-bold sm:text-left text-black">Veuillez vous connecter pour accéder</p>
+                <p class="font-bold sm:text-left text-black ml-20">à votre compte.</p>
+            </div>
 
-            <form id="loginForm" action="../controllers/loginController.php" method="POST" onsubmit="return validateLoginForm()">
-                <div class="mb-4">
-                    <label for="email" class="block text-white">Email:</label>
-                    <input type="email" id="email" name="email" class="w-full p-3 mt-1 border rounded-md focus:outline-none focus:ring-2 focus:bg-sky-700" placeholder="Email" required>
-                    <span id="emailError" class="text-red-500 text-sm"><?= $errors['email'] ?? '' ?></span>
-                </div>
+            <!-- Section droite (formulaire de connexion) -->
+            <div>
+                <form id="loginForm" action="../controllers/loginController.php" method="POST" onsubmit="return validateLoginForm()">
+                    <div class="mb-4">
+                        <label for="email" class="block text-black">Email:</label>
+                        <input type="email" id="email" name="email" class="w-full p-3 mt-1 border border-1 rounded-md focus:outline-none focus:ring-2" style="border-color:#24508c" placeholder="Email" required>
+                        <span id="emailError" class="text-red-500 text-sm"><?= $errors['email'] ?? '' ?></span>
+                    </div>
 
-                <div class="mb-4">
-                    <label for="password" class="block text-white">Mot de passe:</label>
-                    <input type="password" id="password" name="password" class="w-full p-3 mt-1 border rounded-md focus:outline-none focus:ring-2 focus:bg-sky-700" placeholder="Mot de passe" required>
-                    <span id="passwordError" class="text-red-500 text-sm"><?= $errors['password'] ?? '' ?></span>
-                </div>
+                    <div class="mb-4">
+                        <label for="password" class="block text-black">Mot de passe:</label>
+                        <input type="password" id="password" name="password" class="w-full p-3 mt-1 border border-1 rounded-md focus:outline-none focus:ring-2" style="border-color:#24508c" placeholder="Mot de passe" required>
+                        <span id="passwordError" class="text-red-500 text-sm"><?= $errors['password'] ?? '' ?></span>
+                    </div>
 
-                <div class="mt-6">
-                    <button type="submit" class="w-full py-3 bg-sky-700 text-white rounded-md hover:bg-sky-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                        Se connecter
-                    </button>
-                </div>
-                <div class="flex felx-center text-center text-gray-100 gap-2">  
-                   <p>j'ai pas un compte </p>
-                   <a href="register.php"> S'inscrire</a>
-                </div>
-            </form>
+                    <div class="mt-6">
+                        <button type="submit" class="w-full py-3 bg-sky-700 text-white rounded-md hover:bg-sky-600 focus:outline-none focus:ring-2" style="background-color:#24508c;">
+                            Se connecter
+                        </button>
+                    </div>
+                    <div class="flex justify-center text-center text-black gap-2 mt-4">  
+                       <p>Vous n'avez pas de compte ?</p>
+                       <a href="register.php" class="text-sky-600">S'inscrire</a>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 

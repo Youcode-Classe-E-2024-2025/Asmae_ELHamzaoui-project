@@ -11,21 +11,38 @@ class TagController
         $this->tagModel = new Tag($pdo);
     }
 
-    public function handlePostRequest()
-    {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $nomTag = htmlspecialchars($_POST['nom_tag']); // Sanitize input
+    
+        // Afficher toutes les tag
+     public function createTag($nomTag) {
+        echo'hi';
+        return $this->tagModel->createTag($nomTag);
+    }
 
-            if ($this->tagModel->createTag($nomTag)) {
-                echo "success"; // Success message for JavaScript
+     // Afficher toutes les tag
+     public function afficherTag() {
+        return $this->tagModel->afficherTag();
+    }
+
+    public function insertionTagTache($tache_id, $tags){
+        global $pdo;
+    
+        foreach ($tags as $tag_id) {
+            // Vérifier si la relation existe déjà
+            $stmt = $pdo->prepare("SELECT COUNT(*) FROM Tache_Tag WHERE tache_id = ? AND tag_id = ?");
+            $stmt->execute([$tache_id, $tag_id]);
+            $count = $stmt->fetchColumn();
+            
+            // Si la relation n'existe pas, on l'ajoute
+            if ($count == 0) {
+                $stmt = $pdo->prepare("INSERT INTO Tache_Tag (tache_id, tag_id) VALUES (?, ?)");
+                $stmt->execute([$tache_id, $tag_id]);
             } else {
-                echo "error"; // Error message for JavaScript
+                echo "tag avec l'ID $tag_id est déjà assigné à la tache avec l'ID $tache_id.";
             }
         }
     }
 }
 
 // Initialize the controller and handle the POST request
-$controller = new TagController($pdo);
-$controller->handlePostRequest();
+
 ?>

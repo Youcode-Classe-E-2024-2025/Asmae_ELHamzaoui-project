@@ -35,7 +35,6 @@ class ProjetController {
     public function afficherProjets() {
         return $this->projetModel->afficherProjets();
     }
-  
       // Afficher les projets
       public function afficherProjetsPublic() {
         return $this->projetModel->afficherProjetsPublic();

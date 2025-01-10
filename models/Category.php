@@ -18,4 +18,12 @@ class Category
         
         return $stmt->execute();
     }
+
+      // Afficher toutes les tags
+      public function afficherCategorie(){
+        $sql = "SELECT * FROM Categorie";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }

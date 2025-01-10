@@ -2,8 +2,14 @@
 // Inclure les fichiers nécessaires
 include_once '../controllers/projetController.php';
 include_once '../controllers/TacheController.php';
+include_once '../controllers/categorieController.php';
+include_once '../controllers/TagController.php';
+
+$TagController = new TagController($pdo);
+$CategorieController = new CategoryController($pdo);
 $controller = new TacheController($pdo);
 $projetController = new ProjetController($pdo);
+$id_projet = $_GET['id_projet'];
 // Ajouter une tâche via formulaire
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['ajouter'])) {
     $titre = $_POST['titre_tache'];
@@ -11,13 +17,39 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['ajouter'])) {
     $statut = $_POST['statut_tache'];
     $date_limite = $_POST['date_limite'];
     $priorite = $_POST['priorite_tache'];
-    $membre_assigne_id =0;
-    $controller->ajouterTache($titre, $desc, $statut, $date_limite, $priorite, $membre_assigne_id);
+    $membre_assigne_id = 0;
+    $controller->ajouterTache($id_projet,$titre, $desc, $statut, $date_limite, $priorite, $membre_assigne_id);
 }
 
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ajouterTag'])) {
+    $nomTag = htmlspecialchars($_POST['nom_tag']); // Sanitize input
+    if($TagController->createTag($nomTag)){
+        header("Location: ../views/taches_view.php?id_projet=" . $id_projet);
+    } else {
+        echo "error"; // Error message for JavaScript
+    }
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ajouterCategorie'])) {
+           $nomCategorie = htmlspecialchars($_POST['nom_categorie']);
+            $descCategorie = htmlspecialchars($_POST['desc_categorie']);
+            if ($CategorieController->createCategory($nomCategorie, $descCategorie)) {
+                header("Location: ../views/taches_view.php?id_projet=" . $id_projet);
+            } else {
+                echo "error"; // Error message for JavaScript
+            }
+}
+// Afficher toutes les tags
+$tags = $TagController->afficherTag();
+
+// Afficher toutes les tags
+$Categories = $CategorieController->afficherCategorie();
+
 // Afficher toutes les tâches
-$taches = $controller->afficherTaches();
+$taches = $controller->afficherTaches($id_projet);
+
 $projets = $projetController->afficherProjets();
+$couleurs = ["#89cdff", "#426ba8" , "#68a0ed", "#a36357" , "#bf9289", "#edbea4"];
 ?>
 <html lang="fr">
 <head>
@@ -40,7 +72,7 @@ $projets = $projetController->afficherProjets();
         }
 
         /* Style du modal */
-        #modalTache, #modalAssigner, #modalUserTache {
+        #modalTache, #modalAssigner, #modalUserTache,#modalTag,#modalCategorie,#modalTagcategorie {
             display: none; /* Le modal est caché initialement */
             position: fixed;
             top: 50%;
@@ -53,14 +85,24 @@ $projets = $projetController->afficherProjets();
             width: 80%;
             max-width: 600px;
             border-radius: 8px;
-            overflow-y: auto; /* Pour que le contenu dépasse si nécessaire */
-            max-height: 80vh; /* Limiter la hauteur du modal */
+            max-height: 90vh; /* Limiter la hauteur du modal */
         }
-
+        #modalTagbutton,#modalCategoriebutton,#tagcategorietache{
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            z-index: 9999; /* Assurez-vous que le modal apparaît au-dessus du contenu */
+            width: 20%;
+            max-width: 600px;
+            border-radius: 4px;
+            max-height: 90vh; /* Limiter la hauteur du modal */
+            cursor: pointer;  
+        }
         .modal-form input, .modal-form select, .modal-form textarea {
             width: 100%;
             padding: 10px;
-            margin: 8px 0;
+            margin: 0px 0;
             border-radius: 8px;
             border: 1px solid #ccc;
             box-sizing: border-box;
@@ -80,265 +122,361 @@ $projets = $projetController->afficherProjets();
         .modal-form button:hover {
             background-color: #2563EB;
         }
-    </style>
+
+        body {
+            background-color:#f2f8ff;
+        }
+       
+         /* Icône du gear */
+    .gear-icon {
+      font-size: 30px;
+      cursor: pointer;
+      position: relative; 
+
+    }
+
+    /* Style du menu */
+    .menu {
+      display: none; /* Initialement caché */
+      position: absolute;
+      top: 60px; /* Place le menu juste en dessous de l'icône */
+      right:65px;
+      background-color: #f9f9f9;
+      border: 1px solid #ccc;
+      padding: 5px;
+      width:150px;
+      border-radius: 5px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      z-index: 10; /* Assure que le menu est au-dessus des autres éléments */
+    }
+
+    /* Style des éléments de menu */
+    .menu a {
+      display: block;
+      background-color:#f2f8ff;
+      margin-top:2px;
+      color: #333;
+      text-decoration: none;
+    }
+
+    .menu a:hover {
+        background-color:rgb(185, 212, 243);
+        cursor: pointer;
+    }
+
+    .sticky-note {
+        width: 250px; /* Largeur de la note */
+        height: 250px; /* Hauteur de la note */
+        border-radius: 10px; /* Coins arrondis */
+        box-shadow: 6px 6px 15px rgba(0, 0, 0, 0.54); /* Ombre légère */
+        padding: 15px; /* Espacement interne */
+        font-family: Arial, sans-serif; /* Police de caractères */
+        position: relative; /* Pour ajouter des éléments positionnés à l'intérieur */
+        align-items: center;
+        text-align: center;
+        color: #333; /* Couleur du texte */
+        
+    }
+</style>
 </head>
-<body class="bg-gray-100 text-gray-900">
-<header class="mx-8">
-   <div class="container flex justify-between items-center">
-       <img src="../images/logo.png" alt="Logo" class="h-12 w-20 logo my-5 bg-gray-600 ">
-       <div class="flex space-x-8 items-center">
-           <a href="views/direction.php" class="text-2xl hover:text-gray-600">
-               <i class="fa-solid fa-right-from-bracket"></i>
-           </a>
-       </div>
-   </div>
+<body>
+<header class="mx-4">
+    <div class="container flex justify-between items-center">
+        <!-- Logo avec taille augmentée -->
+        <img src="../images/logo.png" alt="Logo" class="h-24 w-32"> <!-- Ajout de la classe "logo" pour appliquer la transformation -->
+        <div class="space-x-6 items-center mr-8"> <!-- Espacement égal entre les éléments --> 
+            <i class="fa-duotone fa-solid fa-gear gear-icon" style="color:#24508c;" onclick="toggleMenu()">
+            </i> 
+            <div class="menu" id="menu">
+              <a onclick="ajouterProjet()"  id="openModalButton" class="text-center" style="color:#24508c">Ajouter tache</a>
+              <a onclick="assignerProjet()" id="openModalTacheUser" class="text-center" style="color:#24508c">Assigner tâche</a>
+              <a href="deconnexion.php"  class="text-center hover:text-gray-400" style="color:#24508c">log out</a>
+            </div>
+        </div>
+    </div>               
 </header>
 
-<div class="flex justify-center gap-4">
-    <div class="w-64 h-screen  border rounded-lg p-6">
-        <div class="w-48 h-10 border rounded-lg p-2 bg-gray-200">Taches</div><br>
-        <div class="w-48 h-10 border rounded-lg p-2 bg-gray-200">Assignements</div>
+<div class="flex justify-center gap-4 mx-4">
+    <div class="w-64 h-screen border border-2 rounded-lg p-6" style="background-color:#f2f8ff;">
+        <div class="w-48 h-10 border rounded-lg p-2 text-white font-bold" style="background-color:#24508c;">Taches</div><br>
+        <div class="w-48 h-10 border rounded-lg p-2 text-white font-bold" style="background-color:#24508c;">Assignements</div>
     </div>
 
-    <div class="container mx-auto p-8  border rounded-lg">
+    <div class="container mx-auto p-8 border border-2 rounded-lg" style="background-color:#f2f8ff;">
         <div class="flex justify-between gap-4">
-            <h1 class="text-3xl font-bold mb-8">Liste des Tâches</h1>
-            <div class="flex flex-center gap-2">   
-                <button id="assignerTacheButton" class="w-40 h-10 border rounded-lg p-2 bg-gray-200">Assigner Tâche </button>
-                <button id="openModalButton" class="w-40 h-10 border rounded-lg p-2 bg-gray-200">Ajouter tache</button>
-                <button id="openModalTacheUser" class="w-40 h-10 border rounded-lg p-2 bg-gray-200">Ajouter tâche utilisateur</button>
+            <h1 class="text-3xl font-bold mb-8" style="color:#24508c;">Liste des Tâches</h1>
+            <div>
+            <a id="modalTagbutton" style="color: rgb(185, 212, 243) ;background-color:#24508c;" class="text-white py-2 px-3 rounded hover:bg-red-600 " >Ajouter des tags</a>
+            <a id="modalCategoriebutton" style="color: rgb(185, 212, 243) ;background-color:#24508c;" class="text-white py-2 px-3 rounded hover:bg-red-600 " >Ajouter catégories</a>
+            <a id="tagcategorietache" style="color: rgb(185, 212, 243) ;background-color:#24508c;"  class="text-white py-2 px-3 rounded hover:bg-red-600">améliorer une tache</i></a>
             </div>
         </div>
 
-        <!-- Table des tâches -->
-        <table class="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
-            <thead class="bg-gray-800 text-white">
-                <tr>
-                    <th class="py-2 px-4 text-left">ID</th>
-                    <th class="py-2 px-4 text-left">Titre</th>
-                    <th class="py-2 px-4 text-left">Description</th>
-                    <th class="py-2 px-4 text-left">Statut</th>
-                    <th class="py-2 px-4 text-left">Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($taches as $tache): ?>
-                    <tr class="border-b">
-                        <td class="py-2 px-4"><?php echo $tache['id_tache']; ?></td>
-                        <td class="py-2 px-4"><?php echo $tache['titre_tache']; ?></td>
-                        <td class="py-2 px-4"><?php echo $tache['desc_tache']; ?></td>
-                        <td class="py-2 px-4"><?php echo $tache['statut_tache']; ?></td>
-                        <td class="py-2 px-4">
-                            <a href="modifier_tache.php?id=<?php echo $tache['id_tache']; ?>" class="text-blue-600 hover:text-blue-800">Modifier</a> | 
-                            <a href="../controllers/supprimer_tache.php?id=<?php echo $tache['id_tache']; ?>" class="text-red-600 hover:text-red-800">Supprimer</a>
-                        </td>
-                    </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
-
-        <div id="modalOverlay"></div>
+        <!-- Affichage des tâches selon le projet -->
+        <div class="grid grid-cols-3 gap-5">
+        <?php foreach ($taches as $index => $tache): ?>
+           <?php $couleur = $couleurs[$index % count($couleurs)]; // Assigner une couleur différente ?>
+                <div class="sticky-note mb-8"style="background-color: <?php echo $couleur; ?>;">
+                <img src="../images/msak.png" alt="Logo" class="h-12 w-24" style="position:relative;bottom:40px;left:50px"> <!-- Ajout de la classe "logo" pour appliquer la transformation -->
+                  <h1 class="font-bold text-xl" style="position:relative;bottom:30px; color:#f2f8ff;"><?php echo $tache['titre_tache']; ?></h1>
+                  <p><?php echo $tache['desc_tache']; ?></p>
+                  <p><?php echo $tache['statut_tache']; ?></p>
+                  <div class="pt-16 px-2 flex justify-center gap-4">
+                    <a style="color: rgb(185, 212, 243) ;background-color:#24508c;"  class="text-white py-2 px-3 rounded hover:bg-red-600" href="modifier_tache.php?id=<?php echo $tache['id_tache']; ?>&id_projet=<?php echo $id_projet; ?>" ><i class="fa-solid fa-pen-to-square"></i></a>
+                    <a style="color: rgb(185, 212, 243) ;background-color:#24508c;"  class="text-white py-2 px-3 rounded hover:bg-red-600" href="../controllers/supprimer_tache.php?id=<?php echo urlencode($tache['id_tache']); ?>&id_projet=<?php echo urlencode($id_projet); ?>" class="text-red-600 hover:text-red-800" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette tâche ?')"><i class="fa-solid fa-trash"></i></a>
+                  </div>
+                </div>
+            <?php endforeach; ?>
+    </div>
+           
+    <div id="modalOverlay"></div>
 
         <!-- Formulaire d'ajout de tâche -->
-        <div id="modalTache">
-            <h2 class="text-2xl font-semibold mt-10 mb-4">Ajouter une nouvelle tâche</h2>
-            <form method="POST" class="modal-form space-y-4">
+        <div id="modalTache" style="background-color:#f2f8ff; border:5px solid #24508c">
+            <form method="POST" class="modal-form">
+               
+                <div class="p-4 text-center text-white pt-2" style="height:70px; width:70px;position:relative; left:505px;bottom:21px; border-bottom-left-radius:90px; border-top-right-radius:9px;font-size:25px; background-color:#24508c;">
+                     <a><i class="fas fa-times"></i></a>
+                </div>
+                
+               
                 <div>
-                    <label for="titre_tache" class="block text-lg">Titre :</label>
-                    <input type="text" name="titre_tache" required class="focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <label for="titre_tache" class="block text-lg font-semibold">Titre :</label>
+                    <input type="text" name="titre_tache" required class="focus:outline-none focus:ring-2 focus:ring-blue-500" />
                 </div>
                 <div>
-                    <label for="desc_tache" class="block text-lg">Description :</label>
+                    <label for="desc_tache" class="block text-lg font-semibold">Description :</label>
                     <textarea name="desc_tache" class="focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
                 </div>
-                <div>
-                    <label for="statut_tache" class="block text-lg">Statut :</label>
-                    <select name="statut_tache" class="focus:outline-none focus:ring-2 focus:ring-blue-500">
-                        <option value="en_cours">En cours</option>
-                    </select>
+                <div class="mb-2 flex space-x-4">
+                    <div class="w-1/2">
+                        <label for="statut_tache" class="block text-lg font-semibold">Statut :</label>
+                        <select name="statut_tache" class=" w-full focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <option value="en_cours">En cours</option>
+                        </select>
+                    </div>
+    
+                    <div class="w-1/2">
+                        <label for="priorite_tache" class="block text-lg font-semibold">Priorité :</label>
+                        <select name="priorite_tache" class="w-full focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <option value="basse">Basse</option>
+                            <option value="moyenne">Moyenne</option>
+                            <option value="haute">Haute</option>
+                        </select>
+                    </div>
                 </div>
+               
                 <div>
-                    <label for="date_limite" class="block text-lg">Date limite :</label>
-                    <input type="date" name="date_limite" class="focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <label for="date_limite" class="block text-lg font-semibold">Date limite :</label>
+                    <input type="date" name="date_limite" class="focus:outline-none focus:ring-2 focus:ring-blue-500" />
                 </div>
-                <div>
-                    <label for="priorite_tache" class="block text-lg">Priorité :</label>
-                    <select name="priorite_tache" class="focus:outline-none focus:ring-2 focus:ring-blue-500">
-                        <option value="basse">Basse</option>
-                        <option value="moyenne">Moyenne</option>
-                        <option value="haute">Haute</option>
-                    </select>
-                </div>
-                <!-- <div>
-                    <label for="membre_assigne_id" class="block text-lg">Membre Assigné :</label>
-                    <input type="number" name="membre_assigne_id" required class="focus:outline-none focus:ring-2 focus:ring-blue-500">
-                </div> -->
-                <button type="submit" name="ajouter">Ajouter</button>
+                
+                <button type="submit" name="ajouter" style="background:#24508c; font-semibold">Ajouter</button>
             </form>
         </div>
 
-        <!-- Modal pour Assignation de tâche pour des projets-->
-        <div id="modalAssigner">
-            <h2 class="text-2xl font-semibold mt-10 mb-4">Assigner une tâche</h2>
-            <form method="POST" action="../controllers/assigner_tache.php" class="modal-form space-y-4">
-                <!-- Sélection des membres -->
-                <div>
-                    <label for="membre_assigne" class="block text-lg">Projets :</label>
-                    <select name="projet_id" class="focus:outline-none focus:ring-2 focus:ring-blue-500">
-                        <?php foreach($projets as $project): ?>
-                            <option value="<?php echo  $project['id_projet']; ?>"><?php echo  $project['nom_projet']; ?></option>
-                        <?php endforeach; ?>
-                    </select>
-                </div>
-
-                <!-- Liste des tâches du projet -->
-                <div>
-                    <label for="taches" class="block text-lg">Tâches :</label>
-                    <?php foreach ($taches as $tache): ?>
-                        <div>
-                            <input type="checkbox" name="taches[]" value="<?php echo $tache['id_tache']; ?>"> <?php echo $tache['titre_tache']; ?>
-                        </div>
-                    <?php endforeach; ?>
-                </div> 
-                <!-- Boutons -->
-                <div class="flex gap-4">
-                    <button type="submit" name="assigner" class="w-1/2 bg-blue-500 text-white">Assigner</button>
-                    <button type="button" id="closeAssignerModal" class="w-1/2 bg-gray-500 text-white">Annuler</button>
-                </div>
-            </form>
-        </div>
-        
         <!-- Modal pour Assignation de tâche pour des membres-->
-        <div id="modalUserTache">
-           <form method="POST" action="../controllers/assigner_tache_user.php">
-           <label for="taches">Sélectionner des tâches :</label>
-           <br>
-   
-           <?php
-           // Récupérer les tâches disponibles
-           $stmt = $pdo->prepare("SELECT id_tache, titre_tache FROM Tache");
-           $stmt->execute();
-           $taches = $stmt->fetchAll(PDO::FETCH_ASSOC);
-   
-           // Affichage des cases à cocher pour chaque tâche
-           foreach ($taches as $tache) {
-               echo "<input type=\"checkbox\" name=\"taches[]\" value=\"" . $tache['id_tache'] . "\"> " . $tache['titre_tache'] . "<br>";
-           }
-           ?>
-           <br>
-           <label for="user_id">Sélectionner un utilisateur :</label>
-           <select name="user_id" id="user_id">
-               <?php
-               // Récupérer les utilisateurs disponibles (membres)
-               $stmt = $pdo->prepare("SELECT id_user, nom_user FROM Utilisateur WHERE role_user = 'membre'");
-               $stmt->execute();
-               $utilisateurs = $stmt->fetchAll(PDO::FETCH_ASSOC);
-   
-               // Affichage des utilisateurs dans le menu déroulant
-               foreach ($utilisateurs as $utilisateur) {
-                   echo "<option value=\"" . $utilisateur['id_user'] . "\">" . $utilisateur['nom_user'] . "</option>";
-               }
-               ?>
-           </select>
-           <br><br>
-   
-           <button type="submit" name="assigner_tache_user" class="w-40 h-10 border rounded-lg p-2 bg-blue-200">Assigner</button>
-           <button type="button" id="closeUserTacheModal" class="w-40 h-10 border rounded-lg p-2 bg-red-200">Annuler</button>
-           </form>
-       </div>
-       
-       <!-- Modal for Adding a Tag -->
-<div class="modal fade" id="addTagModal">
-  <div class="modal-dialog">
-    <div class="modal-content rounded-lg shadow-lg">
-      <div class="modal-header p-4 bg-gray-100">
-        <h5 class="modal-title text-xl font-semibold text-gray-800" id="addTagModalLabel">Ajouter un Nouveau Tag</h5>
-        <button type="button" class="btn-close text-gray-500" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body p-4">
-        <form id="addTagForm" action="../controllers/TagController.php" method="POST">
-          <div class="mb-4">
-            <label for="nom_tag" class="block text-sm font-medium text-gray-700">Nom du Tag</label>
-            <input type="text" id="nom_tag" name="nom_tag" class="mt-2 p-2 w-full border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" required>
-          </div>
-          <button type="submit" class="w-full py-2 mt-2 bg-indigo-500 text-white rounded-lg hover:bg-indigo-600">Ajouter Tag</button>
-        </form>
-      </div>
-    </div>
-  </div>
+        <div id="modalUserTache" style="width:400px; background-color:#f2f8ff; border:5px solid #24508c">
+            <form method="POST" action="../controllers/assigner_tache_user.php">
+                <div class="p-4 text-center text-white pt-2" style="height:70px; width:70px;position:relative; left:305px;bottom:21px; border-bottom-left-radius:90px; border-top-right-radius:9px;font-size:25px; background-color:#24508c;">
+                     <a><i class="fas fa-times"></i></a>
+                </div>
+                <label for="taches" class="font-semibold">Sélectionner des tâches :</label>
+                <br><br>
+                <!-- Zone des cases à cocher avec défilement -->
+                <div class="max-h-40  overflow-y-auto mb-2">
+                    <?php       
+                    foreach ($taches as $tache) {
+                        echo "<div><input type=\"checkbox\" name=\"taches[]\" value=\"" . $tache['id_tache'] . "\"> " . $tache['titre_tache'] . "</div>";
+                    }
+                    ?>
+                </div>
+        
+                <br>
+                <label for="user_id" class="font-semibold">Sélectionner un utilisateur :</label>
+                <br>
+                <select name="user_id" id="user_id"  class="w-full px-4 py-2 border border-gray-300 rounded mt-1 focus:ring-2 focus:ring-blue-500">
+                    <?php
+                    // Récupérer les membres assignés pour le projet
+                    $stmt = $pdo->prepare("SELECT u.id_user, u.nom_user FROM Utilisateur u JOIN Projet_Utilisateur pu ON u.id_user = pu.id_user WHERE pu.id_projet = :id_projet;");
+                    $stmt->bindParam(':id_projet', $id_projet);
+                    $stmt->execute();
+                    $utilisateurs = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        
+                    // Affichage des utilisateurs dans le menu déroulant
+                    foreach ($utilisateurs as $utilisateur) {
+                        echo "<option value=\"" . $utilisateur['id_user'] . "\">" . $utilisateur['nom_user'] . "</option>";
+                    }
+                    ?>
+                </select>
+                <br><br>
+        
+                <button type="submit" name="assigner_tache_user" class="w-full h-10 border rounded-lg p-2 text-white font-semibold" style="background-color:#24508c;">Assigner</button>
+                <!-- <button type="button" id="closeUserTacheModal" class="w-40 h-10 border rounded-lg p-2 bg-red-200">Annuler</button> -->
+            </form>
+        </div>
+
+
+
+         <!-- Modal pour ajouter des tag-->
+         <div id="modalTag" style="width:400px; background-color:#f2f8ff; border:5px solid #24508c">
+            <form method="POST" action="">
+                <div class="p-4 text-center text-white pt-2" style="height:70px; width:70px;position:relative; left:305px;bottom:21px; border-bottom-left-radius:90px; border-top-right-radius:9px;font-size:25px; background-color:#24508c;">
+                     <a><i class="fas fa-times"></i></a>
+                </div>
+                <label for="taches" class="font-semibold">Ajouter tags </label>
+                <br><br>
+                <!-- ajout des tags -->
+                <div class="max-h-40  overflow-y-auto mb-2">
+                 <label for="">nom tag</label><br>
+                 <input type="text" name="nom_tag" class="w-full px-4 py-2 border border-gray-300 rounded mt-1 focus:ring-2 focus:ring-blue-500">
+                </div><br>
+                <button type="submit" name="ajouterTag" class="w-full h-10 border rounded-lg p-2 text-white font-semibold" style="background-color:#24508c;">Ajouter tag</button>
+                <!-- <button type="button" id="closeUserTacheModal" class="w-40 h-10 border rounded-lg p-2 bg-red-200">Annuler</button> -->
+            </form>
+        </div>
+
+
+        <!-- Modal pour ajouter des catégories-->
+        <div id="modalCategorie" style="width:400px; background-color:#f2f8ff; border:5px solid #24508c">
+            <form method="POST" action="../controllers/categorieController.php?id_projet=<?php echo $id_projet; ?>">
+                <div class="p-4 text-center text-white pt-2" style="height:70px; width:70px;position:relative; left:305px;bottom:21px; border-bottom-left-radius:90px; border-top-right-radius:9px;font-size:25px; background-color:#24508c;">
+                     <a><i class="fas fa-times"></i></a>
+                </div>
+                <label class="font-semibold">Ajouter des catégories </label>
+                <br><br>
+                <!-- ajout des tags -->
+                <div class="max-h-40  overflow-y-auto mb-2">
+                 <label for="">nom catégorie</label><br>
+                 <input type="text" name="nom_categorie" class="w-full px-4 py-2 border border-gray-300 rounded mt-1 focus:ring-2 focus:ring-blue-500">
+                </div>
+        
+                <br>
+                <div class="max-h-40  overflow-y-auto mb-2">
+                 <label for="">description catégorie</label><br>
+                 <input type="text" name="desc_categorie" class="w-full px-4 py-1 border border-gray-300 rounded mt-1 focus:ring-2 focus:ring-blue-500">
+                </div>
+                <br><br>
+        
+                <button type="submit" name="ajouterCategorie" name="ajouterTag" class="w-full h-10 border rounded-lg p-2 text-white font-semibold" style="background-color:#24508c;">Ajouter categorie</button>
+                <!-- <button type="button" id="closeUserTacheModal" class="w-40 h-10 border rounded-lg p-2 bg-red-200">Annuler</button> -->
+            </form>
+        </div>
+
+
+        <!-- Modal pour ajouter des tags et des catégories à une tache-->
+        <div id="modalTagcategorie" style="width:400px; background-color:#f2f8ff; border:5px solid #24508c">
+            <form method="POST" action="../controllers/ajouter_tache_TagCategorie.php">
+                <div class="p-4 text-center text-white pt-2" style="height:70px; width:70px;position:relative; left:305px;bottom:21px; border-bottom-left-radius:90px; border-top-right-radius:9px;font-size:25px; background-color:#24508c;">
+                     <a><i class="fas fa-times"></i></a>
+                </div>
+                <label for="taches" class="font-semibold">Ajouter des tags et des catégories à votre taches </label>
+                <label for="taches">Sélectionner des tâches :</label>
+                <!-- Zone des cases à cocher avec défilement -->
+                <select name="id_tache" id="user_id"  class="w-full px-4 py-2 border border-gray-300 rounded mt-1 focus:ring-2 focus:ring-blue-500">
+                    <?php       
+                    foreach ($taches as $tache) {
+                        echo "<option value=\"" .  $tache['id_tache'] . "\">" . $tache['titre_tache'] . "</option>";
+                    }
+                    ?>
+                </select><br>
+                <!-- liste des catégories -->
+                <label for="">Catégorie :</label><br>
+                <div class="max-h-24  overflow-y-auto mb-2">
+                    <?php       
+                    foreach ($Categories as $categorie) {
+                        echo "<div><input type=\"checkbox\" name=\"categories[]\" value=\"" . $categorie['id_categorie'] . "\"> " . $categorie['nom_categorie'] . "</div>";
+                    }
+                    ?>
+                
+                </div>
+
+                 <!-- liste des tags -->
+                 <label for="">Tags :</label><br>
+                 <div class="max-h-24  overflow-y-auto mb-2">
+                    <?php       
+                    foreach ($tags as $tag) {
+                        echo "<div><input type=\"checkbox\" name=\"tags[]\" value=\"" . $tag['id_tag'] . "\"> " . $tag['nom_tag'] . "</div>";
+                    }
+                    ?>
+                </div>
+                <br>
+                <button type="submit"  class="w-full h-10 border rounded-lg p-2 text-white font-semibold" style="background-color:#24508c;">Ajouter </button>
+                <!-- <button type="button" id="closeUserTacheModal" class="w-40 h-10 border rounded-lg p-2 bg-red-200">Annuler</button> -->
+            </form>
+        </div>
+
+        
+
+        <script>
+            // Fonction pour ouvrir un modal
+            function openModal(modalId, overlayId) {
+                document.getElementById(modalId).style.display = 'block';
+                document.getElementById(overlayId).style.display = 'block';
+            }
+            // Fonction pour fermer un modal
+            function closeModal(modalId, overlayId) {
+                document.getElementById(modalId).style.display = 'none';
+                document.getElementById(overlayId).style.display = 'none';
+            }
+            // Lorsque le bouton est cliqué, affiche le modal d'ajout de tâche
+            document.getElementById('openModalButton').addEventListener('click', function() {
+                openModal('modalTache', 'modalOverlay');
+            });
+            // Lors du clic sur le bouton "Assigner tâche"
+            document.getElementById('openModalTacheUser').addEventListener('click', function() {
+                openModal('modalUserTache', 'modalOverlay');
+            });
+             // Lors du clic sur le bouton "tag"
+             document.getElementById('modalTagbutton').addEventListener('click', function() {
+                openModal('modalTag', 'modalOverlay');
+            });
+            
+             // Lors du clic sur le bouton "catégorie"
+             document.getElementById('modalCategoriebutton').addEventListener('click', function() {
+                openModal('modalCategorie', 'modalOverlay');
+            });
+
+             // Lors du clic sur le bouton "catégorie" +"tag"
+             document.getElementById('tagcategorietache').addEventListener('click', function() {
+                openModal('modalTagcategorie', 'modalOverlay');
+            });
+            // Fermer le modal d'ajout lorsque l'on clique sur l'overlay
+            document.getElementById('modalOverlay').addEventListener('click', function() {
+                closeModal('modalTache', 'modalOverlay');
+                closeModal('modalUserTache', 'modalOverlay');  // Ajout pour fermer le modal User
+                closeModal('modalTag', 'modalOverlay');
+                closeModal('modalCategorie', 'modalOverlay');
+                closeModal('modalTagcategorie', 'modalOverlay');
+            });
+            // Fermer le modal d'assignation
+            document.getElementById('closeUserTacheModal').addEventListener('click', function() {
+                closeModal('modalUserTache', 'modalOverlay');
+            });
+            
+            // Fermer le modal d'ajout d'une tage
+            document.getElementById('modalTagbutton').addEventListener('click', function() {
+                closeModal('modalTag', 'modalOverlay');
+            });
+            // Fermer le modal d'ajout d'une catégorie
+            document.getElementById('modalCategoriebutton').addEventListener('click', function() {
+                closeModal('modalCategorie', 'modalOverlay');
+            });
+             // Fermer le modal d'ajout d'une catégorie
+             document.getElementById('tagcategorietache').addEventListener('click', function() {
+                closeModal('modalTagcategorie', 'modalOverlay');
+            });
+            function toggleMenu() {
+               const menu = document.getElementById("menu");
+              if (menu.style.display === "none") {
+                  menu.style.display = "block"; // Si le menu est visible, on le cache
+              } else {
+                 menu.style.display = "none"; // Sinon on l'affiche
+              }
+            };
+        </script>
+
 </div>
-
-<!-- Modal for Adding a Category -->
-<div class="modal fade" id="addCategoryModal">
-  <div class="modal-dialog">
-    <div class="modal-content rounded-lg shadow-lg">
-      <div class="modal-header p-4 bg-gray-100">
-        <h5 class="modal-title text-xl font-semibold text-gray-800" id="addCategoryModalLabel">Ajouter une Nouvelle Catégorie</h5>
-        <button type="button" class="btn-close text-gray-500" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body p-4">
-        <form id="addCategoryForm" action="../controllers/categorieController.php" method="POST">
-          <div class="mb-4">
-            <label for="nom_categorie" class="block text-sm font-medium text-gray-700">Nom de la Catégorie</label>
-            <input type="text" id="nom_categorie" name="nom_categorie" class="mt-2 p-2 w-full border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" required>
-          </div>
-          <div class="mb-4">
-            <label for="desc_categorie" class="block text-sm font-medium text-gray-700">Description de la Catégorie</label>
-            <textarea id="desc_categorie" name="desc_categorie" class="mt-2 p-2 w-full border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
-          </div>
-          <button type="submit" class="w-full py-2 mt-2 bg-indigo-500 text-white rounded-lg hover:bg-indigo-600">Ajouter Catégorie</button>
-        </form>
-      </div>
-    </div>
-  </div>
 </div>
-
-    </div>
-</div>
-<script>
-    // Fonction pour ouvrir un modal
-    function openModal(modalId, overlayId) {
-        document.getElementById(modalId).style.display = 'block';
-        document.getElementById(overlayId).style.display = 'block';
-    }
-
-    // Fonction pour fermer un modal
-    function closeModal(modalId, overlayId) {
-        document.getElementById(modalId).style.display = 'none';
-        document.getElementById(overlayId).style.display = 'none';
-    }
-
-    // Lorsque le bouton est cliqué, affiche le modal d'ajout de tâche
-    document.getElementById('openModalButton').addEventListener('click', function() {
-        openModal('modalTache', 'modalOverlay');
-    });
-
-    // Lors du clic sur le bouton "Assigner tâche"
-    document.getElementById('assignerTacheButton').addEventListener('click', function() {
-        openModal('modalAssigner', 'modalOverlay');
-    });
-
-    // Lors du clic sur le bouton "Ajouter tâche utilisateur"
-    document.getElementById('openModalTacheUser').addEventListener('click', function() {
-        openModal('modalUserTache', 'modalOverlay');
-    });
-
-    // Fermer le modal d'ajout lorsque l'on clique sur l'overlay
-    document.getElementById('modalOverlay').addEventListener('click', function() {
-        closeModal('modalTache', 'modalOverlay');
-        closeModal('modalAssigner', 'modalOverlay');
-        closeModal('modalUserTache', 'modalOverlay');  // Ajout pour fermer le 3ème modal
-    });
-
-    // Fermer le modal d'assignation
-    document.getElementById('closeAssignerModal').addEventListener('click', function() {
-        closeModal('modalAssigner', 'modalOverlay');
-    });
-
-    // Fermer le modal pour utilisateur
-    document.getElementById('closeUserTacheModal').addEventListener('click', function() {
-        closeModal('modalUserTache', 'modalOverlay');
-    });
-</script>
 </body>
 </html>
