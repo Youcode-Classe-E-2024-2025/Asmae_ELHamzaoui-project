@@ -128,3 +128,19 @@ CREATE TABLE markdown_data (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (id_projet) REFERENCES Projet(id_projet)
 );
+
+
+CREATE TABLE Permission (
+    id_permission INT AUTO_INCREMENT PRIMARY KEY,
+    nom_permission VARCHAR(255) NOT NULL,
+    description_permission TEXT
+);
+
+-- Table pour associer les utilisateurs à des permissions spécifiques
+CREATE TABLE Utilisateur_Permission (
+    id_user INT,
+    id_permission INT,
+    PRIMARY KEY (id_user, id_permission),
+    FOREIGN KEY (id_user) REFERENCES Utilisateur(id_user),
+    FOREIGN KEY (id_permission) REFERENCES Permission(id_permission)
+);
